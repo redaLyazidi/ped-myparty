@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>com.ped.myparty</groupId>
+        <artifactId>my-party</artifactId>
+        <version>0.1.0.BUILD-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>myparty-frontend</artifactId>
+    <name>myparty-frontend</name>
+    <packaging>war</packaging>
+    <version>0.1.0.BUILD-SNAPSHOT</version>
+    
+    <dependencies>
+      <dependency>
+        <groupId>com.ped.myparty</groupId>
+        <artifactId>myparty-backend-domain-lib</artifactId>
+        <version>0.1.0.BUILD-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+</project>
