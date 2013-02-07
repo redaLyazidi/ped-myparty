@@ -11,7 +11,7 @@ SCM : SVN
 
 Le projet sera géré avec MAVEN.
 
-BD : Un de test(H2Database) un de prod (MySQL)
+BD : Une de test (H2Database) une de prod (MySQL)
 
 ORM : Hibernate
 
@@ -21,4 +21,3 @@ Tomcat
 Framework de présentation : JSF 2.0
 
 Réplications de BD
-
