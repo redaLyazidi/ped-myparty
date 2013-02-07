@@ -1,13 +1,4 @@
-#summary One-sentence summary of this page.
+Editeurs SVG :
 
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+http://svg-edit.googlecode.com/svn/branches/2.6/editor/svg-editor.html#group
+http://editor.method.ac/
