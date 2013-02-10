@@ -1,0 +1,75 @@
+package test;
+
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.ped.dao.PartyDaoImpl;
+import net.ped.model.Adress;
+import net.ped.model.Artist;
+import net.ped.model.Party;
+
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatDtdDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.ext.h2.H2DataTypeFactory;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class MyPartyTest {
+
+	private static final Logger LOG = LoggerFactory.getLogger(MyPartyTest.class);
+	
+	@Rule public TestName name = new TestName();
+	
+	static PartyDaoImpl dao;
+	static Adress adress;
+	static Artist artist1, artist2;
+	static List<Artist> listArtists;
+	static Party party;
+	
+	@BeforeClass
+	public static void setUp() throws Exception {
+		dao = new PartyDaoImpl();
+		adress = new Adress("18 rue des plantes", "Bordeaux", "France");
+		artist1 = new Artist("Jean", "variete");
+		artist2 = new Artist("Robert", "variete");
+		listArtists = new ArrayList<Artist>();
+		listArtists.add(artist1);
+		listArtists.add(artist2);
+		party = new Party("Le concert du saucisson", adress, listArtists);
+	}
+	
+	@Test
+	public void testAddParty(){
+		try {
+			dao.addParty(party);
+		} catch (Exception e) {
+			LOG.error("erreur lors de l'execution de la methode testAddParty");
+			e.printStackTrace();
+		}
+	}
+	
+	@After
+	public void afterTests() throws Exception {
+		Class driverClass = Class.forName("org.h2.Driver");
+		Connection jdbcConnection = DriverManager.getConnection("jdbc:h2:mem://localhost:9101/dbunit", "sa", "");
+		IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
+		connection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new H2DataTypeFactory());
+		// full database export
+		IDataSet fullDataSet = connection.createDataSet();
+		FlatXmlDataSet.write(fullDataSet, new FileOutputStream("target/"+name.getMethodName()+".xml"));
+		FlatDtdDataSet.write(connection.createDataSet(), new FileOutputStream("target/"+"test.dtd"));
+	}
+	
+}
