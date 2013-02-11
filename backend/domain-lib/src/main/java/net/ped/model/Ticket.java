@@ -19,15 +19,17 @@ public class Ticket implements java.io.Serializable{
 	private Party party;
 	private String firstname;
 	private String lastname;
+	private String mail;
 	
 	public Ticket() {
 
 	}
 
-	public Ticket(Party party, String firstname, String lastname) {
+	public Ticket(Party party, String firstname, String lastname, String mail) {
 		this.party = party;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.mail = mail;
 	}
 
 	public int getId() {
@@ -60,5 +62,13 @@ public class Ticket implements java.io.Serializable{
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 }

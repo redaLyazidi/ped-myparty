@@ -4,6 +4,9 @@ import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.ped.dao.PartyDaoImpl;
@@ -33,6 +36,7 @@ public class MyPartyTest {
 	@Rule public TestName name = new TestName();
 	
 	static PartyDaoImpl dao;
+	static Calendar dateParty, dateBegin, dateEnd;
 	static Adress adress;
 	static Artist artist1, artist2;
 	static List<Artist> listArtists;
@@ -41,13 +45,16 @@ public class MyPartyTest {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		dao = new PartyDaoImpl();
+		dateParty = new GregorianCalendar(2013, 04, 15, 21, 30);
+		dateBegin = new GregorianCalendar(2013, 04, 01, 10, 30);
+		dateEnd = new GregorianCalendar(2013, 04, 10, 11, 30);
 		adress = new Adress("18 rue des plantes", "Bordeaux", "France");
 		artist1 = new Artist("Jean", "variete");
 		artist2 = new Artist("Robert", "variete");
 		listArtists = new ArrayList<Artist>();
 		listArtists.add(artist1);
 		listArtists.add(artist2);
-		party = new Party("Le concert du saucisson", adress, listArtists);
+		party = new Party("Le concert du saucisson", dateParty, dateBegin, dateEnd, "succes enorme en France", 200, "variete", 25.50, adress, listArtists);
 	}
 	
 	@Test
