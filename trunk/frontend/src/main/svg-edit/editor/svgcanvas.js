@@ -229,6 +229,10 @@ $.extend(all_properties.text, {
 	font_family: 'serif'
 });
 
+var getAllProperties = this.getAllProperties = function() { // myParty add
+    return all_properties;
+}
+
 // Current shape style properties
 var cur_shape = all_properties.shape;
 
