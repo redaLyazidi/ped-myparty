@@ -20,7 +20,7 @@ public interface InterfacePartyDao {
 	/**
 	 * supprime une party
 	 */
-	public void deleteParty(Party p) throws Exception;
+	public void deleteParty(int id) throws Exception;
 	
 	/**
 	 * obtient toutes les party

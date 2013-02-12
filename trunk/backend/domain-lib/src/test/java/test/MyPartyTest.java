@@ -1,5 +1,7 @@
 package test;
 
+import static org.junit.Assert.*;
+
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -61,8 +63,34 @@ public class MyPartyTest {
 	public void testAddParty(){
 		try {
 			dao.addParty(party);
+			assertFalse(dao.getAllParties().isEmpty());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testAddParty");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testUpdateParty(){
+		try {
+			Party p1 = dao.getParty(1);
+			p1.setNbPlace(500);
+			dao.updateParty(p1);
+			Party p2 = dao.getParty(1);
+			assertEquals(500, p2.getNbPlace());
+		} catch (Exception e) {
+			LOG.error("erreur lors de l'execution de la methode testupdateParty");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testDeleteParty(){
+		try {
+			dao.deleteParty(1);
+			assertTrue(dao.getAllParties().isEmpty());
+		} catch (Exception e) {
+			LOG.error("erreur lors de l'execution de la methode testDeleteParty");
 			e.printStackTrace();
 		}
 	}
