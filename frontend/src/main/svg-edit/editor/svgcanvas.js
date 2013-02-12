@@ -3272,6 +3272,12 @@ var getMouseTarget = this.getMouseTarget = function(evt) {
 				var attrs = $(element).attr(["width", "height"]);
 				// Image should be kept regardless of size (use inherit dimensions later)
 				keep = (attrs.width != 0 || attrs.height != 0) || current_mode === "image";
+                                canvas.setMode("select");
+
+                                /*if (getHref(element).indexOf('data:') !== 0) {
+                                    console.log("svgEditor : ", svgEditor);
+                                    svgEditor.promptImgURL();
+                                }*/
 				break;
 			case "circle":
 				keep = (element.getAttribute('r') != 0);
@@ -5319,7 +5325,7 @@ this.embedImage = function(val, callback) {
 		} catch(e) {
 			encodableImages[val] = false;
 		}
-		last_good_img_url = val;
+		//last_good_img_url = val; // myparty
 		if(callback) callback(encodableImages[val]);
 	}).attr('src',val);
 }

@@ -1526,7 +1526,7 @@
 					if(svgCanvas.addedNew) {
 						if(elname === 'image') {
 							// Prompt for URL if not a data URL
-							if(svgCanvas.getHref(elem).indexOf('data:') !== 0) {
+							if(typeof(elem.fixedUrl) === "undefined" && svgCanvas.getHref(elem).indexOf('data:') !== 0) { // myparty
 								promptImgURL();
 							}
 						} /*else if(elname == 'text') {
@@ -3320,7 +3320,10 @@
 				var curhref = svgCanvas.getHref(selectedElement);
 				curhref = curhref.indexOf("data:") === 0?"":curhref;
 				$.prompt(uiStrings.notification.enterNewImgURL, curhref, function(url) {
-					if(url) setImageURL(url);
+					if(url) { 
+                                            setImageURL(url);
+                                            svgCanvas.setGoodImage(url);
+                                        }
 				});
 			}
 
