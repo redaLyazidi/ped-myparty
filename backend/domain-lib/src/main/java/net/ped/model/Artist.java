@@ -4,8 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+//@XmlRootElement(name = "artist")
 public class Artist implements java.io.Serializable{
 	
 	@Id
@@ -23,6 +26,7 @@ public class Artist implements java.io.Serializable{
 		this.type = type;
 	}
 
+	//@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -31,6 +35,7 @@ public class Artist implements java.io.Serializable{
 		this.id = id;
 	}
 
+	//@XmlElement
 	public String getName() {
 		return name;
 	}
@@ -39,6 +44,7 @@ public class Artist implements java.io.Serializable{
 		this.name = name;
 	}
 
+	//@XmlElement
 	public String getType() {
 		return type;
 	}

@@ -16,13 +16,19 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 
 @Entity
+//@XmlRootElement(name = "party")
 public class Party implements java.io.Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	
 	private String title;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -64,6 +70,7 @@ public class Party implements java.io.Serializable{
 		this.artists = artists;
 	}
 
+	//@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -72,6 +79,7 @@ public class Party implements java.io.Serializable{
 		this.id = id;
 	}
 
+	//@XmlElement
 	public String getTitle() {
 		return title;
 	}
@@ -80,6 +88,7 @@ public class Party implements java.io.Serializable{
 		this.title = title;
 	}
 	
+	//@XmlElement(type=Date.class)
 	public Calendar getDateParty() {
 		return dateParty;
 	}
@@ -88,6 +97,7 @@ public class Party implements java.io.Serializable{
 		this.dateParty = dateParty;
 	}
 
+	//@XmlElement(type=Date.class)
 	public Calendar getDateBegin() {
 		return dateBegin;
 	}
@@ -96,6 +106,7 @@ public class Party implements java.io.Serializable{
 		this.dateBegin = dateBegin;
 	}
 
+	//@XmlElement(type=Date.class)
 	public Calendar getDateEnd() {
 		return dateEnd;
 	}
@@ -104,6 +115,7 @@ public class Party implements java.io.Serializable{
 		this.dateEnd = dateEnd;
 	}
 
+	//@XmlElement
 	public String getDescription() {
 		return description;
 	}
@@ -112,6 +124,7 @@ public class Party implements java.io.Serializable{
 		this.description = description;
 	}
 
+	//@XmlElement
 	public int getNbPlace() {
 		return nbPlace;
 	}
@@ -120,6 +133,7 @@ public class Party implements java.io.Serializable{
 		this.nbPlace = nbPlace;
 	}
 
+	//@XmlElement
 	public String getTheme() {
 		return theme;
 	}
@@ -128,6 +142,7 @@ public class Party implements java.io.Serializable{
 		this.theme = theme;
 	}
 
+	//@XmlElement
 	public double getPrice() {
 		return price;
 	}
@@ -136,6 +151,7 @@ public class Party implements java.io.Serializable{
 		this.price = price;
 	}
 
+	//@XmlElement
 	public int getNbPlaceBought() {
 		return nbPlaceBought;
 	}
@@ -144,6 +160,7 @@ public class Party implements java.io.Serializable{
 		this.nbPlaceBought = nbPlaceBought;
 	}
 
+	//@XmlTransient
 	public int getNbPlaceScanned() {
 		return nbPlaceScanned;
 	}
@@ -152,6 +169,7 @@ public class Party implements java.io.Serializable{
 		this.nbPlaceScanned = nbPlaceScanned;
 	}
 
+	//@XmlElement
 	public Adress getAdress() {
 		return adress;
 	}
@@ -160,6 +178,7 @@ public class Party implements java.io.Serializable{
 		this.adress = adress;
 	}
 
+	//@XmlElement
 	public List<Artist> getArtists() {
 		return artists;
 	}
