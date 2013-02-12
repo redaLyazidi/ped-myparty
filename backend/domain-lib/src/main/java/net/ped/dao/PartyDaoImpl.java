@@ -1,9 +1,11 @@
 package net.ped.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import net.ped.model.Party;
 
@@ -35,23 +37,93 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 	}
 
 	public void updateParty(Party p) throws Exception{
-		// TODO Auto-generated method stub
-		
+		LOG.info("> updateParty");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			em.merge(p); 
+			tx.commit();
+			LOG.debug("Modification de la party");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction updateParty",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
 	}
 
-	public void deleteParty(Party p) throws Exception{
-		// TODO Auto-generated method stub
-		
+	public void deleteParty(int id) throws Exception{
+		LOG.info("> deleteParty");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Party p = em.find(Party.class, id);
+			if (p == null) {
+				LOG.error("Cette party n'existe pas");
+				throw new Exception();
+			}
+			em.remove(p);
+			tx.commit();
+			LOG.debug("Suppression de la party");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction deleteParty",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
 	}
 
 	public List<Party> getAllParties() throws Exception{
-		// TODO Auto-generated method stub
-		return null;
+		LOG.info("> getAllParties");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		List<Party> list=new ArrayList<Party>();
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			list = em.createQuery("from Party u").getResultList();
+			tx.commit();
+			LOG.debug("la recherche a reussi, taille du resultat : "+ list.size());
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction getAllParties", re);
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return list;
 	}
 
 	public Party getParty(int id) throws Exception{
-		// TODO Auto-generated method stub
-		return null;
+		LOG.info("> getParty");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		Party p = new Party();
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query = em.createQuery("from Party u " +
+			"inner join fetch u.artists where u.id=:param");
+			query.setParameter("param", id);
+			p = (Party)query.getSingleResult();
+			tx.commit();
+			LOG.debug("Party trouvee");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction getParty",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return p;
 	}
 
 	public List<Party> getPartiesCriteria() throws Exception{
