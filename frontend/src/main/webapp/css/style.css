@@ -1,0 +1,40 @@
+body {
+	background-color: grey;	
+}
+
+.submit {
+	margin-top: 20px;
+}
+
+li {
+    margin: 0;	
+}
+
+.page-header {
+	margin : 0;
+}
+
+.banner {
+	margin-bottom: 30px;
+	height: 100px;
+	background-color: black;
+	border-bottom : 2px grey solid;
+}
+
+.banner h1 {
+	margin: 0;
+	padding : 20px;
+	color : lightblue;
+}
+
+.hero-unit {
+	max-width: 600px;
+}
+
+.sidebar {
+	min-width: 400px;
+}
+
+.party-list td {
+	font-size: 10px;
+}
