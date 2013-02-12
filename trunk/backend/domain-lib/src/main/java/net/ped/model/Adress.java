@@ -1,6 +1,7 @@
 package net.ped.model;
 
 import javax.persistence.Embeddable;
+import javax.xml.bind.annotation.XmlElement;
 
 @Embeddable
 public class Adress {
@@ -19,6 +20,7 @@ public class Adress {
 		this.country = country;
 	}
 
+	//@XmlElement
 	public String getStreet() {
 		return street;
 	}
@@ -27,6 +29,7 @@ public class Adress {
 		this.street = street;
 	}
 
+	//@XmlElement
 	public String getTown() {
 		return town;
 	}
@@ -35,6 +38,7 @@ public class Adress {
 		this.town = town;
 	}
 
+	//@XmlElement
 	public String getCountry() {
 		return country;
 	}
