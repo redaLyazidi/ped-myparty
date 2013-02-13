@@ -15,6 +15,9 @@
 // 2) browser.js
 // 3) svgcanvas.js
 
+if (!alert)
+    alert = window.alert;
+
 (function() {
 
 	document.addEventListener("touchstart", touchHandler, true);
@@ -555,12 +558,62 @@
 						ok.hide();
 					}
 
+                                        if(type == 'imageBrowser') {
+                                            /*var input = $('<input type="text">').prependTo(btn_holder);
+						input.val(defText || '');
+						input.bind('keydown', 'return', function() {ok.click();});*/
+
+
+                                            console.log('imageBrowser');
+                                            var input = $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);
+                                            /*input.bind('change', function() {
+                                                ok.click();
+                                            });*/
+					}
+
 					box.show();
 
 					ok.click(function() {
-						box.hide();
-						var resp = (type == 'prompt')?input.val():true;
-						if(callback) callback(resp);
+
+                                                var close = true;
+						var resp = true;
+                                                if (type == 'prompt')
+                                                    resp = input.val();
+                                                if (type == 'imageBrowser') {
+                                                    close = false;
+
+                                                    var oFile = document.getElementById("imageFileBrowser").files;
+                                                    if (oFile.length == 0) {
+                                                        alert("Please select a file!");
+                                                        return;
+                                                    }
+                                                    oFile = oFile[0];
+
+                                                    var oFReader = new FileReader();
+                                                    oFReader.onload = function (oFREvent) {
+                                                        console.log("box : ", box);
+
+                                                        var dataUrl = oFREvent.target.result;
+                                                        console.log(dataUrl);
+                                                        if (dataUrl == null) {
+                                                            alert("Cannot read image file");
+                                                            return;
+                                                        }
+                                                        box.hide();
+                                                        if (callback) callback(dataUrl);
+                                                    }
+                                                    var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+                                                    if (!rFilter.test(oFile.type)) {
+                                                        alert("You must select a valid image file!");
+                                                        return;
+                                                    }
+                                                    oFReader.readAsDataURL(oFile);
+                                                    console.log("resp : ", resp);
+                                                }
+                                                if (close === true) {
+                                                    box.hide();
+                                                    if (callback) callback(resp);
+                                                }
 					}).focus();
 
 					if(type == 'prompt') input.focus();
@@ -570,6 +623,7 @@
 				$.confirm = function(msg, cb) {	dbox('confirm', msg, cb);};
 				$.process_cancel = function(msg, cb) {	dbox('process', msg, cb);};
 				$.prompt = function(msg, txt, cb) { dbox('prompt', msg, cb, txt);};
+                                $.imageBrowser = function(msg, txt, cb) { dbox('imageBrowser', msg, cb, txt);};
 			}());
 
 			var setSelectMode = function() {
@@ -3319,7 +3373,7 @@
 			function promptImgURL() {
 				var curhref = svgCanvas.getHref(selectedElement);
 				curhref = curhref.indexOf("data:") === 0?"":curhref;
-				$.prompt(uiStrings.notification.enterNewImgURL, curhref, function(url) {
+				$.imageBrowser(uiStrings.notification.enterNewImgURL, curhref, function(url) {
 					if(url) { 
                                             setImageURL(url);
                                             svgCanvas.setGoodImage(url);
