@@ -76,8 +76,8 @@ public class MyPartyTest {
 		listArtists3 = new ArrayList<Artist>();
 		listArtists3.add(artist3);
 		party1 = new Party("Le concert du saucisson", dateParty1, dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, adress, listArtists1);
-		party2 = new Party("Le concert du saucisson", dateParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "variete", 25.50, adress, listArtists2);
-		party3 = new Party("Le concert du saucisson", dateParty3, dateBegin3, dateEnd3, "succes enorme en France", 200, "variete", 25.50, adress, listArtists3);
+		party2 = new Party("Le concert du saucisson", dateParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "variete", 50.50, adress, listArtists2);
+		party3 = new Party("Le concert du saucisson", dateParty3, dateBegin3, dateEnd3, "succes enorme en France", 200, "variete", 100.50, adress, listArtists3);
 	}
 	
 	@Test
@@ -137,6 +137,18 @@ public class MyPartyTest {
 			assertEquals(2, list.size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesNotBegun");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testF_PartiesCriteria(){
+		List<Party> list = new ArrayList<Party>();
+		try {
+			list = dao.getPartiesCriteria(30, 50.50);
+			assertEquals(1, list.size());
+		} catch (Exception e) {
+			LOG.error("erreur lors de l'execution de la methode testPartiesCriteria");
 			e.printStackTrace();
 		}
 	}
