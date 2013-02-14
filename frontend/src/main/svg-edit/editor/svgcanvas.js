@@ -7448,21 +7448,26 @@ this.setImageURL = function(val) {
 		setsize = true;
 	} else if(!setsize) return;
 
+	setHref(elem, val);
+    // myparty : catch only new data images in the history.
+    console.log('cur_href.indexOf("data:")', cur_href.indexOf("data:"));
+    if (cur_href.indexOf("data:") !== 0)
+        return;
+
 	var batchCmd = new BatchCommand("Change Image URL");
 
-	setHref(elem, val);
 	batchCmd.addSubCommand(new ChangeElementCommand(elem, {
 		"#href": cur_href
 	}));
 
-        console.log("Attrs : ", attrs);
+    console.log("Attrs : ", attrs);
 
-	if(setsize) {
+	/*if(setsize) {
 		$(new Image()).load(function() {
-                        console.log("this width : ", this.width);
+            console.log("this width : ", this.width);
 
 			var changes = $(elem).attr(['width', 'height']);
-		        console.log("Changes : ", changes);
+            console.log("Changes : ", changes);
 
 			/*$(elem).attr({
 				width: this.width,
@@ -7470,14 +7475,14 @@ this.setImageURL = function(val) {
 			});
 			
 			selectorManager.requestSelector(elem).resize();*/
-			
+		/*	
 			batchCmd.addSubCommand(new ChangeElementCommand(elem, changes));
 			addCommandToHistory(batchCmd);
 			call("changed", [elem]);
 		}).attr('src',val);
-	} else {
-		addCommandToHistory(batchCmd);
-	}
+	} else {*/
+    addCommandToHistory(batchCmd);
+	//}
 };
 
 // Function: setLinkURL
