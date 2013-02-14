@@ -601,7 +601,7 @@ if (!alert)
                     //box.onkeydown = function (e) {console.log("blop"); return false};
                     svgEditor.disableShortcuts();
                     $('#dialog_content').html('<p>'+msg.replace(/\n/g,'</p><p>')+'</p>')
-                    .toggleClass('prompt',true);
+                    .toggleClass('prompt',false);
                     btn_holder.empty();
 
                     var exitDialog = function(resp) {
@@ -618,9 +618,10 @@ if (!alert)
                     });
 
 
-                    var input = $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);
+                    $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);
                     box.show();
                     ok.click(function() { // *1*
+                        input = document.getElementById("imageFileBrowser");
                         var oFile = input.files;
                         if (oFile.length == 0) {
                             // NO Jquery here : deletes the dialog
@@ -662,7 +663,7 @@ if (!alert)
                 svgCanvas.setMode('select');
                 workarea.css('cursor','auto');
             };
-
+            
             var togglePathEditMode = function(editmode, elems) {
                 $('#path_node_panel').toggle(editmode);
                 $('#tools_bottom_2,#tools_bottom_3').toggle(!editmode);
@@ -1570,21 +1571,22 @@ if (!alert)
             };
 
             var setImageURL = Editor.setImageURL = function(url) {
-                if(!url) url = default_img_url;
+                console.log("setImageUrl");
+                if(!url)
+                    url = default_img_url;
 
-                svgCanvas.setImageURL(url);
-                $('#image_url').val(url);
-
-                if(url.indexOf('data:') === 0) {
+                if(url.indexOf('data:') === 0 || url.indexOf(curConfig.fixedUrlImages) === 0) {
                     // data URI found
+                    // or myparty : do not replace qrcode and other special images with data...
                     $('#image_url').hide();
                     $('#change_image_url').show();
+
+                    svgCanvas.setImageURL(url);
+                    $('#image_url').val(url);
                     return;
                 }
 
                 // regular URL
-                if (url.indexOf(curConfig.fixedUrlImages) === 0) // myparty : do not replace qrcode and other special images with data...
-                    return;
                 svgCanvas.embedImage(url, function(datauri) {
                     if(!datauri) {
                         // Couldn't embed, so show warning
@@ -5093,6 +5095,8 @@ if (!alert)
             // if browser has HTML5 File API support, then we will show the open menu item
             // and provide a file input to click.  When that change event fires, it will
             // get the text contents of the file and send it to the canvas
+            
+            // CAUTION : MAKES THE HISTORY CRASH!!!
             if (window.FileReader) {
                 var import_image = function(e) {
                     e.stopPropagation();
@@ -5126,35 +5130,36 @@ if (!alert)
                                 var reader = new FileReader();
                                 reader.onloadend = function(e) {
                                     // let's insert the new image until we know its dimensions
-                                    insertNewImage = function(img_width, img_height){
+                                    //insertNewImage = function(){
                                         var newImage = svgCanvas.addSvgElementFromJson({
                                             "element": "image",
                                             "attr": {
                                                 "x": 0,
                                                 "y": 0,
-                                                "width": img_width,
-                                                "height": img_height,
+                                                "width": 150,
+                                                "height": 150,
                                                 "id": svgCanvas.getNextId(),
                                                 "style": "pointer-events:inherit"
                                             }
                                         });
-                                    /*svgCanvas.setHref(newImage, e.target.result);
-                            svgCanvas.selectOnly([newImage])
-                            svgCanvas.alignSelectedElements("m", "page")
-                            svgCanvas.alignSelectedElements("c", "page")
-                            updateContextPanel();*/
-                                    }
+                                        svgCanvas.setHref(newImage, e.target.result);
+                                        svgCanvas.selectOnly([newImage]);
+                                        //preventClickDefault(newImage);
+
+                                        //svgCanvas.alignSelectedElements("m", "page");
+                                        //svgCanvas.alignSelectedElements("c", "page");
+                                        setImageURL(e.target.result);
+                                        updateContextPanel();
+                                        //svgCanvas.setGoodImage(e.target.result);
+                                        return false;
+                                    //}
                                     // create dummy img so we know the default dimensions
-                                    var img_width = 100;
-                                    var img_height = 100;
-                                    var img = new Image();
+                                    /*var img = new Image();
                                     img.src = e.target.result;
                                     img.style.opacity = 0;
                                     img.onload = function() {
-                                        img_width = img.offsetWidth
-                                        img_height = img.offsetHeight
-                                        insertNewImage(img_width, img_height);
-                                    }
+                                        insertNewImage();
+                                    }*/
                                 };
                                 reader.readAsDataURL(file)
                             }
