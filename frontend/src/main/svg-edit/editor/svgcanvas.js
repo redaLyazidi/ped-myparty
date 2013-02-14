@@ -7455,16 +7455,21 @@ this.setImageURL = function(val) {
 		"#href": cur_href
 	}));
 
+        console.log("Attrs : ", attrs);
+
 	if(setsize) {
 		$(new Image()).load(function() {
+                        console.log("this width : ", this.width);
+
 			var changes = $(elem).attr(['width', 'height']);
-		
-			$(elem).attr({
+		        console.log("Changes : ", changes);
+
+			/*$(elem).attr({
 				width: this.width,
 				height: this.height
 			});
 			
-			selectorManager.requestSelector(elem).resize();
+			selectorManager.requestSelector(elem).resize();*/
 			
 			batchCmd.addSubCommand(new ChangeElementCommand(elem, changes));
 			addCommandToHistory(batchCmd);
@@ -7779,7 +7784,7 @@ var changeSelectedAttributeNoUndo = function(attr, newValue, elems) {
 		
 		// only allow the transform/opacity/filter attribute to change on <g> elements, slightly hacky
 		// TODO: FIXME: This doesn't seem right.  Where's the body of this if statement?
-		if (elem.tagName === "g" && good_g_attrs.indexOf(attr) >= 0);
+		if (elem.tagName === "g" && good_g_attrs.indexOf(attr) >= 0) {}
 		var oldval = attr === "#text" ? elem.textContent : elem.getAttribute(attr);
 		if (oldval == null)  oldval = "";
 		if (oldval !== String(newValue)) {
