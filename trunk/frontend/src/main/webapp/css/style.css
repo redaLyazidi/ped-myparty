@@ -1,9 +1,11 @@
 body {
 	background-color: grey;	
+	padding-top: 60px;
 }
 
 .submit {
 	margin-top: 20px;
+	width : 100%;
 }
 
 li {
@@ -11,28 +13,33 @@ li {
 }
 
 .page-header {
-	margin : 0;
+	margin: 0;
 }
 
 .banner {
 	margin-bottom: 30px;
-	height: 100px;
+	height: 80px;
+	padding: 30px;
 	background-color: black;
-	border-bottom : 2px grey solid;
+	border-bottom: 2px grey solid;
 }
 
 .banner h1 {
 	margin: 0;
-	padding : 20px;
-	color : lightblue;
+	padding: 20px;
+	color: lightblue;
 }
+
+.banner form {
+	margin-top: 30px;
+}
+
 
 .hero-unit {
-	max-width: 600px;
 }
 
-.sidebar {
-	min-width: 400px;
+.sidebar input {
+	width: 100%;
 }
 
 .party-list td {
