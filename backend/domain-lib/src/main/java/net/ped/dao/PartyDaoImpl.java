@@ -1,6 +1,7 @@
 package net.ped.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -80,27 +81,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			closeEntityManager();
 		}
 	}
-
-	public List<Party> getAllParties() throws Exception{
-		LOG.info("> getAllParties");
-		EntityManager em = createEntityManager(); 
-		EntityTransaction tx = null;
-		List<Party> list=new ArrayList<Party>();
-		try{
-			tx = em.getTransaction();
-			tx.begin();
-			list = em.createQuery("from Party u").getResultList();
-			tx.commit();
-			LOG.debug("la recherche a reussi, taille du resultat : "+ list.size());
-		} catch (RuntimeException re) {
-			LOG.error("Erreur dans la fonction getAllParties", re);
-			throw re;
-		}finally{
-			closeEntityManager();
-		}
-		return list;
-	}
-
+	
 	public Party getParty(int id) throws Exception{
 		LOG.info("> getParty");
 		EntityManager em = createEntityManager(); 
@@ -126,9 +107,79 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 		return p;
 	}
 
+	public List<Party> getAllParties() throws Exception{
+		LOG.info("> getAllParties");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		List<Party> list=new ArrayList<Party>();
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			list = em.createQuery("from Party u inner join fetch u.artists").getResultList();
+			tx.commit();
+			LOG.debug("la recherche a reussi, taille du resultat : "+ list.size());
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction getAllParties", re);
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return list;
+	}
+	
+	public List<Party> getPartiesNotBegun() throws Exception {
+		LOG.info("> getPartiesNotBegun");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		List<Party> list=new ArrayList<Party>();
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			Query query = em.createQuery("from Party u " +
+			"inner join fetch u.artists where u.dateParty>:param");
+			query.setParameter("param", Calendar.getInstance());
+			list = query.getResultList();
+			tx.commit();
+			LOG.debug("la recherche a reussi, taille du resultat : "+ list.size());
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction getPartiesNotBegun", re);
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return list;
+	}
+	
+	public List<Party> getPartiesNotBegunMaxResult(int startPosition, int length)
+			throws Exception {
+		LOG.info("> getPartiesNotBegunMaxResult");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		List<Party> list=new ArrayList<Party>();
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			Query query = em.createQuery("from Party u " +
+			"inner join fetch u.artists where u.dateParty>:param order by u.dateParty");
+			query.setParameter("param", Calendar.getInstance());
+			query.setFirstResult(startPosition);
+			query.setMaxResults(length);
+			list = query.getResultList();
+			tx.commit();
+			LOG.debug("la recherche a reussi, taille du resultat : "+ list.size());
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction getPartiesNotBegunMaxResult", re);
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return list;
+	}
+
 	public List<Party> getPartiesCriteria() throws Exception{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
