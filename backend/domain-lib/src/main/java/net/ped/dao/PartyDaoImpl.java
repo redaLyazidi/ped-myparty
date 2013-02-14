@@ -2,11 +2,18 @@ package net.ped.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import net.ped.model.Party;
 
@@ -176,9 +183,44 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 		return list;
 	}
 
-	public List<Party> getPartiesCriteria() throws Exception{
-		// TODO Auto-generated method stub
-		return null;
+	public List<Party> getPartiesCriteria(double priceBegin, double priceEnd) throws Exception{
+		LOG.info("> getPartiesCriteria");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		List<Party> results = new ArrayList<Party>();
+
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			CriteriaBuilder criteria = em.getCriteriaBuilder();
+			CriteriaQuery<Party> criteriaQuery = criteria.createQuery(Party.class);
+			Root<Party> from = criteriaQuery.from(Party.class);
+			criteriaQuery.select(from);
+			
+			List<Predicate> list = new ArrayList<Predicate>();
+			if(priceBegin != 0 && priceEnd != 0){
+				Predicate p1 = criteria.between(from.<Double>get("price"), priceBegin, priceEnd);
+				list.add(p1);
+			}
+			
+//			if(!date.equals("null")){
+//				Predicate p2 = criteria.equal(from.get("dateParty"), date);
+//				list.add(p2);
+//			}
+
+			Predicate[] predicates = new Predicate[list.size()];
+			list.toArray(predicates);
+			criteriaQuery.where(predicates);
+
+			TypedQuery<Party> query = em.createQuery(criteriaQuery);
+			results = query.getResultList();
+			tx.commit();
+			LOG.debug("la recherche a reussi, taille du resultat : "+ results.size());
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction getPartiesCriteria", re);
+			throw re;
+		}
+		return results;
 	}
 
 
