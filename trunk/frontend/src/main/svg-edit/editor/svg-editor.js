@@ -642,7 +642,7 @@ if (!alert)
                             }
                             exitDialog(dataUrl);
                         }
-                        var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+                        var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
                         if (!rFilter.test(oFile.type)) {
                             alert("You must select a valid image file!");
                             exitDialog(false);
@@ -2805,6 +2805,7 @@ if (!alert)
             };
 
             var clickUndo = function(){
+                console.log("undoMgr.getUndoStackSize()", undoMgr.getUndoStackSize());
                 if (undoMgr.getUndoStackSize() > 0) {
                     undoMgr.undo();
                     populateLayers();
@@ -4454,12 +4455,12 @@ if (!alert)
                     evt: 'click'
                 },
 
-                {
+                /*{
                     sel:'#tool_undo', 
                     fn: clickUndo, 
                     evt: 'click', 
                     key: ['Z', true]
-                },
+                },*/
 
                 {
                     sel:'#tool_redo', 

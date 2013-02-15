@@ -538,6 +538,7 @@ svgedit.history.UndoManager.prototype.addCommandToHistory = function(cmd) {
 	
 	// if our stack pointer is not at the end, then we have to remove
 	// all commands after the pointer and insert the new command
+        console.log("Added cmd to history", cmd, arguments.callee.caller.caller, arguments.callee.caller.caller);
 	if (this.undoStackPointer < this.undoStack.length && this.undoStack.length > 0) {
 		this.undoStack = this.undoStack.splice(0, this.undoStackPointer);
 	}
