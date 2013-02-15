@@ -5744,18 +5744,20 @@ var convertToGroup = this.convertToGroup = function(elem) {
 // Returns:
 // This function returns false if the set was unsuccessful, true otherwise.
 this.setSvgString = function(xmlString) {
+        // myparty : removed command (made the history crash).
+
 	try {
 		// convert string into XML document
 		var newDoc = svgedit.utilities.text2xml(xmlString);
 
 		this.prepareSvg(newDoc);
 
-		var batchCmd = new BatchCommand("Change Source");
+		//var batchCmd = new BatchCommand("Change Source");
 
 		// remove old svg document
 		var nextSibling = svgcontent.nextSibling;
 		var oldzoom = svgroot.removeChild(svgcontent);
-		batchCmd.addSubCommand(new RemoveElementCommand(oldzoom, nextSibling, svgroot));
+		//batchCmd.addSubCommand(new RemoveElementCommand(oldzoom, nextSibling, svgroot));
 	
 		// set new svg document
 		// If DOM3 adoptNode() available, use it. Otherwise fall back to DOM2 importNode()
@@ -5886,10 +5888,10 @@ this.setSvgString = function(xmlString) {
 		this.contentW = attrs['width'];
 		this.contentH = attrs['height'];
 		
-		batchCmd.addSubCommand(new InsertElementCommand(svgcontent));
+		//batchCmd.addSubCommand(new InsertElementCommand(svgcontent));
 		// update root to the correct size
 		var changes = content.attr(["width", "height"]);
-		batchCmd.addSubCommand(new ChangeElementCommand(svgroot, changes));
+		//batchCmd.addSubCommand(new ChangeElementCommand(svgroot, changes));
 		
 		// reset zoom
 		current_zoom = 1;
@@ -5900,7 +5902,7 @@ this.setSvgString = function(xmlString) {
 		svgedit.path.clearData();
 		svgroot.appendChild(selectorManager.selectorParentGroup);
 		
-		addCommandToHistory(batchCmd);
+		//addCommandToHistory(batchCmd);
 		call("changed", [svgcontent]);
 	} catch(e) {
 		console.log(e);
