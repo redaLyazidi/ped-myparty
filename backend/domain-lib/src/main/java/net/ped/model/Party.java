@@ -31,11 +31,13 @@ public class Party implements java.io.Serializable{
 	
 	private String title;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Calendar dateParty;
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.TIME)
+	private Date timeParty;
+	@Temporal(TemporalType.DATE)
 	private Calendar dateBegin;
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Calendar dateEnd;
 	private String description;
 	private int nbPlace;
@@ -55,11 +57,12 @@ public class Party implements java.io.Serializable{
 
 	}
 
-	public Party(String title, Calendar dateParty, Calendar dateBegin, Calendar dateEnd,
-			String description, int nbPlace, String theme, double price,
-			Adress adress, List<Artist> artists) {
+	public Party(String title, Calendar dateParty, Date timeParty,
+			Calendar dateBegin, Calendar dateEnd, String description,
+			int nbPlace, String theme, double price, Adress adress, List<Artist> artists) {
 		this.title = title;
 		this.dateParty = dateParty;
+		this.timeParty = timeParty;
 		this.dateBegin = dateBegin;
 		this.dateEnd = dateEnd;
 		this.description = description;
@@ -95,6 +98,14 @@ public class Party implements java.io.Serializable{
 
 	public void setDateParty(Calendar dateParty) {
 		this.dateParty = dateParty;
+	}
+	
+	public Date getTimeParty() {
+		return timeParty;
+	}
+
+	public void setTimeParty(Date timeParty) {
+		this.timeParty = timeParty;
 	}
 
 	//@XmlElement(type=Date.class)
