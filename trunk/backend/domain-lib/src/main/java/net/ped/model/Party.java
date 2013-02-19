@@ -33,8 +33,8 @@ public class Party implements java.io.Serializable{
 	
 	@Temporal(TemporalType.DATE)
 	private Calendar dateParty;
-	@Temporal(TemporalType.TIME)
-	private Date timeParty;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar timeParty;
 	@Temporal(TemporalType.DATE)
 	private Calendar dateBegin;
 	@Temporal(TemporalType.DATE)
@@ -57,7 +57,7 @@ public class Party implements java.io.Serializable{
 
 	}
 
-	public Party(String title, Calendar dateParty, Date timeParty,
+	public Party(String title, Calendar dateParty, Calendar timeParty,
 			Calendar dateBegin, Calendar dateEnd, String description,
 			int nbPlace, String theme, double price, Adress adress, List<Artist> artists) {
 		this.title = title;
@@ -100,11 +100,11 @@ public class Party implements java.io.Serializable{
 		this.dateParty = dateParty;
 	}
 	
-	public Date getTimeParty() {
+	public Calendar getTimeParty() {
 		return timeParty;
 	}
 
-	public void setTimeParty(Date timeParty) {
+	public void setTimeParty(Calendar timeParty) {
 		this.timeParty = timeParty;
 	}
 
