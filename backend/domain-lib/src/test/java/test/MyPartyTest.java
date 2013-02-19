@@ -79,9 +79,9 @@ public class MyPartyTest {
 		listArtists2.add(artist2);
 		listArtists3 = new ArrayList<Artist>();
 		listArtists3.add(artist3);
-		party1 = new Party("Le concert du saucisson", dateParty1, timeParty1.getTime(), dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, adress, listArtists1);
-		party2 = new Party("Le concert du jambon", dateParty2, timeParty2.getTime(), dateBegin2, dateEnd2, "succes enorme en France", 200, "variete", 50.50, adress, listArtists2);
-		party3 = new Party("Le concert du pate", dateParty3, timeParty3.getTime(),dateBegin3, dateEnd3, "succes enorme en France", 200, "variete", 100.50, adress, listArtists3);
+		party1 = new Party("Le concert du saucisson", dateParty1, timeParty1, dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, adress, listArtists1);
+		party2 = new Party("Le concert du jambon", dateParty2, timeParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "variete", 50.50, adress, listArtists2);
+		party3 = new Party("Le concert du pate", dateParty3, timeParty3,dateBegin3, dateEnd3, "succes enorme en France", 200, "variete", 100.50, adress, listArtists3);
 	}
 	
 	@Test
@@ -148,11 +148,11 @@ public class MyPartyTest {
 	@Test
 	public void testF_PartiesCriteria(){
 		List<Party> list = new ArrayList<Party>();
-		Calendar calendar = new GregorianCalendar(2013, 03, 15);
-		Calendar time = new GregorianCalendar(0, 0, 0, 21, 30);
+		Calendar calendar = new GregorianCalendar(2013, 04, 15);
+		Calendar time = new GregorianCalendar(0, 0, 0, 20, 30, 00);
 		try {
-			list = dao.getPartiesCriteria(30, 50.50,calendar);
-			//assertEquals(1, list.size());
+			list = dao.getPartiesCriteria(25.50, 30.00, calendar, time);
+			assertEquals(1, list.size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesCriteria");
 			e.printStackTrace();

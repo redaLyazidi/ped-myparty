@@ -1,6 +1,7 @@
 package net.ped.dao;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import net.ped.model.Party;
@@ -52,6 +53,6 @@ public interface InterfacePartyDao {
 	 * obtient toutes les party suivant différents critères
 	 * @return List<Party>
 	 */
-	public List<Party> getPartiesCriteria(double priceBegin, double priceEnd, Calendar date) throws Exception;
+	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time) throws Exception;
 
 }
