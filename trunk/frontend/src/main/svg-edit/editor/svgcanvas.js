@@ -3269,11 +3269,9 @@ var getMouseTarget = this.getMouseTarget = function(evt) {
 			case "square":
 			case "rect":
 			case "image":
-				var attrs = $(element).attr(["width", "height"]);
-				// Image should be kept regardless of size (use inherit dimensions later)
-				keep = (attrs.width != 0 || attrs.height != 0) || current_mode === "image";
+                                keep = mpUtils.keepCreatedImage(element);
+				keep = keep || current_mode === "image";
                                 canvas.setMode("select");
-
                                 /*if (getHref(element).indexOf('data:') !== 0) {
                                     console.log("svgEditor : ", svgEditor);
                                     svgEditor.promptImgURL();
@@ -7437,53 +7435,55 @@ this.setTextContent = function(val) {
 // Parameters:
 // val - String with the image URL/path
 this.setImageURL = function(val) {
-	var elem = selectedElements[0];
-	if(!elem) return;
-	
-	var attrs = $(elem).attr(['width', 'height']);
-	var setsize = (!attrs.width || !attrs.height);
+        var elem = selectedElements[0];
+        if(!elem) return;
 
-	var cur_href = getHref(elem);
-	
-	// Do nothing if no URL change or size change
-	if(cur_href !== val) {
-		setsize = true;
-	} else if(!setsize) return;
+        var attrs = $(elem).attr(['width', 'height']);
+        var nullsize = (!attrs.width || !attrs.height);
 
-	setHref(elem, val);
-    // myparty : catch only new data images in the history.
-    console.log('cur_href.indexOf("data:")', cur_href.indexOf("data:"));
-    if (cur_href.indexOf("data:") !== 0)
-        return;
+        var cur_href = getHref(elem);
+        if (cur_href !== val) {
+            console.log("changed href");
+            setHref(elem, val);
+            console.log('est une data image :', cur_href.indexOf("data:") === 0);
+            // myparty : catch only new data images in the history.
+            if (cur_href.indexOf("data:") === 0) {
+                var batchCmd = new BatchCommand("Change Image URL");
+                batchCmd.addSubCommand(new ChangeElementCommand(elem, {
+                        "#href": cur_href
+                }));
+                addCommandToHistory(batchCmd);
+            }
+        }
 
-	var batchCmd = new BatchCommand("Change Image URL");
+	if (nullsize === true) {
+            console.log("Changed image attrs : ", attrs);
+            $(elem).attr({
+                width:  "18em",
+                height: "18em"
+            });
+            selectorManager.requestSelector(elem).resize();
+        }
 
-	batchCmd.addSubCommand(new ChangeElementCommand(elem, {
-		"#href": cur_href
-	}));
+		/*$(new Image()).load(function() {
+                console.log("this width : ", this.width);
+                var changes = $(elem).attr(['width', 'height']);
+                console.log("Changes : ", changes);
 
-    console.log("Attrs : ", attrs);
+                $(elem).attr({
+                        width: 200, // default size
+                        height: 200
+                });
 
-	/*if(setsize) {
-		$(new Image()).load(function() {
-            console.log("this width : ", this.width);
-
-			var changes = $(elem).attr(['width', 'height']);
-            console.log("Changes : ", changes);
-
-			/*$(elem).attr({
-				width: this.width,
-				height: this.height
-			});
-			
-			selectorManager.requestSelector(elem).resize();*/
-		/*	
-			batchCmd.addSubCommand(new ChangeElementCommand(elem, changes));
-			addCommandToHistory(batchCmd);
-			call("changed", [elem]);
-		}).attr('src',val);
-	} else {*/
-    addCommandToHistory(batchCmd);
+                selectorManager.requestSelector(elem).resize();*/
+                /*
+                batchCmd.addSubCommand(new ChangeElementCommand(elem, changes));
+                addCommandToHistory(batchCmd);
+                call("changed", [elem]);*/
+       /* }).attr('src',val);
+            }
+        }*/
+	//} else {*/
 	//}
 };
 

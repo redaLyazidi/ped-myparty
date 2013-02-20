@@ -64,12 +64,11 @@ svgEditor.addExtension("mypartyQrcode", function() {
             if (! started)
                 return;
 
-            var attrs = $(newImage).attr(["width", "height"]);
-            // Image should be kept regardless of size (use inherit dimensions later)
-            var keep = (attrs.width != 0 || attrs.height != 0);
+            var keep = mpUtils.keepCreatedImage(newImage);
             newImage.fixedUrl = "true";
 
-            canv.setMode("select");
+            if (keep == true)
+                canv.setMode("select");
 
             return {
                 keep: keep,
