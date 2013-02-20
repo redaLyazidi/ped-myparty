@@ -7459,8 +7459,8 @@ this.setImageURL = function(val) {
 	if (nullsize === true) {
             console.log("Changed image attrs : ", attrs);
             $(elem).attr({
-                width:  "18em",
-                height: "18em"
+                width:  "200",
+                height: "200"
             });
             selectorManager.requestSelector(elem).resize();
         }
