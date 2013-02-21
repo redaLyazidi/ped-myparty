@@ -22,6 +22,7 @@ JS_FILES=\
 	svgcanvas.js \
 	svg-editor.js \
 	contextmenu.js \
+	myparty-utils.js \
 	locale/locale.js
 
 JS_INPUT_FILES=$(addprefix editor/, $(JS_FILES))
@@ -53,7 +54,7 @@ build/$(PACKAGE): $(COMPILED_JS)
 # NOTE: WHITESPACE_ONLY and --formatting PRETTY_PRINT is helpful for debugging.
 $(COMPILED_JS):
 	java -jar $(CLOSURE) \
-		--compilation_level SIMPLE_OPTIMIZATIONS \
+		--compilation_level WHITESPACE_ONLY --formatting PRETTY_PRINT \
 		$(CLOSURE_JS_ARGS) \
 		--js_output_file $(COMPILED_JS)
 
