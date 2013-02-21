@@ -610,15 +610,26 @@ if (!alert)
                         callback(resp);
                     }
                 
-                    var ok = $('<input type="button" value="' + uiStrings.common.ok + '">').appendTo(btn_holder);
-                    $('<input type="button" value="' + uiStrings.common.cancel + '">')
+                    /*var ok = $('<input type="button" value="' + uiStrings.common.ok + '">').appendTo(btn_holder);
+                    $('<input type="button" value="' + uiStrings.common.cancel + '">')*/
+                    $('<p><input id="ok_image"type="button" value="' + uiStrings.common.ok + '"> <input type="button" value="' + uiStrings.common.cancel + '"> </p>')
                     .appendTo(btn_holder)
                     .click(function() {
                         exitDialog(false);
                     });
 
-
+                    var ok = jQuery('#ok_image');
+                    console.log('ok: ',ok);
+                    /*$('<p><span> Enter an URL: </span> <input type="text"/></p>').prependTo(btn_holder);
                     $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);
+                    $('<input type="radio" name="imageFileBrowser" value="file" checked/>').prependTo(btn_holder);*/
+                    jQuery('<div id="chooseFile"><div><input type="radio" name="imageFileBrowser" value="file" checked/>' +
+                        '<input id="imageFileBrowser" type="file"/></div>' +
+                        '<div><input type="radio" name="imageFileBrowser" value="url"/>' +
+                        ' Enter an URL:  <input id="imageURL" size="5" type="text" style="width: 125px;display: inline;margin-left: 23px;"/></div></div>').prependTo(btn_holder);
+                    ;
+                    console.log('btn_holder', btn_holder);
+                    /* $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);*/
                     box.show();
                     ok.click(function() { // *1*
                         input = document.getElementById("imageFileBrowser");
@@ -5132,30 +5143,30 @@ if (!alert)
                                 reader.onloadend = function(e) {
                                     // let's insert the new image until we know its dimensions
                                     //insertNewImage = function(){
-                                        var newImage = svgCanvas.addSvgElementFromJson({
-                                            "element": "image",
-                                            "attr": {
-                                                "x": 0,
-                                                "y": 0,
-                                                "width": 150,
-                                                "height": 150,
-                                                "id": svgCanvas.getNextId(),
-                                                "style": "pointer-events:inherit"
-                                            }
-                                        });
-                                        svgCanvas.setHref(newImage, e.target.result);
-                                        svgCanvas.selectOnly([newImage]);
-                                        //preventClickDefault(newImage);
+                                    var newImage = svgCanvas.addSvgElementFromJson({
+                                        "element": "image",
+                                        "attr": {
+                                            "x": 0,
+                                            "y": 0,
+                                            "width": 150,
+                                            "height": 150,
+                                            "id": svgCanvas.getNextId(),
+                                            "style": "pointer-events:inherit"
+                                        }
+                                    });
+                                    svgCanvas.setHref(newImage, e.target.result);
+                                    svgCanvas.selectOnly([newImage]);
+                                    //preventClickDefault(newImage);
 
-                                        //svgCanvas.alignSelectedElements("m", "page");
-                                        //svgCanvas.alignSelectedElements("c", "page");
-                                        setImageURL(e.target.result);
-                                        updateContextPanel();
-                                        //svgCanvas.setGoodImage(e.target.result);
-                                        return false;
-                                    //}
-                                    // create dummy img so we know the default dimensions
-                                    /*var img = new Image();
+                                    //svgCanvas.alignSelectedElements("m", "page");
+                                    //svgCanvas.alignSelectedElements("c", "page");
+                                    setImageURL(e.target.result);
+                                    updateContextPanel();
+                                    //svgCanvas.setGoodImage(e.target.result);
+                                    return false;
+                                //}
+                                // create dummy img so we know the default dimensions
+                                /*var img = new Image();
                                     img.src = e.target.result;
                                     img.style.opacity = 0;
                                     img.onload = function() {
