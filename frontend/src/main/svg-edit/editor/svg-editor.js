@@ -623,36 +623,55 @@ if (!alert)
                     /*$('<p><span> Enter an URL: </span> <input type="text"/></p>').prependTo(btn_holder);
                     $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);
                     $('<input type="radio" name="imageFileBrowser" value="file" checked/>').prependTo(btn_holder);*/
-                    jQuery('<div id="chooseFile"><div><input type="radio" name="imageFileBrowser" value="file" checked/>' +
+                    jQuery('<div id="chooseFile"><div><input id="radioFile" type="radio" name="imageFileBrowser" value="file" checked/>' +
                         '<input id="imageFileBrowser" type="file"/></div>' +
-                        '<div><input type="radio" name="imageFileBrowser" value="url"/>' +
+                        '<div><input id="radioURL" type="radio" name="imageFileBrowser" value="url"/>' +
                         ' Enter an URL:  <input id="imageURL" size="5" type="text" style="width: 125px;display: inline;margin-left: 23px;"/></div></div>').prependTo(btn_holder);
                     ;
                     console.log('btn_holder', btn_holder);
+                    //Give the value of which radio is selected
+                    jQuery('input:radio[name=imageFileBrowser]:checked').val();
+                    
                     /* $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);*/
                     box.show();
                     ok.click(function() { // *1*
-                        input = document.getElementById("imageFileBrowser");
-                        var oFile = input.files;
-                        if (oFile.length == 0) {
-                            // NO Jquery here : deletes the dialog
-                            alert("Please select a file!"); // myparty : TOTO : translate
-                            return;
-                        }
-                        oFile = oFile[0];
-                        var oFReader = new FileReader();
-                        oFReader.onload = function (oFREvent) { // *3*
-                            input.focus();
-                            var dataUrl = oFREvent.target.result;
-                            //console.log("box : ", box); console.log(dataUrl);
-                            if (dataUrl == null) {
+                        var radiochecked = jQuery('input:radio[name=imageFileBrowser]:checked').val();
+                        if (radiochecked === 'file') {
+                            input = document.getElementById("imageFileBrowser");
+                            var oFile = input.files;
+                            if (oFile.length == 0) {
                                 // NO Jquery here : deletes the dialog
-                                alert("Cannot read image file");
-                                exitDialog(false);
+                                alert("Please select a file!"); // myparty : TOTO : translate
                                 return;
                             }
-                            exitDialog(dataUrl);
+                        
+                        
+                            oFile = oFile[0];
+                            var oFReader = new FileReader();
+                            oFReader.onload = function (oFREvent) { // *3*
+                                input.focus();
+                                var dataUrl = oFREvent.target.result;
+                                //console.log("box : ", box); console.log(dataUrl);
+                                if (dataUrl == null) {
+                                    // NO Jquery here : deletes the dialog
+                                    alert("Cannot read image file");
+                                    exitDialog(false);
+                                    return;
+                                }
+                            
+                                exitDialog(dataUrl);
+                            }
                         }
+                        else {
+                            
+                            var input = jQuery("#imageURL").val();
+                            jQuery.alert('check the" console');
+                            //from http://stackoverflow.com/questions/1303872/trying-to-validate-url-using-javascript
+                            var urlregex = new RegExp("^(http:\/\/www.|https:\/\/www.|http:\/\/.|www.){1}([0-9A-Za-z]+\.)");
+                            if (!urlregex.test(input))
+                                jQuery.alert('It isn\'t a valid URL');
+                        }
+                        
                         var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
                         if (!rFilter.test(oFile.type)) {
                             alert("You must select a valid image file!");
