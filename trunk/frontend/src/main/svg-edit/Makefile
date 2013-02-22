@@ -30,7 +30,7 @@ JS_BUILD_FILES=$(addprefix build/$(PACKAGE)/, $(JS_FILES))
 CLOSURE_JS_ARGS=$(addprefix --js , $(JS_INPUT_FILES))
 COMPILED_JS=editor/svgedit.compiled.js
 
-all: release firefox opera
+all: release # firefox opera
 
 # The build directory relies on the JS being compiled.
 build/$(PACKAGE): $(COMPILED_JS)

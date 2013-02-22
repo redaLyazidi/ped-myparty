@@ -5357,6 +5357,25 @@ this.save = function(opts) {
 	call("saved", str);
 };
 
+this.saveAsSVG = function() {
+    // remove the selected outline before serializing
+	clearSelection();
+
+        var opts = {
+            'images': 'embed',
+            'round_digits': 6
+        }
+        if(opts) $.extend(save_options, opts);
+	save_options.apply = true;
+
+	// no need for doctype, see http://jwatt.org/svg/authoring/#doctype-declaration
+	var str = this.svgCanvasToString();
+        var uriContent = "data:image/svg+xml," + encodeURIComponent(str);
+        location.href = uriContent;
+        var newWindow = window.open(uriContent, 'neuesDokument');
+}
+
+
 // Function: rasterExport
 // Generates a PNG Data URL based on the current image, then calls "exported" 
 // with an object including the string and any issues found
