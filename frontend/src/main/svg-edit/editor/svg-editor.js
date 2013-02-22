@@ -109,7 +109,7 @@ if (!alert)
                 "errorLoadingSVG": "Error: Unable to load SVG data",
                 "URLloadFail": "Unable to load from URL",
                 "retrieving": 'Retrieving "%s" ...',
-                "cannotLoadImageUrlPleaseSelectNewOne":"The image %s comes from an external file and cannot be loaded.\nPlease choose a location where it can be loaded from."
+                "cannotLoadImageUrlPleaseSelectNewOne":"The image comes from an external file and cannot be loaded.\nPlease choose a location where it can be loaded from."
             }
         };
 
@@ -601,12 +601,20 @@ if (!alert)
                 $.prompt = function(msg, txt, cb) {
                     dbox('prompt', msg, cb, txt);
                 };
-                $.imageFileBrowser = function(msg, callback) {
+                $.imageFileBrowser = function(msg, imgurl,callback) {
                     //$('#dialog_container').onkeypress = function() {console.log("héhé");};
                     //box.onblur = function() {box.focus(); box.onkeydown = function () {console.log("toto"); return false;}; console.log("blur");};
                     //box.onkeydown = function (e) {console.log("blop"); return false};
                     svgEditor.disableShortcuts();
-                    $('#dialog_content').html('<p>'+msg.replace(/\n/g,'</p><p>')+'</p>')
+
+                    var contentStr = '<div>';
+                    if (imgurl)
+                        contentStr += '<img src="' + imgurl + '" style="float: left; margin-right: 5px;" width="120px" />';
+
+                    contentStr += '<p>'+msg.replace(/\n/g,'</p><p>');
+                    contentStr += '</p></div>';
+
+                    $('#dialog_content').html(contentStr)
                     .toggleClass('prompt',false);
                     btn_holder.empty();
 
@@ -629,10 +637,10 @@ if (!alert)
                     /*$('<p><span> Enter an URL: </span> <input type="text"/></p>').prependTo(btn_holder);
                     $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);
                     $('<input type="radio" name="imageFileBrowser" value="file" checked/>').prependTo(btn_holder);*/
-                    jQuery('<div id="chooseFile"><div><input id="radioFile" type="radio" name="imageFileBrowser" value="file" checked/>' +
+                    jQuery('<div id="chooseFile" style="text-align:left; margin-left:23px;"><div><input id="radioFile" type="radio" name="imageFileBrowser" value="file" checked/>' +
                         '<input id="imageFileBrowser" type="file"/></div>' +
                         '<div><input id="radioURL" type="radio" name="imageFileBrowser" value="url"/>' +
-                        ' Enter an URL:  <input id="imageURL" size="5" type="text" style="width: 125px;display: inline;margin-left: 23px;"/></div></div>').prependTo(btn_holder);
+                        'Enter an URL: <input id="imageURL" style="width: 200px; display:inline;" type="text"/></div></div>').prependTo(btn_holder);
                     ;
                     console.log('btn_holder', btn_holder);
                     //Give the value of which radio is selected
@@ -3511,7 +3519,7 @@ if (!alert)
             function promptImgURL() {
                 var curhref = svgCanvas.getHref(selectedElement);
                 curhref = curhref.indexOf("data:") === 0?"":curhref;
-                $.imageFileBrowser(uiStrings.notification.enterNewImgURL, function(url) {
+                $.imageFileBrowser(uiStrings.notification.enterNewImgURL, null, function(url) {
                     if(url) { 
                         setImageURL(url);
                         svgCanvas.setGoodImage(url);
@@ -3525,8 +3533,8 @@ if (!alert)
             function promptImgURLFromFile() {
                 var curhref = svgCanvas.getHref(selectedElement);
                 curhref = curhref.indexOf("data:") === 0?"":curhref;
-                var msg = uiStrings.notification.cannotLoadImageUrlPleaseSelectNewOne.replace("%s", curhref);
-                $.imageFileBrowser(msg, function(url) {
+                var msg = uiStrings.notification.cannotLoadImageUrlPleaseSelectNewOne;
+                $.imageFileBrowser(msg, curhref, function(url) {
                     if(url) {
                         setImageURL(url);
                         svgCanvas.setGoodImage(url);
@@ -5181,13 +5189,14 @@ if (!alert)
                                 reader.onloadend = function(e) {
                                     // let's insert the new image until we know its dimensions
                                     //insertNewImage = function(){
+                                    var size = mpUtils.imageDefaultSize();
                                     var newImage = svgCanvas.addSvgElementFromJson({
                                         "element": "image",
                                         "attr": {
                                             "x": 0,
                                             "y": 0,
-                                            "width": 150,
-                                            "height": 150,
+                                            "width": size,
+                                            "height": size,
                                             "id": svgCanvas.getNextId(),
                                             "style": "pointer-events:inherit"
                                         }
