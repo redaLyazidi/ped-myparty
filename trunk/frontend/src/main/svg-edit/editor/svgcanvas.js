@@ -7477,9 +7477,10 @@ this.setImageURL = function(val) {
 
 	if (nullsize === true) {
             console.log("Changed image attrs : ", attrs);
+            var size = mpUtils.imageDefaultSize();
             $(elem).attr({
-                width:  "200",
-                height: "200"
+                width:  size,
+                height: size
             });
             selectorManager.requestSelector(elem).resize();
         }

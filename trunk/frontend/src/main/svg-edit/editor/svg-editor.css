@@ -1335,12 +1335,14 @@ span.zoom_tool {
 }
 
 #dialog_content {
-	height: 95px;
+	height: auto;
+        min-height: 50px;
 	margin: 10px 10px 5px 10px;
 	background: #DDD;
 	overflow: auto;
 	text-align: left;
 	border: 1px solid #B0B0B0;
+        text-align: center;
 }
 
 #dialog_content.prompt {
@@ -1358,9 +1360,10 @@ span.zoom_tool {
 	text-align: center;
 	left: 50%;
 	top: 50%;
-	width: 300px;
+	width: 400px;
 	margin-left: -150px;
-	height: 150px;
+	/*height: 150px;*/
+        height: auto;
 	margin-top: -80px;
 	position:fixed;
 	z-index:50001;
@@ -1505,8 +1508,8 @@ span.zoom_tool {
 .contextMenu LI.quit A { background-image: url(images/door.png); }
 */
 /*ADDED*/
-#dialog_container {
-    height: 200px;
+/*#dialog_container {
+    height: auto;/*260px;
     width: 400px;
- /*   float: left;*/
-}
+ /*   float: left;
+}*/

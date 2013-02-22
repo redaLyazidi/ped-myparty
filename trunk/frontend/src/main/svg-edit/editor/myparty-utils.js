@@ -10,4 +10,10 @@ mpUtils.keepCreatedImage = function(element) {
     return (attrs.width > MIN_SIZE && attrs.height > MIN_SIZE);
 }
 
+mpUtils.imageDefaultSize = function() {
+    var res = svgEditor.canvas.getResolution();
+    var size = Math.min(res.w/2.5, res.h/2.5);
+    return size;
+}
+
 })();

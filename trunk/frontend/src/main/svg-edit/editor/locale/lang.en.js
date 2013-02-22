@@ -229,6 +229,7 @@ svgEditor.readLang({
 		"enterNewLinkURL": "Enter the new hyperlink URL",
 		"errorLoadingSVG": "Error: Unable to load SVG data",
 		"URLloadFail": "Unable to load from URL",
-		"retrieving": "Retrieving \"%s\"..."
+		"retrieving": "Retrieving \"%s\"...",
+                "cannotLoadImageUrlPleaseSelectNewOne":"The image comes from an external file and cannot be loaded.\nPlease choose a location where it can be loaded from."
 	}
 });
