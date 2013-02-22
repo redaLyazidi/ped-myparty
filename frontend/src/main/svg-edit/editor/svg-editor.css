@@ -351,7 +351,7 @@ div.palette_item:first-child {
 	position: relative;
 	top: -2px;
 	left: -2px;
-	width: 100px;
+	width: 106px;
 	line-height: 26px;
 }
 
@@ -470,16 +470,22 @@ div.palette_item:first-child {
 
 #tools_top {
 	position: absolute;
-	left: 108px;
+	left: 120px;
 	right: 2px;
 	top: 2px;
 	height: 40px;
 	border-bottom: none;
 	overflow: auto;
+        clear: both;
 }
 
 #tools_top .tool_sep {
 	margin-top: 5px;
+}
+
+ #tools_top div > div {
+	float: left;
+	margin-right: 4px;
 }
 
 #tools_left {
@@ -707,6 +713,20 @@ span.zoom_tool {
  #main_menu li#tool_open,  #main_menu li#tool_import {
 	position: relative;
 	overflow: hidden;
+}
+
+#tools_top_my_party .push_button,
+#tools_top_my_party .push_button_pressed
+{
+    width: auto; /* do not inherit width from tool_button */
+    white-space: nowrap;
+}
+
+#tools_top_my_party {
+    width: auto;
+    overflow: hidden;
+    margin-right: 12.5px;
+    float: right;
 }
 
 #tool_image {

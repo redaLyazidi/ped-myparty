@@ -359,6 +359,8 @@ if (!alert)
 
                     'arrow_right':'flyouth.png',
                     'arrow_down':'dropdown.gif'
+
+                    //'myparty_qrcode':'myparty/qrcode.png'
                 },
                 placement: {
                     '#logo':'logo',
@@ -369,6 +371,10 @@ if (!alert)
                     '#tool_open div div':'open',
                     '#tool_import div div':'import',
                     '#tool_source':'source',
+                    
+                    '#tool_validate div':'validate', // myparty
+                    '#tool_preview div' : 'preview',
+
                     '#tool_docprops > div':'docprops',
                     '#tool_wireframe':'wireframe',
 
@@ -2800,11 +2806,12 @@ if (!alert)
 
             var clickSave = function(){
                 // In the future, more options can be provided here
-                var saveOpts = {
+                /*var saveOpts = {
                     'images': curPrefs.img_save,
                     'round_digits': 6
                 }
-                svgCanvas.save(saveOpts);
+                svgCanvas.save(saveOpts);*/
+                svgCanvas.saveAsSVG();
             };
 
             var clickExport = function() {
@@ -4272,6 +4279,18 @@ if (!alert)
                     evt: 'mouseup', 
                     parent: '#tools_rect', 
                     icon: 'fh_rect'
+                },
+
+                {
+                    sel:'#tool_validate',
+                    fn: null,
+                    evt: 'click'
+                },
+
+                {
+                    sel:'#tool_preview',
+                    fn: null,
+                    evt: 'click'
                 },
 
                 {
