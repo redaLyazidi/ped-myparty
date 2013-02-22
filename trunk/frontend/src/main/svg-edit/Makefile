@@ -23,7 +23,7 @@ JS_FILES=\
 	svg-editor.js \
 	contextmenu.js \
 	myparty-utils.js \
-	locale/locale.js
+	locale/locale.js 
 
 JS_INPUT_FILES=$(addprefix editor/, $(JS_FILES))
 JS_BUILD_FILES=$(addprefix build/$(PACKAGE)/, $(JS_FILES))
@@ -85,6 +85,10 @@ chrome:
 	mkdir -p build/svgedit_app
 	cp -a chrome-app/* build/svgedit_app
 	cd build ; $(ZIP) -r $(PACKAGE)-crx.zip svgedit_app ; rm -rf svgedit_app; cd ..
+
+
+jgraduate:
+	java -jar $(CLOSURE) --js editor/jgraduate/jquery.jgraduate.js --js_output_file editor/jgraduate/jquery.jgraduate.min.js
 
 clean:
 	rm -rf config

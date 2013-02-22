@@ -349,3 +349,8 @@ div.jGraduate_Slider img {
 	right: -10px;
 	bottom: 0;
 }
+
+/*ADDED*/
+#color_picker_jGraduate_cx, #color_picker_jGraduate_cy {
+    display: inline;
+}

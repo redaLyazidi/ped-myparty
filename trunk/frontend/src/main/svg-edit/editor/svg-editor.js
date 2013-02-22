@@ -661,24 +661,24 @@ if (!alert)
                             
                                 exitDialog(dataUrl);
                             }
+                            var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+                            if (!rFilter.test(oFile.type)) {
+                                alert("You must select a valid image file!");
+                                exitDialog(false);
+                                return;
+                            }
+                            oFReader.readAsDataURL(oFile); // *2*
                         }
                         else {
                             
                             var input = jQuery("#imageURL").val();
                             jQuery.alert('check the" console');
                             //from http://stackoverflow.com/questions/1303872/trying-to-validate-url-using-javascript
-                            var urlregex = new RegExp("^(http:\/\/www.|https:\/\/www.|http:\/\/.|www.){1}([0-9A-Za-z]+\.)");
+                            var urlregex = new RegExp("^(http:\/\/www.|https:\/\/www.|http:\/\/.|https:\/\/.|www.){1}([0-9A-Za-z]+\.)");
                             if (!urlregex.test(input))
-                                jQuery.alert('It isn\'t a valid URL');
+                                alert('It isn\'t a valid URL');
+                            exitDialog(input);
                         }
-                        
-                        var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
-                        if (!rFilter.test(oFile.type)) {
-                            alert("You must select a valid image file!");
-                            exitDialog(false);
-                            return;
-                        }
-                        oFReader.readAsDataURL(oFile); // *2*
                     });
                 };
             }());
@@ -3611,7 +3611,7 @@ if (!alert)
                     $('#color_picker').hide();
                 });
             };
-
+            
             var updateToolButtonState = function() {
                 var bNoFill = (svgCanvas.getColor('fill') == 'none');
                 var bNoStroke = (svgCanvas.getColor('stroke') == 'none');
