@@ -140,7 +140,7 @@ public class MyPartyTest {
 			list = dao.getPartiesNotBegunMaxResult(1, 2);
 			assertEquals(2, list.size());
 		} catch (Exception e) {
-			LOG.error("erreur lors de l'execution de la methode testPartiesNotBegun");
+			LOG.error("erreur lors de l'execution de la methode testPartiesNotBegunMaxResult");
 			e.printStackTrace();
 		}
 	}
