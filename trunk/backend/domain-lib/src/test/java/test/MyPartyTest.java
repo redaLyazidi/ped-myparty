@@ -69,7 +69,7 @@ public class MyPartyTest {
 		dateBegin3 = new GregorianCalendar(2013, 02, 01);
 		dateEnd3 = new GregorianCalendar(2013, 02, 10);
 		
-		adress = new Adress("18 rue des plantes", "Bordeaux", "France");
+		adress = new Adress("18 rue des plantes", "Bordeaux", "33600");
 		artist1 = new Artist("Jean", "variete");
 		artist2 = new Artist("Robert", "variete");
 		artist3 = new Artist("George", "variete");
