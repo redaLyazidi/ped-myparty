@@ -1,6 +1,7 @@
 package net.ped.service.front;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import net.ped.dao.InterfacePartyDao;
@@ -35,6 +36,16 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		}
 	}
 
+	public Party getParty(int id){
+		Party party = new Party();
+		try {
+			party = dao.getParty(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return party;
+	}
+	
 	public List<Party> getAllParties(){
 		List<Party> list = new ArrayList<Party>();
 		try {
@@ -45,19 +56,34 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		return list;
 	}
 
-	public Party getParty(int id){
-		Party party = new Party();
+	public List<Party> getPartiesNotBegun() {
+		List<Party> list = new ArrayList<Party>();
 		try {
-			party = dao.getParty(id);
+			list = dao.getPartiesNotBegun();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return party;
+		return list;
 	}
 
-	public List<Party> getPartiesCriteria(){
-		// TODO Auto-generated method stub
-		return null;
+	public List<Party> getPartiesNotBegunMaxResult(int startPosition, int length) {
+		List<Party> list = new ArrayList<Party>();
+		try {
+			list = dao.getPartiesNotBegunMaxResult(startPosition, length);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
+	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd,
+			Calendar date, Calendar time){
+		List<Party> list = new ArrayList<Party>();
+		try {
+			list = dao.getPartiesCriteria(priceBegin, priceEnd, date, time);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }
