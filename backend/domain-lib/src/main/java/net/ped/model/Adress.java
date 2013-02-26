@@ -8,16 +8,16 @@ public class Adress {
 	
 	private String street;
 	private String town;
-	private String country;
+	private String CP;
 	
 	public Adress() {
 		
 	}
 
-	public Adress(String street, String town, String country) {
+	public Adress(String street, String town, String CP) {
 		this.street = street;
 		this.town = town;
-		this.country = country;
+		this.CP = CP;
 	}
 
 	//@XmlElement
@@ -39,11 +39,11 @@ public class Adress {
 	}
 
 	//@XmlElement
-	public String getCountry() {
-		return country;
+	public String getCP() {
+		return CP;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setCountry(String CP) {
+		this.CP = CP;
 	}
 }
