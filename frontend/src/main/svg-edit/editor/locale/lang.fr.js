@@ -145,7 +145,9 @@ svgEditor.readLang({
 		"move_front": "Placer au premier plan",
 		"move_up": "Placer plus près",
 		"move_down": "Placer au dernier plan",
-		"move_back": "Placer plus au fond"
+		"move_back": "Placer plus au fond",
+                "preview": "Prévisualiser le design", //MyParty
+                "validate": "Valider le design " //MyParty
 	},
 	layers: {
 		"layer":"Calque",
