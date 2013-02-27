@@ -14,6 +14,7 @@
 	<h:form enctype="multipart/form-data">
 		<p:messages showDetail="true" />
 		<h:panelGrid columns="2" cellpadding="5">
+		<h:outputText value="Image : " />
 		<p:fileUpload value="#{createParty.file}" mode="simple" />
 			<h:outputText value="Titre: " />
 			<p:inputText value="#{createParty.title}" />
