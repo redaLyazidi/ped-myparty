@@ -1,4 +1,4 @@
-package main.java.beans;
+package beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +9,8 @@ import java.util.Calendar;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import net.ped.model.Adress;
 import net.ped.model.Party;
@@ -133,5 +135,9 @@ public class AccueilBean implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
+	
+	 public void preRenderView() {  
+	      HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );  
+	   } 
+	 
 }
