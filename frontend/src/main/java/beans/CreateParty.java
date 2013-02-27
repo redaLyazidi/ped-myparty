@@ -1,14 +1,22 @@
 package beans;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.model.UploadedFile;
 
 import net.ped.model.Adress;
 import net.ped.model.Party;
@@ -20,6 +28,7 @@ import net.ped.service.front.InterfaceFrontPartyService;
 public class CreateParty implements Serializable{
 
 	InterfaceFrontPartyService service = new FrontPartyService();
+	private UploadedFile file;
 	private String title;
 	private String description;
 	private int nbPlace;
@@ -34,6 +43,14 @@ public class CreateParty implements Serializable{
 	private Date dateBegin;
 	private Date dateEnd;
 
+	public UploadedFile getFile() {  
+		return file;  
+	}  
+
+	public void setFile(UploadedFile file) {  
+		this.file = file;  
+	}  
+	
 	public String getTitle() {
 		return title;
 	}
@@ -139,8 +156,29 @@ public class CreateParty implements Serializable{
 	}
 
 	public void save(){
+		
+		String filename="";
+		if(file != null) {
+			filename = FilenameUtils.getName(file.getFileName());
+			InputStream input=null;
+			OutputStream output=null;
+			try {
+				input = file.getInputstream();
+				// à changer en mettant la destination de son workspace
+				output = new FileOutputStream(new File("//D://Fac//AL//workspace//trunk//frontend//WebContent//resources//upload" + "//", filename));
+				IOUtils.copy(input, output);
+			}catch(Exception e){
+				e.printStackTrace();
+			} finally {
+				IOUtils.closeQuietly(input);
+				IOUtils.closeQuietly(output);
+			} 
+		}  
+		
 		Party party = new Party();
 		Adress adress = new Adress();
+		//TODO à modifier
+		//party.setImage(filename);
 		party.setTitle(title);
 		party.setDescription(description);
 		party.setNbPlace(nbPlace);
@@ -163,6 +201,9 @@ public class CreateParty implements Serializable{
 		Calendar hourParty = new GregorianCalendar(0,0,0,hour,minute);
 		party.setTimeParty(hourParty);
 		service.addParty(party);
+		
+		FacesMessage msg = new FacesMessage("Succesful", "La party a été créée");  
+		FacesContext.getCurrentInstance().addMessage(null, msg); 
 	}
 
 }
