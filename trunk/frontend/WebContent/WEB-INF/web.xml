@@ -31,6 +31,12 @@
  <url-pattern>/imgUrl/*</url-pattern>
 </servlet-mapping>
 
+<!-- ticket designer -->
+<servlet-mapping>
+	 <servlet-name>default</servlet-name>
+	 <url-pattern>/ticket-designer/*</url-pattern>
+</servlet-mapping>
+
   
   <!-- Map these files with JSF -->
 	<servlet-mapping>

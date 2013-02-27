@@ -58,6 +58,7 @@ if (!alert)
             initOpacity: 1,
             imgPath: 'images/',
             fixedUrlImages: 'images/myparty/', //myparty
+            imageProxyServer: self.location.protocol + self.location.host + "/myparty-frontend/imgUrl?url=", // myparty
             langPath: 'locale/',
             extPath: 'extensions/',
             jGraduatePath: 'jgraduate/images/',
@@ -1634,12 +1635,21 @@ if (!alert)
                     return;
                 }
 
-                // regular URL
-                svgCanvas.embedImage(url, function(datauri) {
-                    if(!datauri) {
-                        // Couldn't embed, so show warning
-                        if (url.indexOf("http://") === 0 || url.indexOf("ftp://") === 0)
-                            alert("SHOULD SEND IMAGE ON THE SERVER...");
+                var myPartyEmbedAsDataUriImage = function(datauri) {
+                    window.alert(curConfig.imageProxyServer);
+                    return;
+                    if(!datauri) { // Couldn't embed
+                        // might be a local file or a regular url or some text which makes non-sense.
+                        if (url.indexOf(curConfig.imageProxyServer) !== 0) { // the image doesn't come from the proxy server
+                            if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
+                                // regular URL
+                                // try to dowlonad image threw the proxy server;
+                                svgCanvas.embedImage(curConfig.imageProxyServer + url, myPartyEmbedAsDataUriImage);
+                                return;
+                            }
+                        }
+
+                        //alert("SHOULD SEND IMAGE ON THE SERVER...");
                         $('#url_notice').show();
                         promptImgURLFromFile();
                         console.error("Cannot load image from url : ", url);
@@ -1649,9 +1659,11 @@ if (!alert)
                         setImageURL(datauri); // myparty : try to always load datauri instead of regular urls...
                     }
                     default_img_url = url;
-                });
-            //$('#image_url').show(); // myparty
-            //$('#change_image_url').hide();
+                }
+
+                svgCanvas.embedImage(url, myPartyEmbedAsDataUriImage);
+                //$('#image_url').show(); // myparty
+                //$('#change_image_url').hide();
             }
 
             var setInputWidth = function(elem) {
