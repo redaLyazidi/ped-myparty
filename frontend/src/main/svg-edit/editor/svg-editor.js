@@ -109,7 +109,12 @@ if (!alert)
                 "errorLoadingSVG": "Error: Unable to load SVG data",
                 "URLloadFail": "Unable to load from URL",
                 "retrieving": 'Retrieving "%s" ...',
-                "cannotLoadImageUrlPleaseSelectNewOne":"The image comes from an external file and cannot be loaded.\nPlease choose a location where it can be loaded from."
+                "cannotLoadImageUrlPleaseSelectNewOne":"The image comes from an external file and cannot be loaded.\nPlease choose a location where it can be loaded from.",
+                "EnterURL": "Enter an URL",
+                "PleaseSelectFile": "Please select a file",
+                "CannotReadImageFile": "Cannot read image file",
+                "YouMustSelectValidImageFile": "You must select a valid image file",
+                "ItINValidURL": "It isn't a valid URL"
             }
         };
 
@@ -640,7 +645,7 @@ if (!alert)
                     jQuery('<div id="chooseFile" style="text-align:left; margin-left:23px;"><div><input id="radioFile" type="radio" name="imageFileBrowser" value="file" checked/>' +
                         '<input id="imageFileBrowser" type="file"/></div>' +
                         '<div><input id="radioURL" type="radio" name="imageFileBrowser" value="url"/>' +
-                        'Enter an URL: <input id="imageURL" style="width: 200px; display:inline;" type="text"/></div></div>').prependTo(btn_holder);
+                        uiStrings.notification.EnterURL+ ' <input id="imageURL" style="width: 200px; display:inline;" type="text"/></div></div>').prependTo(btn_holder);
                     ;
                     console.log('btn_holder', btn_holder);
                     //Give the value of which radio is selected
@@ -655,7 +660,7 @@ if (!alert)
                             var oFile = input.files;
                             if (oFile.length == 0) {
                                 // NO Jquery here : deletes the dialog
-                                alert("Please select a file!"); // myparty : TOTO : translate
+                                alert(uiStrings.notification.PleaseSelectFile); // myparty : TOTO : translate
                                 return;
                             }
                         
@@ -668,7 +673,7 @@ if (!alert)
                                 //console.log("box : ", box); console.log(dataUrl);
                                 if (dataUrl == null) {
                                     // NO Jquery here : deletes the dialog
-                                    alert("Cannot read image file");
+                                    alert("CannotReadImageFile");
                                     exitDialog(false);
                                     return;
                                 }
@@ -677,7 +682,7 @@ if (!alert)
                             }
                             var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
                             if (!rFilter.test(oFile.type)) {
-                                alert("You must select a valid image file!");
+                                alert(uiStrings.notification.YouMustSelectValidImageFile);
                                 exitDialog(false);
                                 return;
                             }
@@ -686,11 +691,10 @@ if (!alert)
                         else {
                             
                             var input = jQuery("#imageURL").val();
-                            jQuery.alert('check the" console');
                             //from http://stackoverflow.com/questions/1303872/trying-to-validate-url-using-javascript
                             var urlregex = new RegExp("^(http:\/\/www.|https:\/\/www.|http:\/\/.|https:\/\/.|www.){1}([0-9A-Za-z]+\.)");
                             if (!urlregex.test(input))
-                                alert('It isn\'t a valid URL');
+                                alert(uiStrings.notification.ItINValidURL);
                             exitDialog(input);
                         }
                     });
