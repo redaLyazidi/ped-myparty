@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>JSF 2.0 Hello World</title>
+</h:head>
+<h:body>
+	<h3>JSF 2.0 Hello World Example - hello.xhtml</h3>
+	<h:form>
+
+		<h:panelGrid columns="2" cellpadding="5">
+			<h:outputText value="Titre: " />
+			<p:inputText value="#{createParty.title}" />
+			<h:outputText value="Description: " />
+			<p:inputTextarea rows="6" cols="33"
+				value="#{createParty.description}" />
+			<h:outputText value="Nombre de places: " />
+			<p:inputText value="#{createParty.nbPlace}" />
+			<h:outputText value="Thème: " />
+			<p:inputText value="#{createParty.theme}" />
+			<h:outputText value="Prix: " />
+			<p:inputText value="#{createParty.price}" />
+			<h:outputText value="Rue: " />
+			<p:inputText value="#{createParty.street}" />
+			<h:outputText value="Ville: " />
+			<p:inputText value="#{createParty.town}" />
+			<h:outputText value="Code postal: " />
+			<p:inputText value="#{createParty.codepostal}" />
+			<h:outputText value="Date de la party: " />
+			<p:calendar value="#{createParty.dateParty}" id="popupCal1" />
+			<h:outputText value="Heure: " />
+			<p:inputText value="#{createParty.hour}" />
+			<h:outputText value="Minute: " />
+			<p:inputText value="#{createParty.minute}" />
+			<h:outputText value="Début préventes: " />
+			<p:calendar value="#{createParty.dateBegin}" id="popupCal2" />
+			<h:outputText value="Fin préventes: " />
+			<p:calendar value="#{createParty.dateEnd}" id="popupCal3" />
+			<h:commandButton value="Save" action="#{createParty.save}"></h:commandButton>
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>
