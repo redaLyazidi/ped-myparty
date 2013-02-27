@@ -84,6 +84,11 @@
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
 		</dependency>
+		<dependency>  
+		    <groupId>org.primefaces.themes</groupId>  
+		    <artifactId>bootstrap</artifactId>  
+		    <version>1.0.9</version>  
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -128,6 +133,7 @@
                         </webAppConfig>
                     </configuration>
                 </plugin>
+                
 		</plugins>
 	</build>
 
