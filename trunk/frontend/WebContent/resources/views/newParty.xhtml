@@ -11,9 +11,10 @@
 </h:head>
 <h:body>
 	<h3>JSF 2.0 Hello World Example - hello.xhtml</h3>
-	<h:form>
-
+	<h:form enctype="multipart/form-data">
+		<p:messages showDetail="true" />
 		<h:panelGrid columns="2" cellpadding="5">
+		<p:fileUpload value="#{createParty.file}" mode="simple" />
 			<h:outputText value="Titre: " />
 			<p:inputText value="#{createParty.title}" />
 			<h:outputText value="Description: " />
@@ -41,7 +42,7 @@
 			<p:calendar value="#{createParty.dateBegin}" id="popupCal2" />
 			<h:outputText value="Fin préventes: " />
 			<p:calendar value="#{createParty.dateEnd}" id="popupCal3" />
-			<h:commandButton value="Save" action="#{createParty.save}"></h:commandButton>
+			<h:commandButton value="Save" ajax="false" action="#{createParty.save}"/>
 		</h:panelGrid>
 	</h:form>
 </h:body>

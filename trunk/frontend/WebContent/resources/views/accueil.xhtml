@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
       
-  <head>
+  <h:head>
     <meta charset="utf-8"/>
     <title>MyParty, une application exceptionelle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -23,9 +24,9 @@
 
     <!-- Fav and touch icons -->
 
-  </head>
+  </h:head>
 
-  <body>
+  <h:body>
     
    <!--  <div class="page-header banner">
       <h1 class="pull-left">MyParty</h1>
@@ -68,15 +69,17 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header"><h4>Recherche une party!</h4></li>
+              <h:form>
               <li class="nav-header">Intitulé</li>
-              <li><input class="" type="text"/></li>
+              <li><p:inputText value="#{searchParty.title}"/></li>
               <li class="nav-header">Lieu</li>
               <li><input class="" type="text"/></li>
               <li class="nav-header">Prix</li>
               <li><input value="pricepicker" class="" type="text"/></li>
               <li class="nav-header">Date</li>
-              <li><input value="datepicker" type="text" class=""/></li>
-              <li class="active"><input class="btn btn-primary submit" value="C'est party!.." type="submit" name="search"/></li>
+              <li><p:calendar value="#{searchParty.dateParty}" id="popupCal1" /></li>
+              <li class="active"><h:commandButton value="Save" action="#{searchParty.search}"/></li>
+               </h:form>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
@@ -142,11 +145,6 @@
                 </tr>
               </tbody>
             </table>
-            
-            <h:form>
-    	   <h:inputText value="#{helloBean.name}"></h:inputText>
-    	   <h:commandButton value="Welcome Me" action="welcome"></h:commandButton>
-    	</h:form>
           </div>
         </div><!--/span-->
       </div><!--/row-->
@@ -158,5 +156,5 @@
     
     <!-- Bootstrap -->
     <script src="js/bootstrap.min.js"></script>
-  </body>
+  </h:body>
 </html>
