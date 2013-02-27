@@ -124,6 +124,8 @@ var svgEditor = (function($, Editor) {
 			sidepanel_handle: layers.layers.split('').join(' '),
 
 			tool_clear: tools.new_doc,
+                        tool_preview: tools.preview, //MyParty
+                        tool_validate: tools.validate, //MyParty
 			tool_docprops: tools.docprops,
 			tool_export: tools.export_png,
 			tool_import: tools.import_doc,
@@ -257,6 +259,8 @@ var svgEditor = (function($, Editor) {
 			tool_reorient: tools.reorient_path,
 			tool_select: tools.mode_select,
 			tool_source: tools.source_save,
+                        tool_preview: tools.preview, // my party
+                        tool_validate: tools.validate, // my party
 			tool_square: tools.mode_square,
 			tool_text: tools.mode_text,
 			tool_topath: tools.to_path,

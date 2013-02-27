@@ -143,7 +143,9 @@ svgEditor.readLang({
 		"move_front": "Bring to Front",
 		"move_up": "Move Layer Up",
 		"move_down": "Move Layer Down",
-		"move_back": "Send to Back"
+		"move_back": "Send to Back",
+                "preview": "Preview the design", //MyParty
+                "validate": "Validate the design" //MyParty
 	},
 	layers: {
 		"layer":"Layer",
