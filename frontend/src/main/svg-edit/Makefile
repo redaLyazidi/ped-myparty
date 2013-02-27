@@ -1,6 +1,8 @@
-NAME=svg-edit
+NAME=ticket-designer
 VERSION=2.6
 PACKAGE=$(NAME)-$(VERSION)
+WEBAPP_STATIC_CONTENT_DIR=../../../WebContent/resources/$(NAME)
+
 MAKEDOCS=naturaldocs/NaturalDocs
 CLOSURE=build/tools/closure-compiler.jar
 ZIP=zip
@@ -29,6 +31,10 @@ JS_INPUT_FILES=$(addprefix editor/, $(JS_FILES))
 JS_BUILD_FILES=$(addprefix build/$(PACKAGE)/, $(JS_FILES))
 CLOSURE_JS_ARGS=$(addprefix --js , $(JS_INPUT_FILES))
 COMPILED_JS=editor/svgedit.compiled.js
+
+install: all
+	rm -fr $(WEBAPP_STATIC_CONTENT_DIR)
+	cp -r build/$(PACKAGE) $(WEBAPP_STATIC_CONTENT_DIR)
 
 all: release # firefox opera
 
