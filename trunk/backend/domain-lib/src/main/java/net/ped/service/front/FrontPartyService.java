@@ -10,7 +10,20 @@ import net.ped.model.Party;
 
 public class FrontPartyService implements InterfaceFrontPartyService{
 	
-	InterfacePartyDao dao = new PartyDaoImpl();
+	private InterfacePartyDao dao = new PartyDaoImpl();
+	private static FrontPartyService instance;
+	
+	private FrontPartyService() {
+		instance = this;
+	}
+	
+	public static FrontPartyService getInstance() {
+		if(instance == null) {
+			instance = new FrontPartyService();
+		}
+		
+		return instance;
+	}
 
 	public void addParty(Party p){
 		try {
