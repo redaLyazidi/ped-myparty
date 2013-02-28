@@ -1633,37 +1633,35 @@ if (!alert)
                     svgCanvas.setImageURL(url);
                     $('#image_url').val(url);
                     return;
-                }
-
-                var myPartyEmbedAsDataUriImage = function(datauri) {
-                    window.alert(curConfig.imageProxyServer);
-                    return;
-                    if(!datauri) { // Couldn't embed
-                        // might be a local file or a regular url or some text which makes non-sense.
-                        if (url.indexOf(curConfig.imageProxyServer) !== 0) { // the image doesn't come from the proxy server
-                            if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
-                                // regular URL
-                                // try to dowlonad image threw the proxy server;
-                                svgCanvas.embedImage(curConfig.imageProxyServer + url, myPartyEmbedAsDataUriImage);
-                                return;
+                } else {
+                    var myPartyEmbedAsDataUriImage = function(datauri) {
+                        if(!datauri) { // Couldn't embed
+                            // might be a local file or a regular url or some text which makes non-sense.
+                            if (url.indexOf(curConfig.imageProxyServer) !== 0) { // the image doesn't come from the proxy server
+                                if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
+                                    // regular URL
+                                    // try to dowlonad image threw the proxy server;
+                                    svgCanvas.embedImage(curConfig.imageProxyServer + url, myPartyEmbedAsDataUriImage);
+                                    return;
+                                }
                             }
+
+                            //alert("SHOULD SEND IMAGE ON THE SERVER...");
+                            $('#url_notice').show();
+                            promptImgURLFromFile();
+                            console.error("Cannot load image from url : ", url);
+                        } else {
+                            $('#url_notice').hide();
+                            //console.log("datauri : ", datauri)
+                            setImageURL(datauri); // myparty : try to always load datauri instead of regular urls...
                         }
-
-                        //alert("SHOULD SEND IMAGE ON THE SERVER...");
-                        $('#url_notice').show();
-                        promptImgURLFromFile();
-                        console.error("Cannot load image from url : ", url);
-                    } else {
-                        $('#url_notice').hide();
-                        //console.log("datauri : ", datauri)
-                        setImageURL(datauri); // myparty : try to always load datauri instead of regular urls...
+                        default_img_url = url;
                     }
-                    default_img_url = url;
-                }
 
-                svgCanvas.embedImage(url, myPartyEmbedAsDataUriImage);
-                //$('#image_url').show(); // myparty
-                //$('#change_image_url').hide();
+                    svgCanvas.embedImage(url, myPartyEmbedAsDataUriImage);
+                    //$('#image_url').show(); // myparty
+                    //$('#change_image_url').hide();
+                }
             }
 
             var setInputWidth = function(elem) {
