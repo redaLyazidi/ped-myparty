@@ -53,6 +53,6 @@ public interface InterfacePartyDao {
 	 * obtient toutes les party suivant différents critères
 	 * @return List<Party>
 	 */
-	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time) throws Exception;
+	public List<Party> getPartiesCriteria(double priceBegin, double priceEnd, Calendar date, Calendar time) throws Exception;
 
 }
