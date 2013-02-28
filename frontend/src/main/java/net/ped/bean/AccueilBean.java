@@ -1,4 +1,4 @@
-package beans;
+package net.ped.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import constantes.ConstantesWeb;
+import net.ped.constante.ConstantesWeb;
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 

@@ -1,4 +1,4 @@
-package beans;
+package net.ped.bean;
 
 import java.io.Serializable;
 

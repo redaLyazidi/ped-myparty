@@ -1,4 +1,4 @@
-package constantes;
+package net.ped.constante;
 
 public class ConstantesWeb {
 	
