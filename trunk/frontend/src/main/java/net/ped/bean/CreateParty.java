@@ -1,4 +1,4 @@
-package beans;
+package net.ped.bean;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,8 +21,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.UploadedFile;
 
-import constantes.ConstantesWeb.ThemeParty;
 
+import net.ped.constante.ConstantesWeb.ThemeParty;
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
