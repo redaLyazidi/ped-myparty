@@ -58,7 +58,7 @@ if (!alert)
             initOpacity: 1,
             imgPath: 'images/',
             fixedUrlImages: 'images/myparty/', //myparty
-            imageProxyServer: self.location.protocol + self.location.host + "/myparty-frontend/imgUrl?url=", // myparty
+            imageProxyServer: self.location.protocol + "//" + self.location.host + "/myparty-frontend/imgUrl?url=", // myparty
             langPath: 'locale/',
             extPath: 'extensions/',
             jGraduatePath: 'jgraduate/images/',
@@ -1631,36 +1631,39 @@ if (!alert)
                     $('#change_image_url').show();
 
                     svgCanvas.setImageURL(url);
-                    $('#image_url').val(url);
+                    //$('#image_url').val(url);
                     return;
                 } else {
                     var myPartyEmbedAsDataUriImage = function(datauri) {
+                        //console.log("datauri : ", datauri);
                         if(!datauri) { // Couldn't embed
                             // might be a local file or a regular url or some text which makes non-sense.
+                            //console.log("Embed : ", url);
                             if (url.indexOf(curConfig.imageProxyServer) !== 0) { // the image doesn't come from the proxy server
                                 if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
                                     // regular URL
                                     // try to dowlonad image threw the proxy server;
+                                    //console.log("curConfig.imageProxyServer", curConfig.imageProxyServer);
+                                    //console.log("total :", curConfig.imageProxyServer + url);
                                     svgCanvas.embedImage(curConfig.imageProxyServer + url, myPartyEmbedAsDataUriImage);
                                     return;
                                 }
                             }
 
-                            //alert("SHOULD SEND IMAGE ON THE SERVER...");
                             $('#url_notice').show();
                             promptImgURLFromFile();
                             console.error("Cannot load image from url : ", url);
                         } else {
                             $('#url_notice').hide();
+                            //console.log("Success ", url);
                             //console.log("datauri : ", datauri)
+                            console.log("Changed an image URL with success");
                             setImageURL(datauri); // myparty : try to always load datauri instead of regular urls...
                         }
                         default_img_url = url;
                     }
 
                     svgCanvas.embedImage(url, myPartyEmbedAsDataUriImage);
-                    //$('#image_url').show(); // myparty
-                    //$('#change_image_url').hide();
                 }
             }
 
