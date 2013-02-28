@@ -15,7 +15,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -23,6 +22,7 @@ import org.primefaces.model.UploadedFile;
 
 
 import net.ped.constante.ConstantesWeb.ThemeParty;
+import net.ped.model.Artist;
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
@@ -41,13 +41,17 @@ public class CreateParty implements Serializable{
 	private String codepostal;
 	private Date dateParty;
 	private int selectedHour;
-	private int selectedMinute;
 	private List<Integer> hour;
+	private int selectedMinute;
 	private List<Integer> minute;
 	private Date dateBegin;
 	private Date dateEnd;
 	private String selectedTheme;
 	private List<String> themes;
+	
+	private List<Artist> selectedArtists;
+	private List<Artist> artists;
+	private List<String> selectedTexts; 
 
 	public CreateParty(){
 		hour = new ArrayList<Integer>();
@@ -63,6 +67,8 @@ public class CreateParty implements Serializable{
 		for(ThemeParty t : ThemeParty.values()){
 			themes.add(t.toString());
 		}
+		
+		artists = FrontPartyService.getInstance().getAllArtists();
 	}
 
 	public UploadedFile getFile() {  
@@ -209,6 +215,32 @@ public class CreateParty implements Serializable{
 		this.minute = minute;
 	}
 
+	public List<Artist> getArtists() {
+		return artists;
+	}
+
+	public void setArtists(List<Artist> artists) {
+		this.artists = artists;
+	}
+
+	public List<String> getSelectedTexts() {
+		return selectedTexts;
+	}
+
+	public void setSelectedTexts(List<String> selectedTexts) {
+		this.selectedTexts = selectedTexts;
+	}
+
+	public List<String> complete(String query) {  
+        List<String> suggestions = new ArrayList<String>();  
+          
+        for(Artist a : artists) {  
+            if(a.getName().startsWith(query))  
+                suggestions.add(a.getName());  
+        }  
+        return suggestions;  
+    }  
+
 	public void save(){
 
 		String filename="";
@@ -251,6 +283,13 @@ public class CreateParty implements Serializable{
 		party.setDateParty(cal3);
 		Calendar hourParty = new GregorianCalendar(0,0,0,selectedHour,selectedMinute);
 		party.setTimeParty(hourParty);
+		
+		selectedArtists = new ArrayList<Artist>();
+		for(String s : selectedTexts){
+			selectedArtists.add(FrontPartyService.getInstance().getArtistByName(s));
+		}
+		
+		party.setArtists(selectedArtists);
 		FrontPartyService.getInstance().addParty(party);
 
 		FacesMessage msg = new FacesMessage("Succesful", "La party a été créée");  
