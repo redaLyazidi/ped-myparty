@@ -16,14 +16,59 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import net.ped.model.Artist;
 import net.ped.model.Party;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(PartyDaoImpl.class);
+
+	public void addArtist(Artist a) throws Exception{
+		LOG.info("> addArtist");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			em.persist(a); 
+			tx.commit();
+			LOG.debug("Ajout de l'artiste");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction addArtist",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+	}
+
+	public void deleteArtist(int id){
+		LOG.info("> deleteArtist");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Artist a = em.find(Artist.class, id);
+			if (a == null) {
+				LOG.error("Cet artiste n'existe pas");
+				throw new Exception();
+			}
+			em.remove(a);
+			tx.commit();
+			LOG.debug("Suppression de l'artiste");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction deleteArtist",re);
+			tx.rollback();
+		}finally{
+			closeEntityManager();
+		}
+	}
 
 	public void addParty(Party p) throws Exception{
 		LOG.info("> addParty");
@@ -89,7 +134,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			closeEntityManager();
 		}
 	}
-	
+
 	public Party getParty(int id) throws Exception{
 		LOG.info("> getParty");
 		EntityManager em = createEntityManager(); 
@@ -99,7 +144,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			tx = em.getTransaction(); 
 			tx.begin();
 			Query query = em.createQuery("from Party u " +
-			"inner join fetch u.artists where u.id=:param");
+					"inner join fetch u.artists where u.id=:param");
 			query.setParameter("param", id);
 			p = (Party)query.getSingleResult();
 			tx.commit();
@@ -134,7 +179,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 		}
 		return list;
 	}
-	
+
 	public List<Party> getPartiesNotBegun() throws Exception {
 		LOG.info("> getPartiesNotBegun");
 		EntityManager em = createEntityManager(); 
@@ -144,7 +189,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			tx = em.getTransaction();
 			tx.begin();
 			Query query = em.createQuery("from Party u " +
-			"inner join fetch u.artists where u.dateParty>:param");
+					"inner join fetch u.artists where u.dateParty>:param");
 			query.setParameter("param", Calendar.getInstance());
 			list = query.getResultList();
 			tx.commit();
@@ -157,7 +202,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 		}
 		return list;
 	}
-	
+
 	public List<Party> getPartiesNotBegunMaxResult(int startPosition, int length)
 			throws Exception {
 		LOG.info("> getPartiesNotBegunMaxResult");
@@ -168,7 +213,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			tx = em.getTransaction();
 			tx.begin();
 			Query query = em.createQuery("from Party u " +
-			"inner join fetch u.artists where u.dateParty>:param order by u.dateParty");
+					"inner join fetch u.artists where u.dateParty>:param order by u.dateParty");
 			query.setParameter("param", Calendar.getInstance());
 			query.setFirstResult(startPosition);
 			query.setMaxResults(length);
@@ -197,20 +242,20 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			CriteriaQuery<Party> criteriaQuery = criteria.createQuery(Party.class);
 			Root<Party> from = criteriaQuery.from(Party.class);
 			criteriaQuery.select(from);
-			
+
 			List<Predicate> list = new ArrayList<Predicate>();
 			if(priceBegin != 0 && priceEnd != 0){
 				LOG.debug("ajout prix");
 				Predicate p1 = criteria.between(from.<Double>get("price"), priceBegin, priceEnd);
 				list.add(p1);
 			}
-			
+
 			if(date != null){
 				LOG.debug("ajout date");
 				Predicate p2 = criteria.equal(from.get("dateParty"), date);
 				list.add(p2);
 			}
-			
+
 			if(time != null){
 				LOG.debug("ajout time");
 				Predicate p3 = criteria.equal(from.get("timeParty"), time);
