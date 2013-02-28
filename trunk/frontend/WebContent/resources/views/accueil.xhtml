@@ -89,27 +89,51 @@
 							<div class="listeParty">
 								<c:forEach var="party" items="#{accueilBean.listParty}">
 									<div class="itemListeParty">
-										<div class="itemTitle">
+										<div class="partyPartDesc">
+											<div class="itemTitle">
+												<h:commandLink action="#{accueilBean.outcome}"
+													value="#{party.title}">
+													<f:param name="idParty" value="#{party.id}" />
+												</h:commandLink>
+											</div>
+											<div class="itemArtist">
+												<c:forEach var="artist" items="#{party.artists}">
+													<h:outputText value="#{artist.name}   " />
+												</c:forEach>				
+											</div>
+											<div class="itemGenre">
+												<h:outputText value="#{party.theme}" />
+											</div>
+											<div class="itemDate">
+													<!-- <h:outputText value="Le #{party.dateParty} à #{party.timeParty}" /> -->
+													<h:outputText value="Le 30/02/2013 à 19h" />
+											</div>
+										</div>
+										<div class="partyPartLieu">
+											<div class="itemLieu">
+												<h:outputText value="#{party.place}"/>
+											</div>
+											<div>
+												<h:outputText value="#{party.street}" />
+											</div>
+											
+											<h:outputText value="#{party.CP} #{party.town}" />
+										</div>
+										<div class="partyPartPrice">
+											<div>
+												<h:outputText value="#{party.price} €" />
+											</div>
 											<h:commandLink action="#{accueilBean.outcome}"
-												value="#{party.title}">
-												<f:param name="idParty" value="#{party.id}" />
+													value="Réservez">
+													<f:param name="idParty" value="#{party.id}" />
 											</h:commandLink>
-											<!--	<h:outputText value="#{party.title}" /> -->
 										</div>
-										<div class="itemDate">
-											<!-- 	<h:outputText value="#{party.dateParty}" /> -->
-										</div>
-										<div class="itemLieu">
-											<h:outputText
-												value="#{party.street}, #{party.CP} #{party.town} #{party.place}" />
-										</div>
-										<div class="itemPrice">
-											<h:outputText value="#{party.price} €" />
-										</div>
+										
+										<div class="clear"></div>
 									</div>
 								</c:forEach>
 							</div>
-
+							
 							<div class="bandeauInfListeParty">
 								<div class="nextButton">
 									<h:commandLink action="#{accueilBean.nextPage}" value="Next"
