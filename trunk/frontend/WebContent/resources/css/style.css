@@ -4,6 +4,10 @@ body {
 	background-color: white;
 }
 
+h2 {
+	margin-top: -20px;
+}
+
 .submit {
 	margin-top: 20px;
 	width : 100%;
@@ -37,10 +41,28 @@ li {
 
 
 .hero-unit {
+	padding: 50px;
+	padding-left: 30px;
+}
+
+.hero-unit p {
+	font-size: 15px;
+}
+
+.sidebar {
+}
+
+.sidebar form {
+	padding-top: 10px;
 }
 
 .sidebar input {
-	width: 100%;
+    width: 100%;
+    margin-left: -5px;
+}
+
+.sidebar input[type="submit"] {
+    margin-bottom: -20px;
 }
 
 .party-list td {
