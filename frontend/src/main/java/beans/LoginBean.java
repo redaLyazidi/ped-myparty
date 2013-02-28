@@ -1,4 +1,4 @@
-package main.java.beans;
+package beans;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import javax.faces.context.FacesContext;
 
 import net.ped.model.User;
 
-import main.java.constantes.ConstantesWeb;
+import constantes.ConstantesWeb;
 
 @ManagedBean(name="loginBean")
 @ViewScoped
