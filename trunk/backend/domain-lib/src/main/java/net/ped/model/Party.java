@@ -45,9 +45,12 @@ public class Party implements java.io.Serializable{
 	private double price;
 	private int nbPlaceBought = 0;
 	private int nbPlaceScanned = 0;
+	private String image;
 	
-	@Embedded
-	private Adress adress;
+	private String street;
+	private String town;
+	private String CP;
+	private String place;
 	
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name="PARTY_ARTIST", joinColumns = {@JoinColumn(name = "PARTY_FK")}, inverseJoinColumns = {@JoinColumn(name = "ARTIST_FK")})
@@ -59,7 +62,7 @@ public class Party implements java.io.Serializable{
 
 	public Party(String title, Calendar dateParty, Calendar timeParty,
 			Calendar dateBegin, Calendar dateEnd, String description,
-			int nbPlace, String theme, double price, Adress adress, List<Artist> artists) {
+			int nbPlace, String theme, double price, String image, String street, String town, String CP, String place, List<Artist> artists) {
 		this.title = title;
 		this.dateParty = dateParty;
 		this.timeParty = timeParty;
@@ -69,7 +72,11 @@ public class Party implements java.io.Serializable{
 		this.nbPlace = nbPlace;
 		this.theme = theme;
 		this.price = price;
-		this.adress = adress;
+		this.image = image;
+		this.street = street;
+		this.town = town;
+		this.CP = CP;
+		this.place = place;
 		this.artists = artists;
 	}
 
@@ -162,6 +169,14 @@ public class Party implements java.io.Serializable{
 		this.price = price;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	//@XmlElement
 	public int getNbPlaceBought() {
 		return nbPlaceBought;
@@ -180,15 +195,38 @@ public class Party implements java.io.Serializable{
 		this.nbPlaceScanned = nbPlaceScanned;
 	}
 
-	//@XmlElement
-	public Adress getAdress() {
-		return adress;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setAdress(Adress adress) {
-		this.adress = adress;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
+	public String getTown() {
+		return town;
+	}
+
+	public void setTown(String town) {
+		this.town = town;
+	}
+
+	public String getCP() {
+		return CP;
+	}
+
+	public void setCP(String CP) {
+		this.CP = CP;
+	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+	
 	//@XmlElement
 	public List<Artist> getArtists() {
 		return artists;

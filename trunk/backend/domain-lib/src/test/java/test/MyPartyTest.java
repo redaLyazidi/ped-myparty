@@ -5,16 +5,12 @@ import static org.junit.Assert.*;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.ped.dao.PartyDaoImpl;
-import net.ped.model.Adress;
 import net.ped.model.Artist;
 import net.ped.model.Party;
 
@@ -46,7 +42,6 @@ public class MyPartyTest {
 	static Calendar dateParty1, timeParty1, dateBegin1, dateEnd1;
 	static Calendar dateParty2, timeParty2, dateBegin2, dateEnd2;
 	static Calendar dateParty3, timeParty3, dateBegin3, dateEnd3;
-	static Adress adress;
 	static Artist artist1, artist2, artist3;
 	static List<Artist> listArtists1, listArtists2, listArtists3;
 	static Party party1, party2, party3;
@@ -69,7 +64,6 @@ public class MyPartyTest {
 		dateBegin3 = new GregorianCalendar(2013, 02, 01);
 		dateEnd3 = new GregorianCalendar(2013, 02, 10);
 		
-		adress = new Adress("18 rue des plantes", "Bordeaux", "33600");
 		artist1 = new Artist("Jean", "variete");
 		artist2 = new Artist("Robert", "variete");
 		artist3 = new Artist("George", "variete");
@@ -79,9 +73,9 @@ public class MyPartyTest {
 		listArtists2.add(artist2);
 		listArtists3 = new ArrayList<Artist>();
 		listArtists3.add(artist3);
-		party1 = new Party("Le concert du saucisson", dateParty1, timeParty1, dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, adress, listArtists1);
-		party2 = new Party("Le concert du jambon", dateParty2, timeParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "variete", 50.50, adress, listArtists2);
-		party3 = new Party("Le concert du pate", dateParty3, timeParty3,dateBegin3, dateEnd3, "succes enorme en France", 200, "variete", 100.50, adress, listArtists3);
+		party1 = new Party("Le concert du saucisson", dateParty1, timeParty1, dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, "image.png", "18 rue des plantes", "Bordeaux", "33600", "PATINOIRE MERIADECK", listArtists1);
+		party2 = new Party("Le concert du jambon", dateParty2, timeParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "variete", 50.50, "image.png", "18 rue des plantes", "Bordeaux", "33600", "PATINOIRE MERIADECK", listArtists2);
+		party3 = new Party("Le concert du pate", dateParty3, timeParty3,dateBegin3, dateEnd3, "succes enorme en France", 200, "variete", 100.50, "image.png", "18 rue des plantes", "Bordeaux", "33600", "PATINOIRE MERIADECK", listArtists3);
 	}
 	
 	@Test

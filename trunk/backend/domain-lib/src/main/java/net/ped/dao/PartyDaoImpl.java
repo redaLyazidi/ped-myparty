@@ -184,7 +184,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 		return list;
 	}
 
-	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time) throws Exception{
+	public List<Party> getPartiesCriteria(double priceBegin, double priceEnd, Calendar date, Calendar time) throws Exception{
 		LOG.info("> getPartiesCriteria");
 		EntityManager em = createEntityManager(); 
 		EntityTransaction tx = null;
@@ -199,7 +199,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			criteriaQuery.select(from);
 			
 			List<Predicate> list = new ArrayList<Predicate>();
-			if(priceBegin != null && priceEnd != null){
+			if(priceBegin != 0 && priceEnd != 0){
 				LOG.debug("ajout prix");
 				Predicate p1 = criteria.between(from.<Double>get("price"), priceBegin, priceEnd);
 				list.add(p1);
