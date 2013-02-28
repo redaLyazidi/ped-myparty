@@ -11,6 +11,10 @@
 </h:head>
 <h:body>
 	<h3>JSF 2.0 Hello World Example - hello.xhtml</h3>
+	
+	<f:event type="javax.faces.event.PreRenderViewEvent"
+						listener="#{accueilBean.preRenderView}" />
+	
 	<h:form enctype="multipart/form-data">
 		<p:messages showDetail="true" />
 		<h:panelGrid columns="2" cellpadding="5">
@@ -23,8 +27,11 @@
 				value="#{createParty.description}" />
 			<h:outputText value="Nombre de places: " />
 			<p:inputText value="#{createParty.nbPlace}" />
-			<h:outputText value="Thème: " />
-			<p:inputText value="#{createParty.theme}" />
+			 <h:outputText value="Thème: " />  
+	        <p:selectOneMenu value="#{createParty.selectedTheme}" effect="fade">  
+	            <f:selectItem itemLabel="Selectionner" itemValue="" />  
+	            <f:selectItems value="#{createParty.themes}"/>  
+	        </p:selectOneMenu> 
 			<h:outputText value="Prix: " />
 			<p:inputText value="#{createParty.price}" />
 			<h:outputText value="Rue: " />
@@ -37,10 +44,14 @@
 			<p:inputText value="#{createParty.place}" />
 			<h:outputText value="Date de la party: " />
 			<p:calendar value="#{createParty.dateParty}" id="popupCal1" />
-			<h:outputText value="Heure: " />
-			<p:inputText value="#{createParty.hour}" />
-			<h:outputText value="Minute: " />
-			<p:inputText value="#{createParty.minute}" />
+			<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade">  
+	            <f:selectItem itemLabel="Selectionner" itemValue="" />  
+	            <f:selectItems value="#{createParty.hour}"/>  
+       		</p:selectOneMenu>
+			<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade">  
+	            <f:selectItem itemLabel="Selectionner" itemValue="" />  
+	            <f:selectItems value="#{createParty.minute}"/>  
+       		</p:selectOneMenu>
 			<h:outputText value="Début préventes: " />
 			<p:calendar value="#{createParty.dateBegin}" id="popupCal2" />
 			<h:outputText value="Fin préventes: " />

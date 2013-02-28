@@ -1,4 +1,4 @@
-package main.java.constantes;
+package constantes;
 
 public class ConstantesWeb {
 	
@@ -12,5 +12,8 @@ public class ConstantesWeb {
 	 * Nombre de party affichées par page
 	 */
 	public static final int NUMBER_PARTY_PAGE = 5;
-
+	
+	public static enum ThemeParty{
+		VARIETE, ROCK, ELECTRO, METAL
+	}
 }
