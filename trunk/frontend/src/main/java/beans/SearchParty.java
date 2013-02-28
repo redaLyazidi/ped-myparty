@@ -1,4 +1,4 @@
-package beans;
+package main.java.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,12 +17,13 @@ import net.ped.service.front.InterfaceFrontPartyService;
 @SessionScoped
 public class SearchParty implements Serializable{
 
-	InterfaceFrontPartyService service = new FrontPartyService();
+	//InterfaceFrontPartyService service = new FrontPartyService();
 	private String title;
 	private String theme;
 	private double priceMin=0.0;
 	private double priceMax=0.0;
 	private Date dateParty;
+	private String lieu;
 	
 	public String getTitle() {
 		return title;
@@ -66,7 +67,7 @@ public class SearchParty implements Serializable{
 		}
 		
 		try {
-			list = service.getPartiesCriteria(priceMin, priceMax, dateParty2, null);
+			list = FrontPartyService.getInstance().getPartiesCriteria(priceMin, priceMax, dateParty2, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,6 +75,12 @@ public class SearchParty implements Serializable{
 		for(Party p : list){
 			System.out.println(p.getTitle());
 		}
+	}
+	public String getLieu() {
+		return lieu;
+	}
+	public void setLieu(String lieu) {
+		this.lieu = lieu;
 	}
 	
 }

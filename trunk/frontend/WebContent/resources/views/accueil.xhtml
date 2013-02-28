@@ -14,9 +14,9 @@
 	<meta name="author" content="" />
 
 	<!-- Le styles -->
-	<link href="../css/bootstrap.css" rel="stylesheet" />
-	<link href="../css/style.css" rel="stylesheet" />
-	<link href="../css/bootstrap-responsive.css" rel="stylesheet" />
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="bootstrap-responsive.css" />
 
 </h:head>
 
@@ -57,14 +57,14 @@
 						<div class="well sidebar-nav">
 							<ul class="nav nav-list">
 								<li class="nav-header">Lieu</li>
-								<li><h:inputText value="" /></li>
+								<li><h:inputText value="#{searchParty.lieu}" /></li>
 								<li class="nav-header">Prix</li>
-								<li><h:inputText value="" /></li>
+								<li><h:inputText value="#{searchParty.priceMin}" /></li>
 								<li class="nav-header">Date</li>
-								<li><p:calendar value="#{accueilBean.date}" id="popupCal" />
-								</li>
+								<li><p:calendar value="#{searchParty.dateParty}"
+										id="popupCal" /></li>
 								<li class="nav-header">Mot clé</li>
-								<li><h:inputText value="" /></li>
+								<li><h:inputText value="#{searchParty.title}" /></li>
 								<li class="active"><h:inputText
 										class="btn btn-primary submit" value="Rechercher"
 										type="submit" name="search" /></li>
@@ -74,26 +74,34 @@
 					</div>
 					<!--/span-->
 
-<f:event type="javax.faces.event.PreRenderViewEvent" listener="#{accueilBean.preRenderView}"/>  
+					<f:event type="javax.faces.event.PreRenderViewEvent"
+						listener="#{accueilBean.preRenderView}" />
+
 
 					<!-- Body -->
 					<div class="span9">
 						<div class="hero-unit">
 
-<!-- 							<div class="bandeauSupListeParty"></div> -->
+							<!-- 							<div class="bandeauSupListeParty"> -->
+							<!-- 								Prochaines party -->
+							<!-- 							</div> -->
 
 							<div class="listeParty">
 								<c:forEach var="party" items="#{accueilBean.listParty}">
 									<div class="itemListeParty">
 										<div class="itemTitle">
-											<h:outputText value="#{party.title}" />
+											<h:commandLink action="#{accueilBean.outcome}"
+												value="#{party.title}">
+												<f:param name="idParty" value="#{party.id}" />
+											</h:commandLink>
+											<!--	<h:outputText value="#{party.title}" /> -->
 										</div>
 										<div class="itemDate">
 											<!-- 	<h:outputText value="#{party.dateParty}" /> -->
 										</div>
 										<div class="itemLieu">
 											<h:outputText
-												value="#{party.adress.street}, #{party.adress.country} #{party.adress.town}" />
+												value="#{party.adress.street}, #{party.adress.CP} #{party.adress.town}" />
 										</div>
 										<div class="itemPrice">
 											<h:outputText value="#{party.price} €" />
@@ -102,29 +110,20 @@
 								</c:forEach>
 							</div>
 
-<!-- 							<div class="bandeauInfListeParty"></div> -->
+							<div class="bandeauInfListeParty">
+								<div class="nextButton">
+									<h:commandLink action="#{accueilBean.nextPage}" value="Next"
+										disabled="#{accueilBean.disableButtonNext}" />
+								</div>
+								<div class="numPage">
+									<h:outputText value="#{accueilBean.numPage}" />
+								</div>
+								<div class="prevButton">
+									<h:commandLink action="#{accueilBean.prevPage}"
+										value="Previous" disabled="#{accueilBean.disableButtonPrev}" />
+								</div>
+							</div>
 
-							<!-- 							<h:dataTable value="#{accueilBean.listParty}" var="party" -->
-							<!-- 								styleClass="order-table" headerClass="order-table-header" -->
-							<!-- 								rowClasses="order-table-odd-row,order-table-even-row"> -->
-							<!-- 								<h:column> -->
-							<!-- 									<f:facet name="header">Titre</f:facet> -->
-							<!-- 		    				#{party.title} -->
-							<!-- 		    			</h:column> -->
-							<!-- 								<h:column> -->
-							<!-- 									<f:facet name="header">Date</f:facet> -->
-							<!-- 		    				#{party.dateBegin.toString} -->
-							<!-- 		    			</h:column> -->
-							<!-- 								<h:column> -->
-							<!-- 									<f:facet name="header">Lieu</f:facet> -->
-							<!-- 		    				#{party.adress.street}, #{party.adress.CP} #{party.adress.town} -->
-							<!-- 		    			</h:column> -->
-							<!-- 								<h:column> -->
-							<!-- 									<f:facet name="header">Prix</f:facet> -->
-							<!-- 		    				#{party.price} -->
-							<!-- 		    			</h:column> -->
-
-							<!-- 							</h:dataTable> -->
 						</div>
 					</div>
 					<!--/span-->
@@ -138,7 +137,7 @@
 	</h:form>
 
 	<!-- Bootstrap -->
-	<script src="../js/bootstrap.min.js"></script>
+	<h:outputScript library="js" name="bootstrap.min.js" />
 
 	<!-- 	</h:panelGroup> -->
 </h:body>
