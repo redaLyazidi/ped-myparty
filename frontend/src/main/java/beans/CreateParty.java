@@ -1,4 +1,4 @@
-package beans;
+package main.java.beans;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,7 +27,7 @@ import net.ped.service.front.InterfaceFrontPartyService;
 @SessionScoped
 public class CreateParty implements Serializable{
 
-	InterfaceFrontPartyService service = new FrontPartyService();
+	//InterfaceFrontPartyService service = new FrontPartyService();
 	private UploadedFile file;
 	private String title;
 	private String description;
@@ -200,7 +200,7 @@ public class CreateParty implements Serializable{
 		party.setDateParty(cal3);
 		Calendar hourParty = new GregorianCalendar(0,0,0,hour,minute);
 		party.setTimeParty(hourParty);
-		service.addParty(party);
+		FrontPartyService.getInstance().addParty(party);
 		
 		FacesMessage msg = new FacesMessage("Succesful", "La party a été créée");  
 		FacesContext.getCurrentInstance().addMessage(null, msg); 

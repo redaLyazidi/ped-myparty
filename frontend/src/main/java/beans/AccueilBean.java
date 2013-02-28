@@ -1,18 +1,20 @@
-package beans;
+package main.java.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Calendar;
+import java.util.Map;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import net.ped.model.Adress;
+import main.java.constantes.ConstantesWeb;
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
@@ -24,16 +26,20 @@ public class AccueilBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private List<Party> listParty = new ArrayList<Party>();
-	private int price1;
-	private int price2;
-	private Date date;
+	private boolean disableButtonPrev;
+	private boolean disableButtonNext;
+	private int numPage;
+	private Party partySelect;
 	
 	public AccueilBean(){
 				
 		listParty = new ArrayList<Party>();
-		//listParty = FrontPartyService.getInstance().getPartiesNotBegun();
+		numPage = 1;
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage, ConstantesWeb.NUMBER_PARTY_PAGE);
 		
+		/*
 		Adress a1 = new Adress("20 rue du bidon", "Lyon", "6900");
 		Adress a2 = new Adress("12 place bidon", "La Rochelle", "17000");
 		Adress a3 = new Adress("1 avenue bidon", "Bordeaux", "33000");
@@ -101,7 +107,50 @@ public class AccueilBean implements Serializable {
 		listParty.add(p6);
 		listParty.add(p7);
 		listParty.add(p8);
+		*/
+	}
+	
+	public String outcome() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ELContext el = facesContext.getELContext();
+		Application app = facesContext.getApplication();
+		ExpressionFactory ef = app.getExpressionFactory();
+		ValueExpression ve = ef.createValueExpression(el, "#{partyBean}", PartyBean.class);
+		PartyBean b = new PartyBean();
 		
+		this.partySelect = getPartySelect(facesContext);
+		b.setPartySelect(partySelect);
+		ve.setValue(el, b);
+
+		// puis redirection vers ce bean
+		return "party";
+	}
+	
+	//get value from "f:param"
+	public Party getPartySelect(FacesContext fc){
+		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+		Party party = null;
+		for(Party p : listParty) {
+			if (Integer.valueOf(params.get("idParty")).compareTo(Integer.valueOf(p.getId())) == 0) {
+				party = p;
+				break;
+			}
+		}
+			
+		return party;
+	}
+	
+	
+	public void nextPage() {
+		numPage ++;
+		listParty.clear();
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage, ConstantesWeb.NUMBER_PARTY_PAGE);
+	}
+	
+	public void prevPage() {
+		numPage --;
+		listParty.clear();
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 	
 	public List<Party> getListParty() {
@@ -112,32 +161,55 @@ public class AccueilBean implements Serializable {
 		this.listParty = listParty;
 	}
 
-	public int getPrice2() {
-		return price2;
+	public int getNumPage() {
+		return numPage;
 	}
 
-	public void setPrice2(int price2) {
-		this.price2 = price2;
+	public void setNumPage(int numPage) {
+		this.numPage = numPage;
 	}
 
-	public int getPrice1() {
-		return price1;
+	public boolean isDisableButtonPrev() {
+		if(numPage == 1) {
+			disableButtonPrev = true;
+		}
+		else {
+			disableButtonPrev = false;
+		}
+		
+		return disableButtonPrev;
 	}
 
-	public void setPrice1(int price1) {
-		this.price1 = price1;
+	public void setDisableButtonPrev(boolean disableButtonPrev) {
+		this.disableButtonPrev = disableButtonPrev;
 	}
 
-	public Date getDate() {
-		return date;
+	public boolean isDisableButtonNext() {
+		if(listParty.size() < ConstantesWeb.NUMBER_PARTY_PAGE) {
+			disableButtonNext = true;
+		}
+		else {
+			disableButtonNext = false;
+		}
+		
+		return disableButtonNext;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDisableButtonNext(boolean disableButtonNext) {
+		this.disableButtonNext = disableButtonNext;
+	}
+
+	public Party getPartySelect() {
+		return partySelect;
+	}
+
+	public void setPartySelect(Party partySelect) {
+		this.partySelect = partySelect;
 	}
 	
-	 public void preRenderView() {  
+	public void preRenderView() {  
 	      HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );  
 	   } 
 	 
+
 }
