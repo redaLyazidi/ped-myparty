@@ -3,9 +3,30 @@ package net.ped.service.front;
 import java.util.Calendar;
 import java.util.List;
 
+import net.ped.model.Artist;
 import net.ped.model.Party;
 
 public interface InterfaceFrontPartyService {
+	
+	/**
+	 * ajoute un artiste
+	 */
+	public void addArtist(Artist a);
+	
+	/**
+	 * supprime un artiste
+	 */
+	public void deleteArtist(int id);
+	
+	/**
+	 * obtient un artiste via son nom
+	 */
+	public Artist getArtistByName(String name);
+	
+	/**
+	 * obtient tous les artistes
+	 */
+	public List<Artist> getAllArtists();
 	
 	/**
 	 * ajoute une party
@@ -51,6 +72,6 @@ public interface InterfaceFrontPartyService {
 	 * obtient toutes les party suivant différents critères
 	 * @return List<Party>
 	 */
-	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time) throws Exception;
+	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time);
 
 }

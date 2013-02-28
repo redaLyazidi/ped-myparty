@@ -21,6 +21,16 @@ public interface InterfacePartyDao {
 	public void deleteArtist(int id) throws Exception;
 	
 	/**
+	 * obtient un artiste via son nom
+	 */
+	public Artist getArtistByName(String name) throws Exception;
+	
+	/**
+	 * obtient tous les artistes
+	 */
+	public List<Artist> getAllArtists() throws Exception;
+	
+	/**
 	 * ajoute une party
 	 */
 	public void addParty(Party p) throws Exception;

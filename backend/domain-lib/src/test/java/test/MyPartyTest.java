@@ -84,6 +84,8 @@ public class MyPartyTest {
 			dao.addArtist(artist1);
 			dao.addArtist(artist2);
 			dao.addArtist(artist3);
+			assertEquals("Jean", dao.getArtistByName("Jean").getName());
+			assertFalse(dao.getAllArtists().isEmpty());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testAddArtist");
 			e.printStackTrace();
