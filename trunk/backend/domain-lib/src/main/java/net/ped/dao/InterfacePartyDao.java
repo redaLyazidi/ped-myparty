@@ -4,10 +4,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.ped.model.Artist;
 import net.ped.model.Party;
 
 
 public interface InterfacePartyDao {
+	
+	/**
+	 * ajoute un artiste
+	 */
+	public void addArtist(Artist a) throws Exception;
+	
+	/**
+	 * supprime un artiste
+	 */
+	public void deleteArtist(int id) throws Exception;
 	
 	/**
 	 * ajoute une party

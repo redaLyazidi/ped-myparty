@@ -79,7 +79,19 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testA_AddParty(){
+	public void testA_AddArtist(){
+		try {
+			dao.addArtist(artist1);
+			dao.addArtist(artist2);
+			dao.addArtist(artist3);
+		} catch (Exception e) {
+			LOG.error("erreur lors de l'execution de la methode testAddArtist");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testB_AddParty(){
 		try {
 			dao.addParty(party1);
 			dao.addParty(party2);
@@ -92,7 +104,7 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testB_UpdateParty(){
+	public void testC_UpdateParty(){
 		try {
 			Party p1 = dao.getParty(1);
 			p1.setNbPlace(500);
@@ -106,7 +118,7 @@ public class MyPartyTest {
 	}
 	
 	//@Test
-	public void testC_DeleteParty(){
+	public void testD_DeleteParty(){
 		try {
 			dao.deleteParty(1);
 			assertTrue(dao.getAllParties().isEmpty());
@@ -117,7 +129,7 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testD_PartiesNotBegun(){
+	public void testE_PartiesNotBegun(){
 		try {
 			dao.getPartiesNotBegun();
 			assertFalse(dao.getAllParties().isEmpty());
@@ -128,7 +140,7 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testE_PartiesNotBegunMaxResult(){
+	public void testF_PartiesNotBegunMaxResult(){
 		List<Party> list = new ArrayList<Party>();
 		try {
 			list = dao.getPartiesNotBegunMaxResult(1, 2);
@@ -140,7 +152,7 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testF_PartiesCriteria(){
+	public void testG_PartiesCriteria(){
 		List<Party> list = new ArrayList<Party>();
 		Calendar calendar = new GregorianCalendar(2013, 04, 15);
 		Calendar time = new GregorianCalendar(0, 0, 0, 20, 30, 00);

@@ -52,7 +52,7 @@ public class Party implements java.io.Serializable{
 	private String CP;
 	private String place;
 	
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany
 	@JoinTable(name="PARTY_ARTIST", joinColumns = {@JoinColumn(name = "PARTY_FK")}, inverseJoinColumns = {@JoinColumn(name = "ARTIST_FK")})
 	private List<Artist> artists = new ArrayList<Artist>();
 
