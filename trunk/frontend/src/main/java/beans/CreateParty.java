@@ -5,42 +5,65 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.UploadedFile;
 
+import constantes.ConstantesWeb.ThemeParty;
+
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class CreateParty implements Serializable{
 
-	//InterfaceFrontPartyService service = new FrontPartyService();
 	private UploadedFile file;
 	private String title;
 	private String description;
 	private int nbPlace;
-	private String theme;
 	private double price;
 	private String street;
 	private String town;
 	private String place;
 	private String codepostal;
 	private Date dateParty;
-	private int hour;
-	private int minute;
+	private int selectedHour;
+	private int selectedMinute;
+	private List<Integer> hour;
+	private List<Integer> minute;
 	private Date dateBegin;
 	private Date dateEnd;
+	private String selectedTheme;
+	private List<String> themes;
+
+	public CreateParty(){
+		hour = new ArrayList<Integer>();
+		minute = new ArrayList<Integer>();
+		themes = new ArrayList<String>();
+
+		for(int i=0; i<=23; i++){
+			hour.add(i);
+		}
+		for(int j=0; j<60; j=j+5){
+			minute.add(j);
+		}
+		for(ThemeParty t : ThemeParty.values()){
+			themes.add(t.toString());
+		}
+	}
 
 	public UploadedFile getFile() {  
 		return file;  
@@ -49,7 +72,7 @@ public class CreateParty implements Serializable{
 	public void setFile(UploadedFile file) {  
 		this.file = file;  
 	}  
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -74,12 +97,20 @@ public class CreateParty implements Serializable{
 		this.nbPlace = nbPlace;
 	}
 
-	public String getTheme() {
-		return theme;
+	public String getSelectedTheme() {
+		return selectedTheme;
 	}
 
-	public void setTheme(String theme) {
-		this.theme = theme;
+	public void setSelectedTheme(String selectedTheme) {
+		this.selectedTheme = selectedTheme;
+	}
+
+	public List<String> getThemes() {
+		return themes;
+	}
+
+	public void setThemes(List<String> themes) {
+		this.themes = themes;
 	}
 
 	public double getPrice() {
@@ -146,24 +177,40 @@ public class CreateParty implements Serializable{
 		this.dateParty = dateParty;
 	}
 
-	public int getHour() {
+	public int getSelectedHour() {
+		return selectedHour;
+	}
+
+	public void setSelectedHour(int selectedHour) {
+		this.selectedHour = selectedHour;
+	}
+
+	public int getSelectedMinute() {
+		return selectedMinute;
+	}
+
+	public void setSelectedMinute(int selectedMinute) {
+		this.selectedMinute = selectedMinute;
+	}
+
+	public List<Integer> getHour() {
 		return hour;
 	}
 
-	public void setHour(int hour) {
+	public void setHour(List<Integer> hour) {
 		this.hour = hour;
 	}
 
-	public int getMinute() {
+	public List<Integer> getMinute() {
 		return minute;
 	}
 
-	public void setMinute(int minute) {
+	public void setMinute(List<Integer> minute) {
 		this.minute = minute;
 	}
 
 	public void save(){
-		
+
 		String filename="";
 		if(file != null) {
 			filename = FilenameUtils.getName(file.getFileName());
@@ -181,13 +228,13 @@ public class CreateParty implements Serializable{
 				IOUtils.closeQuietly(output);
 			} 
 		}  
-		
+
 		Party party = new Party();
 		party.setImage(filename);
 		party.setTitle(title);
 		party.setDescription(description);
 		party.setNbPlace(nbPlace);
-		party.setTheme(theme);
+		party.setTheme(selectedTheme);
 		party.setPrice(price);
 		party.setStreet(street);
 		party.setTown(town);
@@ -202,12 +249,11 @@ public class CreateParty implements Serializable{
 		party.setDateBegin(cal1);
 		party.setDateEnd(cal2);
 		party.setDateParty(cal3);
-		Calendar hourParty = new GregorianCalendar(0,0,0,hour,minute);
+		Calendar hourParty = new GregorianCalendar(0,0,0,selectedHour,selectedMinute);
 		party.setTimeParty(hourParty);
 		FrontPartyService.getInstance().addParty(party);
-		
+
 		FacesMessage msg = new FacesMessage("Succesful", "La party a été créée");  
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
 	}
-
 }
