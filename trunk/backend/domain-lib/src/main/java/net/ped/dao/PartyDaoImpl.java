@@ -69,6 +69,50 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			closeEntityManager();
 		}
 	}
+	
+	public Artist getArtistByName(String name) throws Exception{
+		LOG.info("> getArtistByName");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		Artist a = new Artist();
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query = em.createQuery("from Artist u where u.name=:param");
+			query.setParameter("param", name);
+			a = (Artist)query.getSingleResult();
+			tx.commit();
+			LOG.debug("Artiste trouve");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction getArtistByName",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return a;
+	}
+	
+	public List<Artist> getAllArtists() throws Exception{
+		LOG.info("> getAllArtists");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		List<Artist> list=new ArrayList<Artist>();
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			list = em.createQuery("from Artist u").getResultList();
+			tx.commit();
+			LOG.debug("la recherche a reussi, taille du resultat : "+ list.size());
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction getAllArtists", re);
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return list;
+	}
 
 	public void addParty(Party p) throws Exception{
 		LOG.info("> addParty");

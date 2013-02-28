@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.ped.dao.InterfacePartyDao;
 import net.ped.dao.PartyDaoImpl;
+import net.ped.model.Artist;
 import net.ped.model.Party;
 
 public class FrontPartyService implements InterfaceFrontPartyService{
@@ -23,6 +24,44 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		}
 		
 		return instance;
+	}
+	
+	
+	public void addArtist(Artist a){
+		try {
+			dao.addArtist(a);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void deleteArtist(int id){
+		try {
+			dao.deleteArtist(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Artist getArtistByName(String name){
+		Artist artist = new Artist();
+		try {
+			artist = dao.getArtistByName(name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return artist;
+	}
+	
+	public List<Artist> getAllArtists(){
+		List<Artist> list = new ArrayList<Artist>();
+		try {
+			list = dao.getAllArtists();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	public void addParty(Party p){
