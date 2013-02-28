@@ -1,4 +1,4 @@
-package main.java.beans;
+package beans;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,10 +18,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.UploadedFile;
 
-import net.ped.model.Adress;
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
-import net.ped.service.front.InterfaceFrontPartyService;
 
 @ManagedBean
 @SessionScoped
@@ -36,6 +34,7 @@ public class CreateParty implements Serializable{
 	private double price;
 	private String street;
 	private String town;
+	private String place;
 	private String codepostal;
 	private Date dateParty;
 	private int hour;
@@ -115,6 +114,14 @@ public class CreateParty implements Serializable{
 		this.codepostal = codepostal;
 	}
 
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
 	public Date getDateBegin() {
 		return dateBegin;
 	}
@@ -176,19 +183,16 @@ public class CreateParty implements Serializable{
 		}  
 		
 		Party party = new Party();
-		Adress adress = new Adress();
-		//TODO à modifier
-		//party.setImage(filename);
+		party.setImage(filename);
 		party.setTitle(title);
 		party.setDescription(description);
 		party.setNbPlace(nbPlace);
 		party.setTheme(theme);
 		party.setPrice(price);
-		adress.setStreet(street);
-		adress.setTown(town);
-		//TODO à modifier
-		adress.setCountry(codepostal);
-		party.setAdress(adress);
+		party.setStreet(street);
+		party.setTown(town);
+		party.setCP(codepostal);
+		party.setPlace(place);
 		Calendar cal1 = Calendar.getInstance();
 		cal1.setTime(dateBegin);
 		Calendar cal2 = Calendar.getInstance();
