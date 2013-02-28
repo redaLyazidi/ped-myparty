@@ -5306,7 +5306,6 @@ this.svgToString = function(elem, indent) {
 // callback - Optional function to run when image data is found, supplies the
 // result (data URL or false) as first parameter.
 this.embedImage = function(val, callback) {
-
 	// load in the image and once it's loaded, get the dimensions
 	$(new Image()).load(function() {
 		// create a canvas the same size as the raster image

@@ -16,6 +16,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.IOUtils;
 
 // This class is used as a proxy to download image from client side that come from another domain.
 // It can retreive any http resource, not only images
@@ -37,6 +38,7 @@ public final class ImageProxy extends HttpServlet {
 	protected void doGet(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException,
 			IOException {
+		System.out.println("Get ok");
 		doAux(request, response, new GetMethod());
 	}
 
@@ -74,10 +76,9 @@ public final class ImageProxy extends HttpServlet {
 			final OutputStream outputStream) throws IOException {
 		BufferedInputStream input = new BufferedInputStream(inputStream);
 		BufferedOutputStream output = new BufferedOutputStream(outputStream);
-		int b;
-		while ((b = input.read()) != -1) {
-			output.write(b);
-		}
+		IOUtils.copy(input, output);
 		output.flush();
+		IOUtils.closeQuietly(input);
+		//IOUtils.closeQuietly(output);
 	}
 }
