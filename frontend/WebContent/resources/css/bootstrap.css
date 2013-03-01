@@ -6213,42 +6213,51 @@ a.badge:focus {
 	padding: 2%;
 }
 
-.partyPartDesc {
+.listePartyImg {
 	float: left;
-	width: 40%;
+	width: 15%;
 	height: 20%;
+	border: solid 1px black;
 }
 
-.itemTitle {
-	text-transform: uppercase;
-	font-size: 14px;	
-}
-
-.itemArtist {
-	text-transform: uppercase;
-	font-size: 12px;
-}
-
-.itemGenre, .itemDate {
-	font-size: 12px;
-}
-
-.partyPartLieu {
+.listePartyPartDesc {
 	padding-left: 1%;
-	width: 40%;
+	float: left;
+	width: 30%;
+	height: 20%;
+}
+
+.listeItemTitle {
+	text-transform: uppercase;
+	font-size: 80%;
+}
+
+.listeItemArtist {
+	text-transform: uppercase;
+	font-size: 70%;
+}
+
+.listeItemGenre, .listeItemDate {
+	font-size: 70%;
+}
+
+
+.listePartyPartLieu {
+	padding-left: 1%;
+	width: 30%;
 	float: left;
 	height: 20%;
-	font-size: 12px;
+	font-size: 70%;
 	border-left : solid 1px #ffffff;
 }
 
-.itemLieu {
+.listeItemLieu {
 	text-transform: uppercase;
-	font-size: 12px;
+	font-size: 90%;
 }
 
-.partyPartPrice {
-	font-size: 14px;
+.listePartyPartPrice {
+	font-size: 80%;
 	float: right;
 	width: 10%;
 	height: 20%;
@@ -6260,4 +6269,75 @@ a.badge:focus {
 clear: both;
 }
 
+.pageParty {
+	padding-top: 3%;
+	margin: auto;
+	width: 50%;
+}
+
+.partyCadreImg {
+	float: left;
+	width: 20%;
+	height: 30%;
+	padding-right: 3%;
+}
+
+.partyImg {
+	width: 100%;
+	height: 100%;
+	border: solid 1px black;
+}
+
+.partyPartDetails {
+	padding-left: 5%;
+	float: left;
+	width: 45%;
+	height: 40%;
+	border-left: solid 1px #eeeeee;	
+}
+
+.partyPartTitle {
+	margin-bottom: 5%;
+}
+
+.partyPartAdd {
+	margin-bottom: 5%;
+}
+
+.partyPartDesc {
+	
+}
+
+.partyPartReserv {
+	float: right;
+	width: 20%;
+	height: 40%;
+}
+
+.partyItemTitle {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.partyItemArtist {
+	text-transform: uppercase;
+	margin-bottom: 2%;
+} 
+
+.partyItemLieu {
+	text-transform: uppercase;
+} 
+
+.partyItemDate {
+	color: rgb(128,157,198);
+}
+
+.partyNbPlace{
+	border-top: solid 1px #eeeeee;	
+	color: rgb(255,155,55);
+	padding-top: 8%;
+	margin-bottom: 2%;
+}
+
+.partyItemGenre {}
 

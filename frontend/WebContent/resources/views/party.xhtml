@@ -1,116 +1,102 @@
-
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"      
-      xmlns:h="http://java.sun.com/jsf/html">
-      
-  <head>
-    <meta charset="utf-8"/>
-    <title>MyParty, une application exceptionelle</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
 
-    <!-- Le styles -->
-    <link href="../css/bootstrap.css" rel="stylesheet"/>
-    <link href="../css/style.css" rel="stylesheet"/>
-    <link href="../css/bootstrap-responsive.css" rel="stylesheet"/>
+	<meta charset="utf-8" />
+	<title>MyParty</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
+	<!-- Le styles -->
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="bootstrap-responsive.css" />
 
-    <!-- Fav and touch icons -->
+</h:head>
 
-  </head>
+<h:body>
 
-  <body>
-    
-   <!--  <div class="page-header banner">
-      <h1 class="pull-left">MyParty</h1>
-      <form class="pull-left form-inline">
-	  <input type="text" class="input-small" placeholder="Email">
-	  <input type="password" class="input-small" placeholder="Password">
-	  <label class="checkbox">
-	    <input type="checkbox"> Remember me
-	  </label>
-	  <button type="submit" class="btn">Sign in</button>
-	</form>
-    </div>-->
-    
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">MyParty</a>
-          <div class="nav-collapse collapse">
-            <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Email"/>
-              <input class="span2" type="password" placeholder="Password"/>
-              <button type="submit" class="btn">Sign in</button>
-            </form>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-  
-    <!--  Sidebar -->
-    <div class="container">
-      <div class="row-fluid">
-      
-        <div class="sidebar span3">
-          <div class="well sidebar-nav">
-          <h4>Recherche une party!</h4>
-          <form>
-              <p>Intitulé<br />
-              <input class="" type="text"/><br />
-              Lieu<br />
-              <input class="" type="text"/><br />
-              Prix<br />
-              <input value="pricepicker" class="" type="text"/><br />
-              Date<br />
-              <input value="datepicker" type="text" class=""/>
-              <input class="btn btn-primary submit" value="C'est party!.." type="submit" name="search"/>
-              </p>          
-          </form>
-          </div><!--/.well -->
-     </div>
-      <!--  /Sidebar -->
-        
-        
-        <!-- body -->
-        <div class="hero-unit span9 pull-left">
-          
-          <!-- party -->
-          <h2>Le concert de l'année</h2>
-          <p>Le 12/10/2013 à 12:30 <br />
-          Lieu : 15, rue de la fleur
-          <br />
-          Prix : 30€
-          <br />
-          Le zénith de raon-l'étape
-          <br />
-          Réservations du 8/8/2013 au 8/10/2013 (8 places restantes) <br />
-          Artistes : Pierre Dupont, Jean Durand
-          <br /><br />
-          
-          Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-          </p>          
-          <!-- /party -->
-           
-        </div><!--/span-->
-        <!-- /body -->
+	<!-- 	<h:panelGroup> -->
+	<!--     <ui:include src="header.xhtml" /> -->
 
-      </div><!--/row-->
-    </div><!--/container-->
-    
-    
-    <!-- Bootstrap -->
-    <script src="js/bootstrap.min.js"></script>
-  </body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="brand" href="#">MyParty</a>
+
+				<div class="nav-collapse collapse">
+					<form class="navbar-form pull-right">
+						<input class="span2" type="text" placeholder="Email" /> <input
+							class="span2" type="password" placeholder="Password" />
+						<button type="submit" class="btn">Sign in</button>
+					</form>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+
+	<div class="pageParty">
+		<h:form>
+			<div class="partyCadreImg">
+				<div class="partyImg">
+					<h:outputText value="Image" />
+				</div>
+			</div>
+			<div class="partyPartDetails">
+				<div class="partyPartTitle">
+					<div class="partyItemTitle">
+						<h:outputText value="#{partyBean.partySelect.title}" />
+					</div>
+					<div class="partyItemArtist">
+						<c:forEach var="artist" items="#{partyBean.partySelect.artists}">
+							<h:outputText value="#{artist.name}   " />
+						</c:forEach>
+					</div>
+					<div class="partyItemGenre">
+						<h:outputText value="#{partyBean.partySelect.theme}" />
+					</div>
+					<div class="partyItemDate">
+						<h:outputText value="Le 30/02/2013 à 19h" />
+					</div>
+				</div>
+				<div class="partyPartAdd">
+					<div class="partyItemLieu">
+						<h:outputText value="#{partyBean.partySelect.place}" />
+					</div>
+					<div>
+						<h:outputText value="#{partyBean.partySelect.street}" />
+					</div>
+					<h:outputText value="#{partyBean.partySelect.CP} #{partyBean.partySelect.town}" />
+				</div>
+				<div class="partyPartDesc">
+					<h:outputText value="#{partyBean.partySelect.description}" />
+				</div>
+			</div>
+			<div class="partyPartReserv">
+				<div>
+					<h:outputText value="#{partyBean.partySelect.price} €" />
+				</div>
+				<div class="partyNbPlace">
+					<h:outputText value="#{partyBean.nbPlaceRest} places restantes" />
+				</div>
+				<h:commandLink action="#{partyBean.buyTicket}" value="Réservez"
+					disabled="#{partyBean.disableBuyButton}" />
+			</div>
+			<div class="clear"></div>
+		</h:form>
+	</div>
+
+</h:body>
 </html>
