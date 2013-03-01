@@ -1,7 +1,7 @@
 NAME=ticket-designer
 VERSION=2.6
 PACKAGE=$(NAME)-$(VERSION)
-WEBAPP_STATIC_CONTENT_DIR=../../../WebContent/resources/$(NAME)
+WEBAPP_STATIC_CONTENT_DIR=../../../src/main/webapp/resources/$(NAME)
 
 MAKEDOCS=naturaldocs/NaturalDocs
 CLOSURE=build/tools/closure-compiler.jar
