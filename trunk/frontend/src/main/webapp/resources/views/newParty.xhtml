@@ -7,60 +7,163 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+	<meta charset="utf-8" />
 	<title>Création d'une Party</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+
+	<!-- Le styles -->
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="bootstrap-responsive.css" />
 </h:head>
+
 <h:body>
-	<h3>Formulaire</h3>
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="brand" href="#">MyParty</a>
+
+				<div class="nav-collapse collapse">
+					<form class="navbar-form pull-right">
+						<input class="span2" type="text" placeholder="Email" /> <input
+							class="span2" type="password" placeholder="Password" />
+						<button type="submit" class="btn">Sign in</button>
+					</form>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
 	
 	<f:event type="javax.faces.event.PreRenderViewEvent"
 						listener="#{accueilBean.preRenderView}" />
 	
 	<h:form enctype="multipart/form-data">
-		<p:messages showDetail="true" />
-		<h:panelGrid columns="2" cellpadding="5">
-		<h:outputText value="Image : " />
-		<p:fileUpload value="#{createParty.file}" mode="simple" />
-			<h:outputText value="Titre: " />
-			<p:inputText value="#{createParty.title}" />
-			<h:outputText value="Description: " />
-			<p:inputTextarea rows="6" cols="33"
-				value="#{createParty.description}" />
-			<h:outputText value="Nombre de places: " />
-			<p:inputText value="#{createParty.nbPlace}" />
-			 <h:outputText value="Thème: " />  
-	        <p:selectOneMenu value="#{createParty.selectedTheme}" effect="fade">  
-	            <f:selectItem itemLabel="Selectionner" itemValue="" />  
-	            <f:selectItems value="#{createParty.themes}"/>  
-	        </p:selectOneMenu> 
-			<h:outputText value="Prix: " />
-			<p:inputText value="#{createParty.price}" />
-			<h:outputText value="Rue: " />
-			<p:inputText value="#{createParty.street}" />
-			<h:outputText value="Ville: " />
-			<p:inputText value="#{createParty.town}" />
-			<h:outputText value="Code postal: " />
-			<p:inputText value="#{createParty.codepostal}" />
-			<h:outputText value="Lieu: " />
-			<p:inputText value="#{createParty.place}" />
-			<h:outputText value="Date de la party: " />
-			<p:calendar value="#{createParty.dateParty}" id="popupCal1" />
-			<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade">  
-	            <f:selectItem itemLabel="Selectionner" itemValue="" />  
-	            <f:selectItems value="#{createParty.hour}"/>  
-       		</p:selectOneMenu>
-			<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade">  
-	            <f:selectItem itemLabel="Selectionner" itemValue="" />  
-	            <f:selectItems value="#{createParty.minute}"/>  
-       		</p:selectOneMenu>
-			<h:outputText value="Début préventes: " />
-			<p:calendar value="#{createParty.dateBegin}" id="popupCal2" />
-			<h:outputText value="Fin préventes: " />
-			<p:calendar value="#{createParty.dateEnd}" id="popupCal3" />
-			<h:commandButton value="Save" ajax="false" action="#{createParty.save}"/>
-			
-			<p:autoComplete value="#{createParty.selectedTexts}" completeMethod="#{createParty.complete}" multiple="true"/>
-			
-		</h:panelGrid>
+	 <div class="container">
+	 
+	 	<div class="row-fluid">
+	 		<div class="span12">
+	 			<h3>Créez une nouvelle Party</h3>
+	 			<p:messages showDetail="true" />
+	 			
+	 			<div class="row-fluid">
+	 				<div class="span6">
+	 				
+	 				<h1><small>Description</small></h1>
+	 				<div class="row-fluid">
+						<div class="span6">
+						
+							<label class="labelForm">Intitule de la party</label>
+							<p:inputText value="#{createParty.title}" />
+							
+							<label class="labelForm">Description</label>
+							<p:inputTextarea rows="6" cols="33"
+								value="#{createParty.description}" />
+								
+							<label class="labelForm">Thème</label> 
+					        <p:selectOneMenu value="#{createParty.selectedTheme}" effect="fade">  
+					            <f:selectItem itemLabel="Selectionner" itemValue="" />  
+					            <f:selectItems value="#{createParty.themes}"/>  
+					        </p:selectOneMenu> 
+						
+						</div>
+						
+						<div class="span6">
+						
+							<label class="labelForm">Image</label>
+							<p:fileUpload value="#{createParty.file}" mode="simple" />
+						
+							<label class="labelForm">Prix</label>
+							<p:inputText value="#{createParty.price}" style="width:50px;" />
+						
+							<label class="labelForm">Nombre de places</label>
+							<p:inputText value="#{createParty.nbPlace}" style="width:50px;" />	
+							
+						</div>
+					</div>
+					</div>
+					<div class="span6">
+						<h1><small>Dates</small></h1>
+						
+						<div class="row-fluid">
+	 						<div class="span6">
+	 							<label class="labelForm">Date de la party</label>
+								<p:calendar value="#{createParty.dateParty}" id="popupCal1" />
+	 						</div>
+	 						<div class="span3">
+	 							<label class="labelForm">Heure</label>
+	 							<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade" style="width:100px;">  
+					            <f:selectItem itemLabel="Choisir" itemValue="" />  
+					            <f:selectItems value="#{createParty.hour}" />  
+				       			</p:selectOneMenu>
+	 						</div>
+	 						<div class="span3">
+	 							<label class="labelForm">Minutes</label>
+	 							<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade" style="width:100px;">  
+					            <f:selectItem itemLabel="Choisir" itemValue="" />  
+					            <f:selectItems value="#{createParty.minute}"/>  
+				       			</p:selectOneMenu>
+	 						</div>
+	 					</div>
+						
+						<label class="labelForm">Début préventes</label>
+						<p:calendar value="#{createParty.dateBegin}" id="popupCal2" />
+						<label class="labelForm">Fin préventes</label>
+						<p:calendar value="#{createParty.dateEnd}" id="popupCal3" />
+												
+					</div>
+					
+				</div>
+				
+				<div class="row-fluid">
+					<div class="span6">
+					
+					<h1><small>Localisation</small></h1>
+						<div class="row-fluid">
+							<div class="span6">
+							
+								<label class="labelForm">Lieu</label>
+								<p:inputText value="#{createParty.place}" />
+								
+								<label class="labelForm">Code postal</label>
+								<p:inputText value="#{createParty.codepostal}" />
+								
+							</div>
+							<div class="span6">
+							
+								<label class="labelForm">Rue</label>
+								<p:inputText value="#{createParty.street}" />
+								
+								<label class="labelForm">Ville</label>
+								<p:inputText value="#{createParty.town}" />
+								
+							</div>
+						
+						</div>
+					</div>
+					
+					<div class="span6">
+					
+					<h1><small>Artistes</small></h1>
+					<label class="labelForm">Nom des groupes</label>
+					<p:autoComplete value="#{createParty.selectedTexts}" completeMethod="#{createParty.complete}" multiple="true"/>
+					
+					</div>
+				</div>
+				<h:commandButton class="btn btn-primary" value="ENREGISTRER" ajax="false" action="#{createParty.save}"/>
+				<h:commandButton class="btn annuler" value="ANNULER" />
+			</div>
+		</div>
+	
+	</div>
 	</h:form>
 </h:body>
 </html>

@@ -68,3 +68,16 @@ li {
 .party-list td {
 	font-size: 10px;
 }
+
+.labelForm {
+color: #008FC7;
+cursor: default;
+}
+
+.annuler {
+margin-left: 20px;
+}
+
+.tablette {
+	max-width: 100%;	
+}
