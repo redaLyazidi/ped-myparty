@@ -64,18 +64,18 @@ public class MyPartyTest {
 		dateBegin3 = new GregorianCalendar(2013, 02, 01);
 		dateEnd3 = new GregorianCalendar(2013, 02, 10);
 		
-		artist1 = new Artist("Jean", "variete");
-		artist2 = new Artist("Robert", "variete");
-		artist3 = new Artist("George", "variete");
+		artist1 = new Artist("JOHNNY HALLYDAY", "VARIETE");
+		artist2 = new Artist("COEUR DE PIRATE", "POP-ROCK");
+		artist3 = new Artist("INDOCHINE", "POP-ROCK");
 		listArtists1 = new ArrayList<Artist>();
 		listArtists1.add(artist1);
 		listArtists2 = new ArrayList<Artist>();
 		listArtists2.add(artist2);
 		listArtists3 = new ArrayList<Artist>();
 		listArtists3.add(artist3);
-		party1 = new Party("Le concert du saucisson", dateParty1, timeParty1, dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, "image.png", "18 rue des plantes", "Bordeaux", "33600", "PATINOIRE MERIADECK", listArtists1);
-		party2 = new Party("Le concert du jambon", dateParty2, timeParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "variete", 50.50, "image.png", "18 rue des plantes", "Bordeaux", "33600", "PATINOIRE MERIADECK", listArtists2);
-		party3 = new Party("Le concert du pate", dateParty3, timeParty3,dateBegin3, dateEnd3, "succes enorme en France", 200, "variete", 100.50, "image.png", "18 rue des plantes", "Bordeaux", "33600", "PATINOIRE MERIADECK", listArtists3);
+		party1 = new Party("JOHNNY HALLYDAY en tournée dans toute la France", dateParty1, timeParty1, dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, "johnny-hallyday.jpg", "95, Cours Maréchal Juin", "Bordeaux", "33000", "PATINOIRE MERIADECK", listArtists1);
+		party2 = new Party("COEUR DE PIRATE en tournée Solo", dateParty2, timeParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "pop-rock", 50.50, "coeur-de-pirate.jpg", "10, rue de Grassi", "Bordeaux", "33000", "THEATRE FEMINA", listArtists2);
+		party3 = new Party("INDOCHINE Black City Tour 2", dateParty3, timeParty3,dateBegin3, dateEnd3, "succes enorme en France", 200, "pop-rock", 100.50, "indochine.jpg", "95, Cours Maréchal Juin", "Bordeaux", "33000", "PATINOIRE MERIADECK", listArtists3);
 	}
 	
 	@Test
@@ -84,7 +84,7 @@ public class MyPartyTest {
 			dao.addArtist(artist1);
 			dao.addArtist(artist2);
 			dao.addArtist(artist3);
-			assertEquals("Jean", dao.getArtistByName("Jean").getName());
+			assertEquals("INDOCHINE", dao.getArtistByName("INDOCHINE").getName());
 			assertFalse(dao.getAllArtists().isEmpty());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testAddArtist");
@@ -145,8 +145,8 @@ public class MyPartyTest {
 	public void testF_PartiesNotBegunMaxResult(){
 		List<Party> list = new ArrayList<Party>();
 		try {
-			list = dao.getPartiesNotBegunMaxResult(1, 2);
-			assertEquals(2, list.size());
+			list = dao.getPartiesNotBegunMaxResult(0, 3);
+			assertEquals(3, list.size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesNotBegunMaxResult");
 			e.printStackTrace();
