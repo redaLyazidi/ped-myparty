@@ -70,14 +70,16 @@ li {
 }
 
 .labelForm {
-color: #008FC7;
-cursor: default;
+	color: #008FC7;
+	cursor: default;
+	margin-top: 10px;
+}
+
+.bottom-form{
+	margin-top: 20px;
+	margin-bottom: 10px;
 }
 
 .annuler {
-margin-left: 20px;
-}
-
-.tablette {
-	max-width: 100%;	
+	margin-left: 20px;
 }
