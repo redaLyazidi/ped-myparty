@@ -110,7 +110,7 @@ if (!alert)
                 "errorLoadingSVG": "Error: Unable to load SVG data",
                 "URLloadFail": "Unable to load from URL",
                 "retrieving": 'Retrieving "%s" ...',
-                "cannotLoadImageUrlPleaseSelectNewOne":"The image comes from an external file and cannot be loaded.\nPlease choose a location where it can be loaded from.",
+                "cannotLoadImageUrlPleaseSelectNewOne":"The image comes from an external file and cannot be loaded.\nPlease choose a location where it can be loaded from.\nConcerned image : %s",
                 "EnterURL": "Enter an URL",
                 "PleaseSelectFile": "Please select a file",
                 "CannotReadImageFile": "Cannot read image file",
@@ -177,7 +177,10 @@ if (!alert)
             if(opts.extensions) {
                 curConfig.extensions = opts.extensions;
             }
+        }
 
+        svgedit.getConfig = function() { //myparty
+            return curConfig;
         }
 
         // Extension mechanisms must call setCustomHandlers with two functions: opts.open and opts.save
@@ -625,6 +628,7 @@ if (!alert)
                     btn_holder.empty();
 
                     var exitDialog = function(resp) {
+                        console.log("Exit!!!");
                         box.hide();
                         svgEditor.enableShortcuts();
                         callback(resp);
@@ -632,14 +636,12 @@ if (!alert)
                 
                     /*var ok = $('<input type="button" value="' + uiStrings.common.ok + '">').appendTo(btn_holder);
                     $('<input type="button" value="' + uiStrings.common.cancel + '">')*/
-                    $('<p><input id="ok_image"type="button" value="' + uiStrings.common.ok + '"> <input type="button" value="' + uiStrings.common.cancel + '"> </p>')
-                    .appendTo(btn_holder)
-                    .click(function() {
+                    $('<p><input id="ok_image"type="button" value="' + uiStrings.common.ok + '"> <input type="button" id="cancel_image" value="' + uiStrings.common.cancel + '"> </p>')
+                    .appendTo(btn_holder);
+                    jQuery('#cancel_image').click(function() {
                         exitDialog(false);
                     });
 
-                    var ok = jQuery('#ok_image');
-                    console.log('ok: ',ok);
                     /*$('<p><span> Enter an URL: </span> <input type="text"/></p>').prependTo(btn_holder);
                     $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);
                     $('<input type="radio" name="imageFileBrowser" value="file" checked/>').prependTo(btn_holder);*/
@@ -654,14 +656,14 @@ if (!alert)
                     
                     /* $('<input id="imageFileBrowser" type="file" />').prependTo(btn_holder);*/
                     box.show();
-                    ok.click(function() { // *1*
+                    jQuery('#ok_image').click(function() { // *1*
                         var radiochecked = jQuery('input:radio[name=imageFileBrowser]:checked').val();
                         if (radiochecked === 'file') {
                             input = document.getElementById("imageFileBrowser");
                             var oFile = input.files;
                             if (oFile.length == 0) {
                                 // NO Jquery here : deletes the dialog
-                                alert(uiStrings.notification.PleaseSelectFile); // myparty : TOTO : translate
+                                alert(uiStrings.notification.PleaseSelectFile);
                                 return;
                             }
                         
@@ -675,7 +677,6 @@ if (!alert)
                                 if (dataUrl == null) {
                                     // NO Jquery here : deletes the dialog
                                     alert("CannotReadImageFile");
-                                    exitDialog(false);
                                     return;
                                 }
                             
@@ -684,23 +685,38 @@ if (!alert)
                             var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
                             if (!rFilter.test(oFile.type)) {
                                 alert(uiStrings.notification.YouMustSelectValidImageFile);
-                                exitDialog(false);
                                 return;
                             }
                             oFReader.readAsDataURL(oFile); // *2*
-                        }
-                        else {
-                            
+                        } else { // URL specified  
                             var input = jQuery("#imageURL").val();
                             //from http://stackoverflow.com/questions/1303872/trying-to-validate-url-using-javascript
                             var urlregex = new RegExp("^(http:\/\/www.|https:\/\/www.|http:\/\/.|https:\/\/.|www.){1}([0-9A-Za-z]+\.)");
-                            if (!urlregex.test(input))
+                            if (!urlregex.test(input)) {
                                 alert(uiStrings.notification.ItINValidURL);
-                            exitDialog(input);
+                                return;
+                            }
+                            isImage(input, function(res) {
+                                if (res == false)
+                                    alert(uiStrings.notification.ItINValidURL); // invalid url : could be a webpage
+                                else
+                                    exitDialog(input); // success!!
+                            });
                         }
                     });
                 };
             }());
+
+            var isImage = function(url, callback) {
+                var img = document.createElement('img');
+                img.onload = function() {
+                    callback(true);
+                }
+                img.onerror = function() {
+                    callback(false);
+                }
+                img.src = url;
+            }
 
             var setSelectMode = function() {
                 var curr = $('.tool_button_current');
@@ -1620,11 +1636,15 @@ if (!alert)
             };
 
             var setImageURL = Editor.setImageURL = function(url) {
-                console.log("setImageUrl");
+                if (!url || url.indexOf('data:') !== 0)
+                    console.log("setImageUrl", url);
+                else
+                    console.log("setImageUrl");
+
                 if(!url)
                     url = default_img_url;
 
-                if(url.indexOf('data:') === 0 || url.indexOf(curConfig.fixedUrlImages) === 0) {
+                if (url.indexOf('data:') === 0 || url.indexOf(curConfig.fixedUrlImages) === 0) {
                     // data URI found
                     // or myparty : do not replace qrcode and other special images with data...
                     $('#image_url').hide();
@@ -1632,9 +1652,21 @@ if (!alert)
 
                     svgCanvas.setImageURL(url);
                     //$('#image_url').val(url);
+                    mpUtils.embedAnExternalImage(); // myparty : embed external images when the soft is ready
+                    return;
+                }
+                else if (url.indexOf('file:') === 0) {
+                    promptImgURLFromFile(); // javascript cannot read local urls
                     return;
                 } else {
                     var myPartyEmbedAsDataUriImage = function(datauri) {
+                        if (!datauri || datauri.indexOf('data:') !== 0)
+                            console.log("myPartyEmbedAsDataUriImage", datauri);
+                        else
+                            console.log("myPartyEmbedAsDataUriImage");
+
+
+
                         //console.log("datauri : ", datauri);
                         if(!datauri) { // Couldn't embed
                             // might be a local file or a regular url or some text which makes non-sense.
@@ -1651,14 +1683,14 @@ if (!alert)
                             }
 
                             $('#url_notice').show();
-                            promptImgURLFromFile();
-                            console.error("Cannot load image from url : ", url);
+                            promptImgURLFromFile(); // delete the image if not provided
+                            console.log("Cannot load image from url : ", url);
                         } else {
                             $('#url_notice').hide();
                             //console.log("Success ", url);
                             //console.log("datauri : ", datauri)
                             console.log("Changed an image URL with success");
-                            setImageURL(datauri); // myparty : try to always load datauri instead of regular urls...
+                            setImageURL(datauri);
                         }
                         default_img_url = url;
                     }
@@ -3547,17 +3579,27 @@ if (!alert)
                 });
             }
 
+            // Prompt an url or a path to an image that is already present in the document :
+            // the current image is invalid and must be replaced.
             function promptImgURLFromFile() {
                 var curhref = svgCanvas.getHref(selectedElement);
-                curhref = curhref.indexOf("data:") === 0?"":curhref;
-                var msg = uiStrings.notification.cannotLoadImageUrlPleaseSelectNewOne;
+                curhref = curhref.indexOf("data:") === 0 ? "" : curhref;
+                var shorthref = curhref;
+                
+                var urlSizeMax = 200;
+                if (curhref.length > urlSizeMax) {
+                    shorthref = curhref.substring(0, urlSizeMax/2) + " [...] " +  curhref.substring(curhref.length - urlSizeMax/2);
+                }
+                var msg = uiStrings.notification.cannotLoadImageUrlPleaseSelectNewOne.replace('%s', shorthref);
+
                 $.imageFileBrowser(msg, curhref, function(url) {
                     if(url) {
                         setImageURL(url);
                         svgCanvas.setGoodImage(url);
                     }
                     else {
-                        alert("DEVRAIT SUPPRIMER L'IMAGE...");
+                        deleteSelected(); // delete the image
+                        mpUtils.embedAnExternalImage(); // myparty : embed external images when the soft is ready
                     }
                 });
             }
