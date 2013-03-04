@@ -52,26 +52,36 @@
 
 	<h:form>
 		<div class="container">
+		
+			<div class="hero-unit modif">
+				<img src="../img/concert.jpg" alt="" style="width: 1170px; max-height: 300px;"/>
+			</div>
+		
 			<!--  Sidebar -->
 			<div class="sidebar">
 				<div class="row-fluid">
 
 					<div class="span3">
-						<div class="well sidebar-nav">
-							<ul class="nav nav-list">
-								<li class="nav-header">Lieu</li>
-								<li><h:inputText value="#{searchParty.lieu}" /></li>
-								<li class="nav-header">Prix</li>
-								<li><h:inputText value="#{searchParty.priceMin}" /></li>
-								<li class="nav-header">Date</li>
-								<li><p:calendar value="#{searchParty.dateParty}"
-										id="popupCal" /></li>
-								<li class="nav-header">Mot clé</li>
-								<li><h:inputText value="#{searchParty.title}" /></li>
-								<li class="active">
-									<h:commandButton class="btn btn-primary" value="RECHERCHER" ajax="false" action="#"/>
-								</li>
-							</ul>
+						<div class="well sidebar-nav ongletRecherche">
+							<div class="bandeauRecherche">
+								<h5>Rechercher</h5>
+							</div>
+							<div style="padding: 15px;">
+								<ul class="nav nav-list formPadding">
+									<li class="nav-header">Lieu</li>
+									<li><h:inputText value="#{searchParty.lieu}" /></li>
+									<li class="nav-header">Prix</li>
+									<li><h:inputText value="#{searchParty.priceMin}" /></li>
+									<li class="nav-header">Date</li>
+									<li><p:calendar value="#{searchParty.dateParty}"
+											id="popupCal" /></li>
+									<li class="nav-header">Mot clé</li>
+									<li><h:inputText value="#{searchParty.title}" /></li>
+									<li class="active">
+										<h:commandButton class="btn btn-primary" value="RECHERCHER" ajax="false" action="#"/>
+									</li>
+								</ul>
+							</div>
 						</div>
 						<!--/.well -->
 					</div>
@@ -79,7 +89,6 @@
 
 					<f:event type="javax.faces.event.PreRenderViewEvent"
 						listener="#{accueilBean.preRenderView}" />
-
 
 					<!-- Body -->
 					<div class="span9">
