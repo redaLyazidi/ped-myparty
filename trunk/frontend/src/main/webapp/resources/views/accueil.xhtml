@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -90,7 +93,7 @@
 								<c:forEach var="party" items="#{accueilBean.listParty}">
 									<div class="itemListeParty">
 										<div class="listePartyImg">
-											<h:outputText value="Image" />
+											<h:graphicImage value="../upload/#{party.image}"/>
 										</div>
 										<div class="listePartyPartDesc">
 											<div class="listeItemTitle">
@@ -108,8 +111,14 @@
 												<h:outputText value="#{party.theme}" />
 											</div>
 											<div class="listeItemDate">
-													<!-- <h:outputText value="Le #{party.dateParty} à #{party.timeParty}" /> -->
-													<h:outputText value="Le 30/02/2013 à 19h" />
+												<h:outputText value="#{party.dateParty.getTime()}" >
+													<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Europe/Paris" />
+												</h:outputText>	
+											</div>
+											<div class="listeItemDate">
+												<h:outputText value="#{party.timeParty.getTime()}">
+													<f:convertDateTime pattern="HH:mm" timeZone="Europe/Paris" />
+												</h:outputText>
 											</div>
 										</div>
 										<div class="listePartyPartLieu"> 
