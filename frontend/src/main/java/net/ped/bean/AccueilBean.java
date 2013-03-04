@@ -36,7 +36,7 @@ public class AccueilBean implements Serializable {
 	public AccueilBean(){
 				
 		listParty = new ArrayList<Party>();
-		numPage = 1;
+		numPage = 0;
 		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage, ConstantesWeb.NUMBER_PARTY_PAGE);
 
 	}

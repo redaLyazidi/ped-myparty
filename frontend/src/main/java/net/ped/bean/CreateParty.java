@@ -251,7 +251,7 @@ public class CreateParty implements Serializable{
 			try {
 				input = file.getInputstream();
 				// à changer en mettant la destination de son workspace
-				output = new FileOutputStream(new File("//D://Fac//AL//workspace//trunk//frontend//WebContent//resources//upload" + "//", filename));
+				output = new FileOutputStream(new File("//D://Fac//AL//workspace//trunk//frontend//src//main//webapp//resources//upload" + "//", filename));
 				IOUtils.copy(input, output);
 			}catch(Exception e){
 				e.printStackTrace();
