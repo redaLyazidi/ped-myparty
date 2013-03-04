@@ -803,6 +803,14 @@ h4 small {
   font-size: 14px;
 }
 
+h5 {
+	color: white!important; 
+	font-size: 14px!important; 
+	font-weight: bold!important; 
+	padding-top: 8px!important; 
+	text-align: center!important;
+}
+
 .page-header {
   padding-bottom: 9px;
   margin: 20px 0 30px;
@@ -3101,10 +3109,11 @@ table th[class*="span"],
 
 .well {
   min-height: 20px;
-  padding: 19px;
+  padding: 0px;
+  /* padding: 19px; */
   margin-bottom: 20px;
   background-color: #f5f5f5;
-  border: 1px solid #e3e3e3;
+  border: 1px solid #000;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
@@ -3967,7 +3976,7 @@ input[type="submit"].btn.btn-mini {
   font-size: 11px;
   font-weight: bold;
   line-height: 20px;
-  color: #999999;
+  color: black;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
 }
@@ -6162,6 +6171,30 @@ a.badge:focus {
  * Lister party
 */
 
+.modif {
+	padding: 0px!important;
+	background: none;
+}
+
+.ongletRecherche {
+	height: 400px;
+	background-color: #EFF6FA;
+}
+
+.bandeauRecherche{
+	background: #191919; 
+	height: 36px; 
+	margin-top: -10px;
+}
+
+.formPadding{
+	padding: 10px;
+}
+
+.test3{
+	color: black!important;
+}
+
 .bandeauSupListeParty {
 	padding-left: 50px;
 	color: black;
@@ -6248,7 +6281,7 @@ a.badge:focus {
 }
 
 .clear {
-clear: both;
+	clear: both;
 }
 
 .pageParty {
