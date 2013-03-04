@@ -3572,9 +3572,8 @@ if (!alert)
                     if(url) { 
                         setImageURL(url);
                         svgCanvas.setGoodImage(url);
-                    //Essai pour resoudre le probleme de l'image sélectionnée permanente
-                    //svgCanvas.setGoodImage('');
-                    //Fin Essai a premiere vue sa marche
+                    } else {
+                        clickUndo(); // delete the image
                     }
                 });
             }
