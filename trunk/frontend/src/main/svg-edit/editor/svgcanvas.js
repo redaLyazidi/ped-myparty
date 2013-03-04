@@ -253,6 +253,9 @@ var selectedElements = new Array(1);
 // Returns: The new element
 var addSvgElementFromJson = this.addSvgElementFromJson = function(data) {
 	var shape = svgedit.utilities.getElem(data.attr.id);
+        /*console.log("ADD ELEM FROM JSON : ", data);
+        console.log("SHAPE : ", shape);
+        console.log("ID : ", data.attr.id);*/
 	// if shape is a path but we need to create a rect/ellipse, then remove the path
 	var current_layer = getCurrentDrawing().getCurrentLayer();
 	if (shape && data.element != shape.tagName) {
@@ -317,6 +320,16 @@ svgedit.utilities.init({
 	getSelectedElements: function() { return selectedElements; },
 	getSVGContent: function() { return svgcontent; }
 });
+
+mpUtils.init({
+	getDOMDocument: function() { return svgdoc; },
+	getDOMContainer: function() { return container; },
+	getSVGRoot: function() { return svgroot; },
+	// TODO: replace this mostly with a way to get the current drawing.
+	getSelectedElements: function() { return selectedElements; },
+	getSVGContent: function() { return svgcontent; }
+});
+
 var getUrlFromAttr = canvas.getUrlFromAttr = svgedit.utilities.getUrlFromAttr;
 var getHref = canvas.getHref = svgedit.utilities.getHref;
 var setHref = canvas.setHref = svgedit.utilities.setHref;
@@ -1179,7 +1192,8 @@ var remapElement = this.remapElement = function(selected,changes,m) {
 		case "foreignObject":
 		case "rect":
 		case "image":
-			
+
+                        console.log("IMAGE");
 			// Allow images to be inverted (give them matrix when flipped)
 			if(elName === 'image' && (m.a < 0 || m.d < 0)) {
 				// Convert to matrix
@@ -5307,6 +5321,8 @@ this.svgToString = function(elem, indent) {
 // result (data URL or false) as first parameter.
 this.embedImage = function(val, callback) {
 	// load in the image and once it's loaded, get the dimensions
+        //console.log("EMBED IMAGE", val);
+
 	$(new Image()).load(function() {
 		// create a canvas the same size as the raster image
 		var canvas = document.createElement("canvas");
@@ -5316,8 +5332,9 @@ this.embedImage = function(val, callback) {
 		canvas.getContext("2d").drawImage(this,0,0);
 		// retrieve the data: URL
 		try {
-			var urldata = ';svgedit_url=' + encodeURIComponent(val);
-			urldata = canvas.toDataURL().replace(';base64',urldata+';base64');
+			//var urldata = ';svgedit_url=' + encodeURIComponent(val); // my-party : removed
+			//urldata = canvas.toDataURL().replace(';base64',urldata+';base64');
+                        var urldata = canvas.toDataURL();
 			encodableImages[val] = urldata;
 		} catch(e) {
 			encodableImages[val] = false;
@@ -5922,9 +5939,10 @@ this.setSvgString = function(xmlString) {
 		call("changed", [svgcontent]);
 	} catch(e) {
 		console.log(e);
+                mpUtils.embedExternalImages(); // myparty
 		return false;
 	}
-
+        mpUtils.embedExternalImages(); // myparty
 	return true;
 };
 
@@ -6058,9 +6076,10 @@ this.importSvgString = function(xmlString) {
 
 	} catch(e) {
 		console.log(e);
+                mpUtils.embedExternalImages(); // myparty
 		return false;
 	}
-
+        mpUtils.embedExternalImages(); // myparty
 	return true;
 };
 

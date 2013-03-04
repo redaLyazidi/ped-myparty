@@ -234,7 +234,7 @@ svgEditor.readLang({
 		"errorLoadingSVG": "Erreur: Impossible de charger le document SVG",
 		"URLloadFail": "Impossible de charger l'URL",
 		"retrieving": "Récupère \"%s\"...",
-		"cannotLoadImageUrlPleaseSelectNewOne":"L'image provient d'un document externe et ne peut pas être chargée directement. Choisissez s'il vous plait un emplacement d'où la charger.",
+		"cannotLoadImageUrlPleaseSelectNewOne":"L'image provient d'un document externe et ne peut pas être chargée directement. Choisissez s'il vous plait un emplacement d'où la charger. \nImage concernée : %s",
                 "EnterURL": "Entrer une URL",
                 "PleaseSelectFile": "Veuillez SVP choisir un fichier",
                 "CannotReadImageFile" : "Impossible de lire le fichier",
