@@ -70,8 +70,14 @@
 								<ul class="nav nav-list formPadding">
 									<li class="nav-header">Lieu</li>
 									<li><h:inputText value="#{searchParty.lieu}" /></li>
-									<li class="nav-header">Prix</li>
-									<li><h:inputText value="#{searchParty.priceMin}" /></li>
+									<li> <!-- A MODIFIER -->
+										<h:panelGrid columns="1" style="margin-bottom:10px">                      
+									        <h:outputText id="displayRange" value="Prix entre #{searchParty.priceMin} € et #{searchParty.priceMax} €"/>                      
+									        <p:slider for="min,max" display="displayRange" style="width:175px" range="true" displayTemplate="Between {min} and {max}"/>  
+								    	</h:panelGrid>  
+									    <h:inputHidden id="min" value="#{searchParty.priceMin}" />  
+									    <h:inputHidden id="max" value="#{searchParty.priceMax}" />
+								    </li>
 									<li class="nav-header">Date</li>
 									<li><p:calendar value="#{searchParty.dateParty}"
 											id="popupCal" /></li>
