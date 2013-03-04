@@ -6354,5 +6354,27 @@ a.badge:focus {
 	margin-bottom: 2%;
 }
 
-.partyItemGenre {}
+/* Media queries pour le range slider (fourchette prix) en page d'accueil*/
+@media (min-width: 1200px) {
+	
+	 .ui-slider-horizontal
+    {
+        width: 225px!important;
+    }
+}
 
+@media (min-width: 768px) and (max-width: 979px) {
+
+	 .ui-slider-horizontal
+    {
+        width: 120px!important;
+    }
+}
+
+@media (max-width: 767px) {
+
+	 .ui-slider-horizontal
+    {
+        width: 270px!important;
+    }
+}

@@ -21,7 +21,7 @@ public class SearchParty implements Serializable{
 	private String title;
 	private String theme;
 	private double priceMin=0.0;
-	private double priceMax=0.0;
+	private double priceMax=30;
 	private Date dateParty;
 	private String lieu;
 	
