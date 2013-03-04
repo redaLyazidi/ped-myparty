@@ -36,7 +36,7 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="brand" href="#">MyParty</a>
+				<a class="brand" href="#"><img src="../img/logo.png"/></a>
 
 				<div class="nav-collapse collapse">
 					<form class="navbar-form pull-right">
@@ -68,9 +68,9 @@
 										id="popupCal" /></li>
 								<li class="nav-header">Mot clé</li>
 								<li><h:inputText value="#{searchParty.title}" /></li>
-								<li class="active"><h:inputText
-										class="btn btn-primary submit" value="Rechercher"
-										type="submit" name="search" /></li>
+								<li class="active">
+									<h:commandButton class="btn btn-primary" value="RECHERCHER" ajax="false" action="#"/>
+								</li>
 							</ul>
 						</div>
 						<!--/.well -->
@@ -83,69 +83,92 @@
 
 					<!-- Body -->
 					<div class="span9">
-						<div class="hero-unit">
+						
 
 							<!-- 							<div class="bandeauSupListeParty"> -->
 							<!-- 								Prochaines party -->
 							<!-- 							</div> -->
 
-							<div class="listeParty">
+							<table class="table table-hover">
+								
+								<thead style="background: #191919">
+								    <tr style="color: #FFF">
+								      <th>Concert</th>
+								      <th>Lieu</th>
+								      <th>Prix</th>
+									</tr>
+								</thead>
+								<tbody>
 								<c:forEach var="party" items="#{accueilBean.listParty}">
-									<div class="itemListeParty">
-										<div class="listePartyImg">
-											<h:graphicImage value="../upload/#{party.image}"/>
-										</div>
-										<div class="listePartyPartDesc">
-											<div class="listeItemTitle">
-												<h:commandLink action="#{accueilBean.outcome}"
-													value="#{party.title}">
+									<tr>
+										<td>
+											<div class="listePartyImg">
+												<h:graphicImage value="../upload/#{party.image}"/>
+											</div>
+											<div class="descriptionParty">
+												<div class="listeItemTitle">
+													<h:commandLink action="#{accueilBean.outcome}" value="#{party.title}">
+														<f:param name="idParty" value="#{party.id}" />
+													</h:commandLink>
+												</div>
+												<div class="listeItemTheme">
+													<h:outputText value="#{party.theme}" />
+												</div>
+												<div class="listeItemDate">
+													<h:outputText value="#{party.dateParty.getTime()}" >
+														<f:convertDateTime pattern="dd/MM/yyyy à " timeZone="Europe/Paris" />
+													</h:outputText>
+													
+													<h:outputText value="#{party.timeParty.getTime()}">
+														<f:convertDateTime pattern="HH:mm" timeZone="Europe/Paris" />
+													</h:outputText>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="listeAdresse"> 
+												<div class="listeItemLieu">
+													<h:outputText value="#{party.place}"/>
+												</div>
+												<div class="listeItemRue">
+													<h:outputText value="#{party.street}" />
+												</div>
+												<div class="listeItemLieu">
+													<h:outputText value="#{party.CP} #{party.town}" />
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="listItemPrice"> 
+												<div>
+													<h:outputText value="#{party.price} €" />
+												</div>
+												<h:commandLink action="#{accueilBean.outcome}" value="Réservez">
 													<f:param name="idParty" value="#{party.id}" />
 												</h:commandLink>
 											</div>
-											<div class="listeItemArtist">
-												<c:forEach var="artist" items="#{party.artists}">
-													<h:outputText value="#{artist.name}   " />
-												</c:forEach>				
-											</div>
-											<div class="listeItemGenre">
-												<h:outputText value="#{party.theme}" />
-											</div>
-											<div class="listeItemDate">
-												<h:outputText value="#{party.dateParty.getTime()}" >
-													<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Europe/Paris" />
-												</h:outputText>	
-											</div>
-											<div class="listeItemDate">
-												<h:outputText value="#{party.timeParty.getTime()}">
-													<f:convertDateTime pattern="HH:mm" timeZone="Europe/Paris" />
-												</h:outputText>
-											</div>
-										</div>
-										<div class="listePartyPartLieu"> 
-											<div class="listeItemLieu">
-												<h:outputText value="#{party.place}"/>
-											</div>
-											<div>
-												<h:outputText value="#{party.street}" />
-											</div>
-											
-											<h:outputText value="#{party.CP} #{party.town}" />
-										</div>
-										<div class="listePartyPartPrice"> 
-											<div>
-												<h:outputText value="#{party.price} €" />
-											</div>
-											<h:commandLink action="#{accueilBean.outcome}"
-													value="Réservez">
-													<f:param name="idParty" value="#{party.id}" />
-											</h:commandLink>
-										</div>
-										
+										</td>
 										<div class="clear"></div>
-									</div>
+									</tr>
 								</c:forEach>
+								</tbody>
+							</table>
+							
+							<!-- A MODIFIER POUR LA PAGINATION -->
+							<div class="pagination pagination-right">
+								<ul>
+									<li><h:commandLink action="#{accueilBean.prevPage}"	value="Précédent"/></li>
+									<li><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><h:commandLink action="#{accueilBean.nextPage}" value="Suivant"/></li>
+								</ul>
 							</div>
 							
+							
+							<!-- A SUPPRIMER -->
 							<div class="bandeauInfListeParty">
 								<div class="nextButton">
 									<h:commandLink action="#{accueilBean.nextPage}" value="Suivant"
@@ -160,7 +183,7 @@
 								</div>
 							</div>
 
-						</div>
+						
 					</div>
 					<!--/span-->
 				</div>
