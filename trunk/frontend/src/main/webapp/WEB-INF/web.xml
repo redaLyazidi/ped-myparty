@@ -42,6 +42,16 @@
 	 <url-pattern>/ticket-designer/*</url-pattern>
 </servlet-mapping>
 
+<!-- save as for images -->
+<servlet>
+ <servlet-name>Save as</servlet-name>
+ <servlet-class>net.ped.servlet.SaveAs</servlet-class>
+</servlet>
+
+<servlet-mapping>
+ <servlet-name>Save as</servlet-name>
+ <url-pattern>/saveas</url-pattern>
+</servlet-mapping>
   
   <!-- Map these files with JSF -->
 	<servlet-mapping>
