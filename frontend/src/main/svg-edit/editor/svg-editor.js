@@ -71,7 +71,8 @@ if (!alert)
             baseUnit: 'px',
             snappingStep: 10,
             showRulers: true,
-            shortcuts: true
+            shortcuts: true,
+            saveAsUrl: self.location.protocol + '//' + self.location.host + '/myparty-frontend/saveas'
         },
         uiStrings = Editor.uiStrings = {
             common: {
