@@ -6354,12 +6354,24 @@ a.badge:focus {
 	margin-bottom: 2%;
 }
 
-/* Media queries pour le range slider (fourchette prix) en page d'accueil*/
+/* Media queries pour le range slider (fourchette prix) en page d'accueil + selection horaire (minutes) */
 @media (min-width: 1200px) {
 	
 	 .ui-slider-horizontal
     {
         width: 225px!important;
+    }
+}
+
+@media (min-width: 980px) and (max-width: 1199px) {
+	
+	#essai2
+    {
+    	margin-left: 0px!important;
+    }
+    .ui-selectonemenu
+     {
+    	margin-left: 0px!important;
     }
 }
 
@@ -6369,6 +6381,14 @@ a.badge:focus {
     {
         width: 120px!important;
     }
+    .ui-selectonemenu
+    {
+    	margin-left: 0px!important;
+    }
+    .ongletRecherche{
+    	height: 450px;
+    }
+    
 }
 
 @media (max-width: 767px) {
