@@ -70,19 +70,41 @@
 								<ul class="nav nav-list formPadding">
 									<li class="nav-header">Lieu</li>
 									<li><h:inputText value="#{searchParty.lieu}" /></li>
-									<li> <!-- A MODIFIER -->
+									<li> 
+									
+									
+									<!-- A COMPLETER -->
 										<h:panelGrid columns="1" style="margin-bottom:10px">                      
-									        <h:outputText id="displayRange" value="Prix entre #{searchParty.priceMin} € et #{searchParty.priceMax} €"/>                      
+									        <h:outputText id="displayRange" value="PRIX ENTRE #{searchParty.priceMin} € ET #{searchParty.priceMax} €" style="font-weight:bold; font-size:11px;"/>                      
 									        <p:slider for="min,max" display="displayRange" style="width:175px" range="true" displayTemplate="Between {min} and {max}"/>  
 								    	</h:panelGrid>  
 									    <h:inputHidden id="min" value="#{searchParty.priceMin}" />  
 									    <h:inputHidden id="max" value="#{searchParty.priceMax}" />
+									<!--  -->
+									    
 								    </li>
 									<li class="nav-header">Date</li>
 									<li><p:calendar value="#{searchParty.dateParty}"
 											id="popupCal" /></li>
-									<li class="nav-header">Mot clé</li>
-									<li><h:inputText value="#{searchParty.title}" /></li>
+									<li class="nav-header">Heure</li>
+									<li> 
+									
+									
+									<!-- A COMPLETER -->
+					 					<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade" style="width:73px; float: left;">  
+									    	<f:selectItem itemLabel="Choisir" itemValue="" />  
+									        <f:selectItems value="#{createParty.hour}" />
+								       	</p:selectOneMenu>
+								       	
+					 					<div id="essai2" style="float: left; margin-left: 10px; margin-top: 5px;">H</div>
+					 					
+					 					<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade" style="width:73px; margin-left:10px;">  
+									    	<f:selectItem itemLabel="Choisir" itemValue="" />  
+									    	<f:selectItems value="#{createParty.minute}"/>  
+								       	</p:selectOneMenu>
+								     <!--  -->
+								       	
+								    </li>
 									<li class="active">
 										<h:commandButton class="btn btn-primary" value="RECHERCHER" ajax="false" action="#"/>
 									</li>
