@@ -49,6 +49,12 @@ public interface InterfaceFrontPartyService {
 	public void deleteParty(int id);
 	
 	/**
+	 * vérifie si la party avec l'identifiant id existe
+	 * @return boolean
+	 */
+	public boolean containsParty(int id);
+	
+	/**
 	 * obtient une party via son identifiant
 	 * @return Party
 	 */

@@ -196,6 +196,33 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			closeEntityManager();
 		}
 	}
+	
+	public boolean containsParty(int id)throws Exception{
+		LOG.info("> containsParty");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		long number=0;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query=em.createQuery("select count(p.id) FROM Party p where p.id=:param");
+			query.setParameter("param", id);
+			number = (Long)query.getSingleResult();
+			LOG.debug("Total Count result = "+number);
+			tx.commit();
+			LOG.debug("calcul effectue");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction containsParty",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		if(number==0)
+			return false;
+		return true;
+	}
 
 	public Party getParty(int id) throws Exception{
 		LOG.info("> getParty");
