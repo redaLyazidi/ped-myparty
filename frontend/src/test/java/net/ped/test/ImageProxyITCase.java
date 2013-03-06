@@ -2,14 +2,17 @@ package net.ped.test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 import junit.framework.TestCase;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sun.net.www.protocol.http.HttpURLConnection;
 
 
-
 public class ImageProxyITCase extends TestCase {
+	private static final Logger LOG = LoggerFactory.getLogger(ImageProxyITCase.class);
 	
 	static String proxyUrl = "http://localhost:8080/myparty-frontend/imgUrl?url=";
 	
@@ -33,7 +36,7 @@ public class ImageProxyITCase extends TestCase {
 	
 	private void checkSameResponse(URL baseUrl, URL routedUrl) throws Exception {
 		HttpURLConnection connection1 = (HttpURLConnection) baseUrl.openConnection();
-		connection1.setInstanceFollowRedirects(false); // ImageProxy redirection doesn't work
+		connection1.setInstanceFollowRedirects(false); // ImageProxy redirection doesn't work -> error 500
 		HttpURLConnection connection2 = (HttpURLConnection) routedUrl.openConnection();
 		connection2.setInstanceFollowRedirects(false);
 		
@@ -50,9 +53,11 @@ public class ImageProxyITCase extends TestCase {
 				);
 		if (connection1.getResponseCode() == 200 && connection2.getResponseCode() == 200) {
 			// The two requests should have the same content (perhaps different headers, or one gzipped and not the other?)
-			int length1 = connection1.getResponseMessage().length();
-			int length2 = connection2.getResponseMessage().length();
+			int length1 = Math.abs(connection1.getContentLength());
+			int length2 = Math.abs(connection2.getContentLength());
 			double diff = 1.3;
+			
+			LOG.debug("URL : " + baseUrl + ", length1 : " + length1 + ", length2 : " + length2);
 			assertTrue(length1 / diff < length2);
 			assertTrue(length1 * diff > length2);
 		}
