@@ -51,6 +51,12 @@ public interface InterfacePartyDao {
 	public void deleteParty(int id) throws Exception;
 	
 	/**
+	 * vérifie si la party avec l'identifiant id existe
+	 * @return boolean
+	 */
+	public boolean containsParty(int id) throws Exception;
+	
+	/**
 	 * obtient une party via son identifiant
 	 * @return Party
 	 */

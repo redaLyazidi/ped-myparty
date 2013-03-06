@@ -98,6 +98,16 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean containsParty(int id){
+		boolean exist = false;
+		try {
+			exist = dao.containsParty(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return exist;
+	}
 
 	public Party getParty(int id){
 		Party party = new Party();

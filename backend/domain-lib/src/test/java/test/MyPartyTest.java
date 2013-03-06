@@ -175,7 +175,12 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testI_PartiesCriteria(){
+	public void testI_containsParty(){
+		assertEquals(true, service.containsParty(1));
+	}
+	
+	@Test
+	public void testJ_PartiesCriteria(){
 		List<Party> list = new ArrayList<Party>();
 		Calendar calendar = new GregorianCalendar(2013, 04, 15);
 		Calendar time = new GregorianCalendar(0, 0, 0, 20, 30, 00);
