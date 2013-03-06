@@ -12,12 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.InvalidRedirectLocationException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // This class is used as a proxy to download image from client side that come from another domain.
 // It can retreive any http resource, not only images
@@ -30,6 +33,8 @@ import org.apache.commons.io.IOUtils;
 // Doesn't follow url redirection... is it a pb ? Ex : http://localhost:8080/myparty-frontend/imgUrl?url=http://google.fr 
 
 public final class ImageProxy extends HttpServlet {
+	private static final Logger LOG = LoggerFactory.getLogger(ImageProxy.class);
+
 	final String http =  "http://";
 	final String https = "https://";
 	final String start = "url=";
@@ -39,7 +44,6 @@ public final class ImageProxy extends HttpServlet {
 	protected void doGet(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException,
 			IOException {
-		System.out.println("Get ok");
 		doAux(request, response, new GetMethod());
 	}
 
@@ -63,16 +67,34 @@ public final class ImageProxy extends HttpServlet {
 			//System.out.println("Added http");
 		}
 		URL url = new URL(strUrl);
-		//System.out.println(url);
+		LOG.debug("Get on url : " + url);
+
 		proxyMethod.setPath(url.toString());
 		HttpClient proxy = new HttpClient();
 		proxy.getHostConfiguration().setHost(url.getHost());
 
 		try {
 			proxy.executeMethod(proxyMethod);
-		} catch (InvalidRedirectLocationException e) { // crashes with http://google.fr -> redirection. Why ?
+		} catch (InvalidRedirectLocationException e) { // crashes with http://google.fr (redirected to http://www.google.fr). Why ?
 			throw new ServletException();
 		}
+		
+		/*=long length = proxyMethod.getResponseContentLength();
+		LOG.debug("content length : " + length);
+		if (length != -1)
+			response.setContentLength((int) length); // cast <=> humf
+		
+		//Content-Type: text/html; charset=iso-8859-1
+		
+		Header contentType = proxyMethod.getResponseHeader("content-type");
+		LOG.debug("content type : " + contentType);
+		if (contentType != null)
+			response.setContentType(contentType.getValue());*/
+		Header[] headers = proxyMethod.getResponseHeaders(); // héhé
+		for (Header h : headers) {
+			response.setHeader(h.getName(), h.getValue());
+		}
+		
 		write(proxyMethod.getResponseBodyAsStream(), response.getOutputStream());
 	}
 
