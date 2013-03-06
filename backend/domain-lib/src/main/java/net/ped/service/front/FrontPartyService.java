@@ -79,6 +79,17 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 			e.printStackTrace();
 		}
 	}
+	
+	public void ValidateParty(int id){
+		Party party = new Party();
+		try {
+			party = dao.getParty(id);
+			party.setValidated(true);
+			dao.updateParty(party);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void deleteParty(int id){
 		try {
@@ -102,6 +113,16 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		List<Party> list = new ArrayList<Party>();
 		try {
 			list = dao.getAllParties();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<Party> getAllPartiesNotValidated(){
+		List<Party> list = new ArrayList<Party>();
+		try {
+			list = dao.getAllPartiesNotValidated();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

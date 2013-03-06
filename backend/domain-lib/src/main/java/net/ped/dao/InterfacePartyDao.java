@@ -1,7 +1,6 @@
 package net.ped.dao;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import net.ped.model.Artist;
@@ -41,6 +40,12 @@ public interface InterfacePartyDao {
 	public void updateParty(Party p) throws Exception;
 	
 	/**
+	 * obtient toutes les party n'ayant pas été validées 
+	 * @return List<Party>
+	 */
+	public List<Party> getAllPartiesNotValidated() throws Exception;
+	
+	/**
 	 * supprime une party
 	 */
 	public void deleteParty(int id) throws Exception;
@@ -58,20 +63,20 @@ public interface InterfacePartyDao {
 	public List<Party> getAllParties() throws Exception;
 	
 	/**
-	 * obtient les party qui n'ont pas encore commencé
+	 * obtient les party qui n'ont pas encore commencé et étant validées
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesNotBegun() throws Exception;
 	
 	/**
-	 * obtient les "length" party qui n'ont pas encore commencé à partir de la position "startPosition"
+	 * obtient les "length" party qui n'ont pas encore commencé à partir de la position "startPosition" et étant validées
 	 * classement de la party la plus proche à la plus lointaine
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesNotBegunMaxResult(int startPosition, int length) throws Exception;
 	
 	/**
-	 * obtient toutes les party suivant différents critères
+	 * obtient toutes les party suivant différents critères et étant validées
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesCriteria(double priceBegin, double priceEnd, Calendar date, Calendar time) throws Exception;

@@ -46,6 +46,7 @@ public class Party implements java.io.Serializable{
 	private int nbPlaceBought = 0;
 	private int nbPlaceScanned = 0;
 	private String image;
+	private boolean validated = false;
 	
 	private String street;
 	private String town;
@@ -234,5 +235,13 @@ public class Party implements java.io.Serializable{
 
 	public void setArtists(List<Artist> artists) {
 		this.artists = artists;
-	}	
+	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
+	}
 }
