@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.InvalidRedirectLocationException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
@@ -67,7 +68,11 @@ public final class ImageProxy extends HttpServlet {
 		HttpClient proxy = new HttpClient();
 		proxy.getHostConfiguration().setHost(url.getHost());
 
-		proxy.executeMethod(proxyMethod);
+		try {
+			proxy.executeMethod(proxyMethod);
+		} catch (InvalidRedirectLocationException e) { // crashes with http://google.fr -> redirection. Why ?
+			throw new ServletException();
+		}
 		write(proxyMethod.getResponseBodyAsStream(), response.getOutputStream());
 	}
 
