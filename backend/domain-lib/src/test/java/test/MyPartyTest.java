@@ -132,8 +132,8 @@ public class MyPartyTest {
 	@Test
 	public void testE_ValidateParty(){
 		try {
-			service.ValidateParty(1);
-			service.ValidateParty(2);
+			service.ValidateParty(1,"test.svg");
+			service.ValidateParty(2,"test.svg");
 			assertEquals(1, service.getAllPartiesNotValidated().size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testValidatePart");
