@@ -24,11 +24,9 @@ public class PartyNotValidated {
 		
 		dateGreen=new GregorianCalendar();
 		dateGreen.add(Calendar.DATE, 20);
-		System.out.println(dateGreen.getTime());
 		
 		dateOrange=new GregorianCalendar();
 		dateOrange.add(Calendar.DATE, 10);
-		System.out.println(dateOrange.getTime());
 	}
 	
 	public List<Party> getListParty() {
