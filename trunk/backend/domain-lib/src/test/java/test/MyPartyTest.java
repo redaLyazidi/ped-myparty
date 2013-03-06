@@ -10,9 +10,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.ped.dao.PartyDaoImpl;
 import net.ped.model.Artist;
 import net.ped.model.Party;
+import net.ped.service.front.FrontPartyService;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -38,7 +38,7 @@ public class MyPartyTest {
 	
 	@Rule public TestName name = new TestName();
 	
-	static PartyDaoImpl dao;
+	static FrontPartyService service;
 	static Calendar dateParty1, timeParty1, dateBegin1, dateEnd1;
 	static Calendar dateParty2, timeParty2, dateBegin2, dateEnd2;
 	static Calendar dateParty3, timeParty3, dateBegin3, dateEnd3;
@@ -48,7 +48,7 @@ public class MyPartyTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		dao = new PartyDaoImpl();
+		service = FrontPartyService.getInstance();
 		dateParty1 = new GregorianCalendar(2013, 04, 15);
 		timeParty1 = new GregorianCalendar(0, 0, 0, 20, 30, 0);
 		dateBegin1 = new GregorianCalendar(2013, 04, 01);
@@ -81,11 +81,11 @@ public class MyPartyTest {
 	@Test
 	public void testA_AddArtist(){
 		try {
-			dao.addArtist(artist1);
-			dao.addArtist(artist2);
-			dao.addArtist(artist3);
-			assertEquals("INDOCHINE", dao.getArtistByName("INDOCHINE").getName());
-			assertFalse(dao.getAllArtists().isEmpty());
+			service.addArtist(artist1);
+			service.addArtist(artist2);
+			service.addArtist(artist3);
+			assertEquals("INDOCHINE", service.getArtistByName("INDOCHINE").getName());
+			assertFalse(service.getAllArtists().isEmpty());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testAddArtist");
 			e.printStackTrace();
@@ -94,11 +94,11 @@ public class MyPartyTest {
 	
 	@Test
 	public void testB_AddParty(){
-		try {
-			dao.addParty(party1);
-			dao.addParty(party2);
-			dao.addParty(party3);
-			assertFalse(dao.getAllParties().isEmpty());
+		try {	
+			service.addParty(party1);
+			service.addParty(party2);
+			service.addParty(party3);
+			assertFalse(service.getAllParties().isEmpty());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testAddParty");
 			e.printStackTrace();
@@ -108,10 +108,10 @@ public class MyPartyTest {
 	@Test
 	public void testC_UpdateParty(){
 		try {
-			Party p1 = dao.getParty(1);
+			Party p1 = service.getParty(1);
 			p1.setNbPlace(500);
-			dao.updateParty(p1);
-			Party p2 = dao.getParty(1);
+			service.updateParty(p1);
+			Party p2 = service.getParty(1);
 			assertEquals(500, p2.getNbPlace());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testupdateParty");
@@ -119,11 +119,33 @@ public class MyPartyTest {
 		}
 	}
 	
-	//@Test
-	public void testD_DeleteParty(){
+	@Test
+	public void testD_PartiesNotValidated(){
 		try {
-			dao.deleteParty(1);
-			assertTrue(dao.getAllParties().isEmpty());
+			assertEquals(3, service.getAllPartiesNotValidated().size());
+		} catch (Exception e) {
+			LOG.error("erreur lors de l'execution de la methode testValidatePart");
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testE_ValidateParty(){
+		try {
+			service.ValidateParty(1);
+			service.ValidateParty(2);
+			assertEquals(1, service.getAllPartiesNotValidated().size());
+		} catch (Exception e) {
+			LOG.error("erreur lors de l'execution de la methode testValidatePart");
+			e.printStackTrace();
+		}
+	}
+	
+	//@Test
+	public void testF_DeleteParty(){
+		try {
+			service.deleteParty(1);
+			assertTrue(service.getAllParties().isEmpty());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testDeleteParty");
 			e.printStackTrace();
@@ -131,10 +153,9 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testE_PartiesNotBegun(){
+	public void testG_PartiesNotBegun(){
 		try {
-			dao.getPartiesNotBegun();
-			assertFalse(dao.getAllParties().isEmpty());
+			assertFalse(service.getPartiesNotBegun().isEmpty());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesNotBegun");
 			e.printStackTrace();
@@ -142,11 +163,11 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testF_PartiesNotBegunMaxResult(){
+	public void testH_PartiesNotBegunMaxResult(){
 		List<Party> list = new ArrayList<Party>();
 		try {
-			list = dao.getPartiesNotBegunMaxResult(0, 3);
-			assertEquals(3, list.size());
+			list = service.getPartiesNotBegunMaxResult(0, 3);
+			assertEquals(2, list.size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesNotBegunMaxResult");
 			e.printStackTrace();
@@ -154,12 +175,12 @@ public class MyPartyTest {
 	}
 	
 	@Test
-	public void testG_PartiesCriteria(){
+	public void testI_PartiesCriteria(){
 		List<Party> list = new ArrayList<Party>();
 		Calendar calendar = new GregorianCalendar(2013, 04, 15);
 		Calendar time = new GregorianCalendar(0, 0, 0, 20, 30, 00);
 		try {
-			list = dao.getPartiesCriteria(25.50, 30.00, calendar, time);
+			list = service.getPartiesCriteria(25.50, 30.00, calendar, time);
 			assertEquals(1, list.size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesCriteria");

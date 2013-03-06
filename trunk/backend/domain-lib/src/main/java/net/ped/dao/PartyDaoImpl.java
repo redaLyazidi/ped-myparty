@@ -2,10 +2,7 @@ package net.ped.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -153,6 +150,27 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			closeEntityManager();
 		}
 	}
+	
+	public List<Party> getAllPartiesNotValidated(){
+		LOG.info("> getAllPartiesNotValidated");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		List<Party> list=new ArrayList<Party>();
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			list = em.createQuery("from Party u inner join fetch u.artists " +
+			"where u.validated=false").getResultList();
+			tx.commit();
+			LOG.debug("la recherche a reussi, taille du resultat : "+ list.size());
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction getAllPartiesNotValidated", re);
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return list;
+	}
 
 	public void deleteParty(int id) throws Exception{
 		LOG.info("> deleteParty");
@@ -233,7 +251,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			tx = em.getTransaction();
 			tx.begin();
 			Query query = em.createQuery("from Party u " +
-					"inner join fetch u.artists where u.dateParty>:param");
+					"inner join fetch u.artists where u.dateParty>:param and u.validated=true");
 			query.setParameter("param", Calendar.getInstance());
 			list = query.getResultList();
 			tx.commit();
@@ -257,7 +275,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			tx = em.getTransaction();
 			tx.begin();
 			Query query = em.createQuery("from Party u " +
-					"inner join fetch u.artists where u.dateParty>:param order by u.dateParty");
+					"inner join fetch u.artists where u.dateParty>:param and u.validated=true order by u.dateParty");
 			query.setParameter("param", Calendar.getInstance());
 			query.setFirstResult(startPosition);
 			query.setMaxResults(length);
@@ -288,6 +306,10 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			criteriaQuery.select(from);
 
 			List<Predicate> list = new ArrayList<Predicate>();
+			
+			Predicate p0 = criteria.equal(from.get("validated"), true);
+			list.add(p0);
+			
 			if(priceBegin != 0 && priceEnd != 0){
 				LOG.debug("ajout prix");
 				Predicate p1 = criteria.between(from.<Double>get("price"), priceBegin, priceEnd);

@@ -39,6 +39,11 @@ public interface InterfaceFrontPartyService {
 	public void updateParty(Party p);
 	
 	/**
+	 * valide une party -> l'étape de création de billet a été faite
+	 */
+	public void ValidateParty(int id);
+	
+	/**
 	 * supprime une party
 	 */
 	public void deleteParty(int id);
@@ -56,20 +61,26 @@ public interface InterfaceFrontPartyService {
 	public List<Party> getAllParties();
 	
 	/**
-	 * obtient les party qui n'ont pas encore commencé
+	 * obtient toutes les party n'ayant pas été validées 
+	 * @return List<Party>
+	 */
+	public List<Party> getAllPartiesNotValidated();
+	
+	/**
+	 * obtient les party qui n'ont pas encore commencé et étant validées
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesNotBegun();
 	
 	/**
-	 * obtient les "length" party qui n'ont pas encore commencé à partir de la position "startPosition"
+	 * obtient les "length" party qui n'ont pas encore commencé à partir de la position "startPosition" et étant validées
 	 * classement de la party la plus proche à la plus lointaine
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesNotBegunMaxResult(int startPosition, int length);
 	
 	/**
-	 * obtient toutes les party suivant différents critères
+	 * obtient toutes les party suivant différents critères et étant validées
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time);
