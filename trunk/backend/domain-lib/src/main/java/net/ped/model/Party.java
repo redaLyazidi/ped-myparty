@@ -2,11 +2,8 @@ package net.ped.model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,13 +13,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 
 @Entity
-//@XmlRootElement(name = "party")
 public class Party implements java.io.Serializable{
 
 	@Id
@@ -46,6 +39,7 @@ public class Party implements java.io.Serializable{
 	private int nbPlaceBought = 0;
 	private int nbPlaceScanned = 0;
 	private String image;
+	private String pathTicket;
 	private boolean validated = false;
 	
 	private String street;
@@ -81,7 +75,6 @@ public class Party implements java.io.Serializable{
 		this.artists = artists;
 	}
 
-	//@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -90,7 +83,6 @@ public class Party implements java.io.Serializable{
 		this.id = id;
 	}
 
-	//@XmlElement
 	public String getTitle() {
 		return title;
 	}
@@ -99,7 +91,6 @@ public class Party implements java.io.Serializable{
 		this.title = title;
 	}
 	
-	//@XmlElement(type=Date.class)
 	public Calendar getDateParty() {
 		return dateParty;
 	}
@@ -116,7 +107,6 @@ public class Party implements java.io.Serializable{
 		this.timeParty = timeParty;
 	}
 
-	//@XmlElement(type=Date.class)
 	public Calendar getDateBegin() {
 		return dateBegin;
 	}
@@ -125,7 +115,6 @@ public class Party implements java.io.Serializable{
 		this.dateBegin = dateBegin;
 	}
 
-	//@XmlElement(type=Date.class)
 	public Calendar getDateEnd() {
 		return dateEnd;
 	}
@@ -134,7 +123,6 @@ public class Party implements java.io.Serializable{
 		this.dateEnd = dateEnd;
 	}
 
-	//@XmlElement
 	public String getDescription() {
 		return description;
 	}
@@ -143,7 +131,6 @@ public class Party implements java.io.Serializable{
 		this.description = description;
 	}
 
-	//@XmlElement
 	public int getNbPlace() {
 		return nbPlace;
 	}
@@ -152,7 +139,6 @@ public class Party implements java.io.Serializable{
 		this.nbPlace = nbPlace;
 	}
 
-	//@XmlElement
 	public String getTheme() {
 		return theme;
 	}
@@ -161,7 +147,6 @@ public class Party implements java.io.Serializable{
 		this.theme = theme;
 	}
 
-	//@XmlElement
 	public double getPrice() {
 		return price;
 	}
@@ -178,7 +163,6 @@ public class Party implements java.io.Serializable{
 		this.image = image;
 	}
 
-	//@XmlElement
 	public int getNbPlaceBought() {
 		return nbPlaceBought;
 	}
@@ -187,7 +171,6 @@ public class Party implements java.io.Serializable{
 		this.nbPlaceBought = nbPlaceBought;
 	}
 
-	//@XmlTransient
 	public int getNbPlaceScanned() {
 		return nbPlaceScanned;
 	}
@@ -228,13 +211,20 @@ public class Party implements java.io.Serializable{
 		this.place = place;
 	}
 	
-	//@XmlElement
 	public List<Artist> getArtists() {
 		return artists;
 	}
 
 	public void setArtists(List<Artist> artists) {
 		this.artists = artists;
+	}
+
+	public String getPathTicket() {
+		return pathTicket;
+	}
+
+	public void setPathTicket(String pathTicket) {
+		this.pathTicket = pathTicket;
 	}
 
 	public boolean isValidated() {

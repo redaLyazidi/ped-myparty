@@ -80,11 +80,12 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		}
 	}
 	
-	public void ValidateParty(int id){
+	public void ValidateParty(int id, String pathTicket){
 		Party party = new Party();
 		try {
 			party = dao.getParty(id);
 			party.setValidated(true);
+			party.setPathTicket(pathTicket);
 			dao.updateParty(party);
 		} catch (Exception e) {
 			e.printStackTrace();
