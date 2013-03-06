@@ -140,7 +140,7 @@ public class AccueilBean implements Serializable {
 	
 	public void preRenderView() {  
 	      HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );  
-	   } 
+	} 
 	 
 
 }
