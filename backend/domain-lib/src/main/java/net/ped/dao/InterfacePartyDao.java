@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.ped.model.Artist;
 import net.ped.model.Party;
+import net.ped.model.User;
 
 
 public interface InterfacePartyDao {
@@ -86,5 +87,16 @@ public interface InterfacePartyDao {
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesCriteria(double priceBegin, double priceEnd, Calendar date, Calendar time) throws Exception;
+	
+	/**
+	 * ajoute un user
+	 */
+	public void addUser(User u) throws Exception;
+	
+	/**
+	 * obtient un user via son identifiant
+	 * @return User
+	 */
+	public User getUser(int id) throws Exception;
 
 }

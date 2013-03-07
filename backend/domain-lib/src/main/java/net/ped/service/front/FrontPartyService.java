@@ -8,6 +8,7 @@ import net.ped.dao.InterfacePartyDao;
 import net.ped.dao.PartyDaoImpl;
 import net.ped.model.Artist;
 import net.ped.model.Party;
+import net.ped.model.User;
 
 public class FrontPartyService implements InterfaceFrontPartyService{
 	
@@ -169,5 +170,23 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public void addUser(User u){
+		try {
+			dao.addUser(u);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public User getUser(int id){
+		User u = new User();
+		try {
+			u = dao.getUser(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return u;
 	}
 }
