@@ -23,7 +23,7 @@ public interface InterfaceRestPartyService {
 	@POST
 	@Path("/connexion")
 	@Produces("application/json")
-	public Response connexion(User u);
+	public Response connexion(String login, String password);
 	
 	
 	/**
