@@ -270,7 +270,24 @@ public class CreateParty implements Serializable{
 				IOUtils.closeQuietly(input);
 				IOUtils.closeQuietly(output);
 			} 
-		}  
+		}
+		
+		if(dateBegin.after(dateEnd)){
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "La date de début des préventes doit se situer avant la date de fin des préventes", "");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		if(dateBegin.after(dateParty) || dateEnd.after(dateParty)){
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Les dates de début/fin de préventes doivent se situer avant la date de la party", "");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		if(Calendar.getInstance().getTime().after(dateParty) || Calendar.getInstance().getTime().after(dateBegin) || Calendar.getInstance().getTime().after(dateEnd)){
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de choisir une date déjà passée", "");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
+		
 
 		Party party = new Party();
 		party.setImage(filename);
@@ -304,7 +321,7 @@ public class CreateParty implements Serializable{
 		party.setArtists(selectedArtists);
 		FrontPartyService.getInstance().addParty(party);
 
-		FacesMessage msg = new FacesMessage("Succesful", "La party a été créée");
+		FacesMessage msg = new FacesMessage("La party a été créée");
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
 	}
 }

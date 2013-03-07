@@ -52,7 +52,7 @@
 	 	<div class="row-fluid">
 	 		<div class="span12">
 	 			<h3>Créez une nouvelle Party</h3>
-	 			<p:messages showDetail="true" />
+	 			<p:messages/>
 	 			
 	 			<div class="row-fluid">
 	 				<div class="span6">
@@ -60,27 +60,30 @@
 	 					<h1><small>Description</small></h1>
 						
 						<label class="labelForm">Intitulé de la party</label>
-						<p:inputText value="#{createParty.title}" styleClass="span9"/>
-							
+						<p:inputText id="title" value="#{createParty.title}" required="true" requiredMessage="Champ Titre non rempli" styleClass="span9"/>
+						
 						<label class="labelForm">Description</label>
 						<p:inputTextarea rows="6" cols="33"
-							value="#{createParty.description}" styleClass="span9"/>
+							value="#{createParty.description}" required="true" requiredMessage="Champ Description non rempli" styleClass="span9"/>
 								
 						<label class="labelForm">Thème</label> 
-					       <p:selectOneMenu value="#{createParty.selectedTheme}" effect="fade">  
+					       <p:selectOneMenu value="#{createParty.selectedTheme}" effect="fade" required="true" requiredMessage="Champ Thème non rempli">  
 					           <f:selectItem itemLabel="Selectionner" itemValue="" />  
 					           <f:selectItems value="#{createParty.themes}"/>  
 					       </p:selectOneMenu> 
 						
 						<label class="labelForm">Image</label>
-						<p:fileUpload value="#{createParty.file}" mode="simple"/>
+						<p:fileUpload value="#{createParty.file}" mode="simple" required="true" requiredMessage="Champ Image non rempli"/>
 						
 						<label class="labelForm">Prix</label>
-						<p:inputText value="#{createParty.price}" styleClass="span6"/>
+						<p:inputText value="#{createParty.price}" label="Prix" required="true" requiredMessage="Champ Prix non rempli" styleClass="span6">
+							<f:convertNumber type="number" />
+						</p:inputText>
 						
 						<label class="labelForm">Nombre de places</label>
-						<p:inputText value="#{createParty.nbPlace}" styleClass="span6"/>	
-							
+						<p:inputText value="#{createParty.nbPlace}" label="Nombre de places" required="true" requiredMessage="Champ Nombre de places non rempli" styleClass="span6">	
+							<f:convertNumber integerOnly="true" type="number" />
+						</p:inputText>
 						
 					</div>
 					
@@ -88,24 +91,24 @@
 						<h1><small>Dates</small></h1>
 							
 		 					<label class="labelForm">Date de la party</label>
-							<p:calendar value="#{createParty.dateParty}" id="popupCal1"/>
+							<p:calendar value="#{createParty.dateParty}" id="popupCal1" required="true" requiredMessage="Champ Date party non rempli"/>
 		 						
 		 					<label class="labelForm">Heure</label>
-		 					<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade" style="width:100px;">  
+		 					<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade" style="width:100px;" required="true" requiredMessage="Champ Heure non rempli">  
 						    	<f:selectItem itemLabel="Choisir" itemValue="" />  
 						        <f:selectItems value="#{createParty.hour}" />  
 					       	</p:selectOneMenu>
 		 						
 		 					<label class="labelForm">Minutes</label>
-		 					<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade" style="width:100px;">  
+		 					<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade" style="width:100px;" required="true" requiredMessage="Champ Minutes non rempli">  
 						    	<f:selectItem itemLabel="Choisir" itemValue="" />  
 						    	<f:selectItems value="#{createParty.minute}"/>  
 					       	</p:selectOneMenu>
 		 						
 							<label class="labelForm">Début préventes</label>
-							<p:calendar value="#{createParty.dateBegin}" id="popupCal2" />
+							<p:calendar value="#{createParty.dateBegin}" id="popupCal2" required="true" requiredMessage="Champ Début préventes non rempli"/>
 							<label class="labelForm">Fin préventes</label>
-							<p:calendar value="#{createParty.dateEnd}" id="popupCal3" />
+							<p:calendar value="#{createParty.dateEnd}" id="popupCal3" required="true" requiredMessage="Champ Fin préventes non rempli"/>
 					</div>					
 				</div>
 				
@@ -115,16 +118,18 @@
 						<h1><small>Localisation</small></h1>
 
 						<label class="labelForm">Lieu</label>
-						<p:inputText value="#{createParty.place}" styleClass="span9"/>
+						<p:inputText value="#{createParty.place}" required="true" requiredMessage="Champ Lieu non rempli" styleClass="span9"/>
 																					
 						<label class="labelForm">Rue</label>
-						<p:inputText value="#{createParty.street}" styleClass="span9"/>
+						<p:inputText value="#{createParty.street}" required="true" requiredMessage="Champ Rue non rempli" styleClass="span9"/>
 								
 						<label class="labelForm">Code postal</label>
-						<p:inputText value="#{createParty.codepostal}" styleClass="span9"/>
-								
+						<p:inputText value="#{createParty.codepostal}" required="true" requiredMessage="Champ Code postal non rempli" validatorMessage="Code postal invalide" styleClass="span9">
+							<f:validateRegex pattern="[0-9]{5}"></f:validateRegex>
+						</p:inputText>
+							
 						<label class="labelForm">Ville</label>
-						<p:inputText value="#{createParty.town}" styleClass="span9"/>
+						<p:inputText value="#{createParty.town}" required="true" requiredMessage="Champ Ville non rempli" styleClass="span9"/>
 
 					</div>
 					
@@ -133,7 +138,7 @@
 						<h1><small>Artistes</small></h1>
 						
 						<label class="labelForm">Nom des groupes</label>
-						<p:autoComplete value="#{createParty.selectedTexts}" completeMethod="#{createParty.complete}" multiple="true" />
+						<p:autoComplete value="#{createParty.selectedTexts}" completeMethod="#{createParty.complete}" multiple="true" required="true" requiredMessage="Champ Artistes non rempli"/>
 					
 					</div>
 					
