@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.ped.model.Artist;
 import net.ped.model.Party;
+import net.ped.model.User;
 
 public interface InterfaceFrontPartyService {
 	
@@ -91,5 +92,16 @@ public interface InterfaceFrontPartyService {
 	 * @return List<Party>
 	 */
 	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time);
+	
+	/**
+	 * ajoute un user
+	 */
+	public void addUser(User u);
+	
+	/**
+	 * obtient un user via son identifiant
+	 * @return User
+	 */
+	public User getUser(int id);
 
 }

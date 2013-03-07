@@ -15,6 +15,7 @@ import javax.persistence.criteria.Root;
 
 import net.ped.model.Artist;
 import net.ped.model.Party;
+import net.ped.model.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -370,6 +371,50 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			closeEntityManager();
 		}
 		return results;
+	}
+	
+	public void addUser(User u) throws Exception{
+		LOG.info("> addUser");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			em.persist(u); 
+			tx.commit();
+			LOG.debug("Ajout du user");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction addUser",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+	}
+	
+	public User getUser(int id) throws Exception{
+		LOG.info("> getUser");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		User u = new User();
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query = em.createQuery("from User u where u.id=:param");
+			query.setParameter("param", id);
+			u = (User)query.getSingleResult();
+			tx.commit();
+			LOG.debug("User trouve");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction getUser",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return u;
 	}
 
 

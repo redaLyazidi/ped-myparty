@@ -10,9 +10,12 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.ped.dao.RESTDaoImpl;
 import net.ped.model.Artist;
 import net.ped.model.Party;
+import net.ped.model.User;
 import net.ped.service.front.FrontPartyService;
+import net.ped.service.rest.RestPartyService;
 
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
@@ -46,6 +49,8 @@ public class MyPartyTest {
 	static List<Artist> listArtists1, listArtists2, listArtists3;
 	static Party party1, party2, party3;
 	
+	static User user;
+	
 	@BeforeClass
 	public static void setUp() throws Exception {
 		service = FrontPartyService.getInstance();
@@ -76,6 +81,8 @@ public class MyPartyTest {
 		party1 = new Party("JOHNNY HALLYDAY en tournée dans toute la France", dateParty1, timeParty1, dateBegin1, dateEnd1, "succes enorme en France", 200, "variete", 25.50, "johnny-hallyday.jpg", "95, Cours Maréchal Juin", "Bordeaux", "33000", "PATINOIRE MERIADECK", listArtists1);
 		party2 = new Party("COEUR DE PIRATE en tournée Solo", dateParty2, timeParty2, dateBegin2, dateEnd2, "succes enorme en France", 200, "pop-rock", 50.50, "coeur-de-pirate.jpg", "10, rue de Grassi", "Bordeaux", "33000", "THEATRE FEMINA", listArtists2);
 		party3 = new Party("INDOCHINE Black City Tour 2", dateParty3, timeParty3,dateBegin3, dateEnd3, "succes enorme en France", 200, "pop-rock", 100.50, "indochine.jpg", "95, Cours Maréchal Juin", "Bordeaux", "33000", "PATINOIRE MERIADECK", listArtists3);
+	
+		user = new User("Jean", "Dujardin", "jean", "123", "admin");
 	}
 	
 	@Test
@@ -191,6 +198,12 @@ public class MyPartyTest {
 			LOG.error("erreur lors de l'execution de la methode testPartiesCriteria");
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testK_addUser(){
+		service.addUser(user);
+		assertEquals("Jean", service.getUser(1).getFirstname());
 	}
 	
 	@After
