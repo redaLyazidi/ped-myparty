@@ -15,11 +15,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.UploadedFile;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.ped.constante.ConstantesWeb.ThemeParty;
 import net.ped.model.Artist;
@@ -30,6 +32,9 @@ import net.ped.service.front.FrontPartyService;
 @ViewScoped
 public class CreateParty implements Serializable{
 
+	private static final Logger LOG = LoggerFactory.getLogger(CreateParty.class);
+	private static final String imageUploadPath = "/resources/upload";
+	
 	private UploadedFile file;
 	private String title;
 	private String description;
@@ -248,10 +253,16 @@ public class CreateParty implements Serializable{
 			filename = FilenameUtils.getName(file.getFileName());
 			InputStream input=null;
 			OutputStream output=null;
+			ServletContext sc = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+			String webappPath = sc.getRealPath("/");
+			
 			try {
 				input = file.getInputstream();
 				// à changer en mettant la destination de son workspace
-				output = new FileOutputStream(new File("//D://Fac//AL//workspace//trunk//frontend//src//main//webapp//resources//upload" + "//", filename));
+				output = new FileOutputStream(new File(webappPath + imageUploadPath, filename));
+				if( output == null)
+					LOG.debug("REP FAUX\n");
+//				output = new FileOutputStream(new File("//D://Fac//AL//workspace//trunk//frontend//src//main//webapp//resources//upload" + "//", filename));
 				IOUtils.copy(input, output);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -286,13 +297,14 @@ public class CreateParty implements Serializable{
 		
 		selectedArtists = new ArrayList<Artist>();
 		for(String s : selectedTexts){
+			LOG.debug("DEBUG: " + s);
 			selectedArtists.add(FrontPartyService.getInstance().getArtistByName(s));
 		}
 		
 		party.setArtists(selectedArtists);
 		FrontPartyService.getInstance().addParty(party);
 
-		FacesMessage msg = new FacesMessage("Succesful", "La party a été créée");  
+		FacesMessage msg = new FacesMessage("Succesful", "La party a été créée");
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
 	}
 }
