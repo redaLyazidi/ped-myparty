@@ -5510,7 +5510,7 @@ $.SvgCanvas = function(container, config)
             type : 'POST',
             async : false,
             url : route,
-            data : 'svgstr=' + svgstr,
+            data : "svgstr=" + svgstr,
             success : function (data) {
                 downloadFromServer(data,route);
             }
@@ -5519,22 +5519,7 @@ $.SvgCanvas = function(container, config)
 
     function downloadFromServer(filePath, route) {
         console.log("DOWNLOAD : ", filePath, route);
-        /* jQuery.ajax({
-        type : 'GET',
-        async : false,
-        url : route,
-        data : 'url=' + filePath,
-        success : function (data) {
-            alert('svg send: ' + data);
-            console.log('data: ',data);
-            openFile(data,'application/octet-stream');
-            return true;
-        }
-    });*/
-        //    $("#tool_preview").prepend("<iframe id='toto'>toto</iframe>");
-        //    jQuery.('#toto').src
-        //    $("a#toto").attr({target: '_blank', 
-        //                      href  : route + '?url=' + filePath});
+
         var iframe = document.createElement("iframe"); 
         iframe.src = route + '?url=' + filePath; 
         iframe.style.display = "none"; 
