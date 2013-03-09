@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="30dip"
+    android:id="@+id/screen" android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:gravity="center_vertical">
+
+<TextView android:id="@+id/title" android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:text="MyParty"
+    android:padding="20dip" 
+    android:layout_gravity="center" />
+
+<EditText android:id="@+id/login" android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:text="@string/login"
+    android:padding="20dip" 
+    android:onClick="clearField"
+    android:layout_gravity="center" />
+
+<EditText android:padding="20dip"
+    android:id="@+id/pwd" android:layout_height="wrap_content"
+    android:inputType="textWebPassword"
+    android:onClick="clearField"
+    android:text="@string/pwd" android:layout_width="fill_parent"
+    android:layout_gravity="center" />
+    
+<Button android:padding="20dip"
+    android:id="@+id/confirm" android:layout_height="wrap_content"
+    android:text="Confirmer" android:layout_width="fill_parent" 
+    android:layout_gravity="center"
+    android:onClick="performLogin" />
+    
+ <EditText android:padding="20dip"
+    android:background="#ff6666"
+    android:id="@+id/error" android:layout_height="wrap_content"
+    android:text="@string/error_login" android:layout_width="fill_parent"
+    android:visibility="invisible"
+    android:layout_gravity="center" />
+
+</LinearLayout>
