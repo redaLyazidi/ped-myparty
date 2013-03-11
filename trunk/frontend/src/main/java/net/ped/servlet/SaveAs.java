@@ -13,6 +13,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.ped.shared.Commons;
 import net.ped.shared.PedHttpServlet;
 
 import org.apache.commons.io.IOUtils;
@@ -38,7 +39,7 @@ public class SaveAs extends PedHttpServlet {
 		File tempFile = File.createTempFile("ticket", ".svg");
 		LOG.info(tempFile.getPath());
 		LOG.info(getServletContext().getMimeType(tempFile.getName()));
-
+		Commons.getPartySvgFile(0);
 		// write to file
 		FileWriter fw = new FileWriter(tempFile);
 		try {
