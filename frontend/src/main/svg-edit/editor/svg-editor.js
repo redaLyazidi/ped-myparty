@@ -14,6 +14,7 @@
 // 1) units.js
 // 2) browser.js
 // 3) svgcanvas.js
+var mypartyurlbase = '/myparty-frontend';
 
 if (!alert)
     alert = window.alert;
@@ -72,7 +73,9 @@ if (!alert)
             snappingStep: 10,
             showRulers: true,
             shortcuts: true,
-            saveAsUrl: self.location.protocol + '//' + self.location.host + '/myparty-frontend/saveas'
+            saveAsUrl: self.location.protocol + '//' + self.location.host + mypartyurlbase + '/saveas',
+            sendsvgtoserver: self.location.protocol + '//' + self.location.host + mypartyurlbase + '/storesvgtickets',
+            sendsvgtopdf : self.location.protocol + '//' + self.location.host + mypartyurlbase + '/convertsvg'
         },
         uiStrings = Editor.uiStrings = {
             common: {
@@ -370,7 +373,7 @@ if (!alert)
                     'arrow_right':'flyouth.png',
                     'arrow_down':'dropdown.gif'
 
-                    //'myparty_qrcode':'myparty/qrcode.png'
+                //'myparty_qrcode':'myparty/qrcode.png'
                 },
                 placement: {
                     '#logo':'logo',
@@ -2589,7 +2592,7 @@ if (!alert)
 				, else:
 				- Just run its stuff
 
-			*/
+ */
 
             // Unfocus text input when workarea is mousedowned.
             (function() {
@@ -2651,6 +2654,34 @@ if (!alert)
                 }
             };
 
+            var clickPreview =function(){
+                if (toolButtonClick('#tool_preview')) {
+                    jQuery.alert('Preview clicked');
+                    jQuery.post(curConfig.sendsvgtopdf, {
+                        'svgstr' : svgCanvas.svgCanvasToString()
+                        },
+                        function (data) {
+                            console.log('data: ',data);
+                            jQuery.alert('Server is ok');
+                        });
+                }
+            };
+            
+            var clickValidate = function(){
+                if (toolButtonClick('#tool_validate')) {
+                    jQuery.post(curConfig.sendsvgtoserver, {
+                        'svgstr' : svgCanvas.svgCanvasToString()
+                        },
+                    function (data) {
+                        console.log('data: ',data);
+                        jQuery.alert('Response from the server: ' + data);
+                        if(data === true) 
+                            jQuery.alert('Response from the server: ' + data);
+                        if(data === 'true')
+                            jQuery.alert('Raté: ' + data);
+                    });
+                }
+            };
             var clickCircle = function(){
                 if (toolButtonClick('#tool_circle')) {
                     svgCanvas.setMode('circle');
@@ -4349,8 +4380,14 @@ if (!alert)
                 },
 
                 {
+                    sel:'#tool_preview',
+                    fn: clickPreview,
+                    evt: 'click'
+                },
+                
+                {
                     sel:'#tool_validate',
-                    fn: null,
+                    fn: clickValidate,
                     evt: 'click'
                 },
 

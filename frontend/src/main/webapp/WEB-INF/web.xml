@@ -144,7 +144,7 @@
 	<!-- ticketsDir -->
 	<context-param>
 		<param-name>ticketsDir</param-name>
-		<param-value>resources/tickets</param-value>
+		<param-value>resources/tickets/</param-value>
 	</context-param>
 	
 	<!-- SVG QRcode TAG -->
