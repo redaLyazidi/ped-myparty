@@ -25,6 +25,13 @@
  <servlet-name>Faces Servlet</servlet-name>
 </filter-mapping>
 
+<!--  Dummy servlet to get the context -->
+<servlet>
+  <servlet-name>My Servlet</servlet-name>
+  <servlet-class>net.ped.shared.MyHttpServlet</servlet-class>
+  <load-on-startup>0</load-on-startup>
+</servlet>
+
 <!-- proxy for images -->
 <servlet>
  <servlet-name>Images Proxy</servlet-name>
@@ -52,7 +59,30 @@
  <servlet-name>Save as</servlet-name>
  <url-pattern>/saveas</url-pattern>
 </servlet-mapping>
-  
+ 
+
+<!-- Storing SVG -->
+<servlet>
+ <servlet-name>StoreSvgTickets</servlet-name>
+ <servlet-class>net.ped.servlet.StoreSvgTickets</servlet-class>
+</servlet>
+
+<servlet-mapping>
+ <servlet-name>StoreSvgTickets</servlet-name>
+ <url-pattern>/storesvgtickets</url-pattern>
+</servlet-mapping>
+<!-- Convert SVG -->
+<servlet>
+ <servlet-name>ConvertSvg</servlet-name>
+ <servlet-class>net.ped.servlet.ConvertSvg</servlet-class>
+</servlet>
+
+<servlet-mapping>
+ <servlet-name>ConvertSvg</servlet-name>
+ <url-pattern>/convertsvg</url-pattern>
+</servlet-mapping>
+ 
+
   <!-- Map these files with JSF -->
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -109,6 +139,12 @@
 	<context-param>
 		<param-name>resteasy.servlet.mapping.prefix</param-name>
 		<param-value>/rest</param-value>
+	</context-param>
+	
+	<!-- ticketsDir -->
+	<context-param>
+		<param-name>ticketsDir</param-name>
+		<param-value>resources/tickets</param-value>
 	</context-param>
 	
 	
