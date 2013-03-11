@@ -147,5 +147,10 @@
 		<param-value>resources/tickets</param-value>
 	</context-param>
 	
+	<!-- SVG QRcode TAG -->
+	<context-param>
+		<param-name>svgQRcodetag</param-name>
+		<param-value>xlink:href="images/myparty/qrcode.png"</param-value>
+	</context-param>
 	
 </web-app>
