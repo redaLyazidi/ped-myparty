@@ -19,11 +19,11 @@ public class RestPartyService implements InterfaceRestPartyService{
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RestPartyService.class);
 	
-	public Response connexion(String login, String password){
-		User user = new User();
+	public Response connexion(User user){
+		User user2 = new User();
 		try {
-			user = daoREST.connexion(login, password);
-			return Response.ok(user).build();
+			user2 = daoREST.connexion(user.getLogin(), user.getPassword());
+			return Response.ok(user2).build();
 		} catch (Exception e) {
 			LOG.error("erreur creation connection couche service");
 			e.printStackTrace();

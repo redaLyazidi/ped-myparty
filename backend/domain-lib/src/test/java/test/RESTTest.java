@@ -38,7 +38,7 @@ public class RESTTest {
 	//@Test
 	public void testL_connexion(){
 		User userTest = new User();
-		userTest.setLogin("jean");
+		userTest.setLogin("test");
 		userTest.setPassword("123");
 
 		try {
