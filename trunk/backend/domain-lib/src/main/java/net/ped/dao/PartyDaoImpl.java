@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -433,7 +434,9 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 			u = (User)query.getSingleResult();
 			tx.commit();
 			LOG.debug("User trouve, login ok");
-		}catch(Exception re){
+		}catch (NoResultException nre) {
+			LOG.debug("L'utilisateur n'existe pas");
+		}catch(RuntimeException re){
 			if(tx!=null)
 				LOG.error("Erreur dans la fonction login",re);
 			tx.rollback();
