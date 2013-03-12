@@ -10,10 +10,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.ped.dao.BillingDaoImpl;
 import net.ped.dao.RESTDaoImpl;
 import net.ped.model.Artist;
+import net.ped.model.Customer;
 import net.ped.model.Party;
 import net.ped.model.User;
+import net.ped.service.front.FrontBillingService;
 import net.ped.service.front.FrontPartyService;
 import net.ped.service.rest.RestPartyService;
 
@@ -42,6 +45,7 @@ public class MyPartyTest {
 	@Rule public TestName name = new TestName();
 	
 	static FrontPartyService service;
+	static FrontBillingService serviceBilling;
 	static Calendar dateParty1, timeParty1, dateBegin1, dateEnd1;
 	static Calendar dateParty2, timeParty2, dateBegin2, dateEnd2;
 	static Calendar dateParty3, timeParty3, dateBegin3, dateEnd3;
@@ -50,10 +54,12 @@ public class MyPartyTest {
 	static Party party1, party2, party3;
 	
 	static User user;
+	static Customer customer;
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
 		service = FrontPartyService.getInstance();
+		serviceBilling = FrontBillingService.getInstance();
 		dateParty1 = new GregorianCalendar(2013, 04, 15);
 		timeParty1 = new GregorianCalendar(0, 0, 0, 20, 30, 0);
 		dateBegin1 = new GregorianCalendar(2013, 04, 01);
@@ -83,6 +89,7 @@ public class MyPartyTest {
 		party3 = new Party("INDOCHINE Black City Tour 2", dateParty3, timeParty3,dateBegin3, dateEnd3, "succes enorme en France", 200, "pop-rock", 100.50, "indochine.jpg", "95, Cours Maréchal Juin", "Bordeaux", "33000", "PATINOIRE MERIADECK", listArtists3);
 	
 		user = new User("Jean", "Dujardin", "jean", "123", "admin");
+		customer = new Customer("Patrick", "George", "pg@gmail.com");
 	}
 	
 	@Test
@@ -139,8 +146,8 @@ public class MyPartyTest {
 	@Test
 	public void testE_ValidateParty(){
 		try {
-			service.ValidateParty(1,"test.svg");
-			service.ValidateParty(2,"test.svg");
+			service.ValidateParty(1);
+			service.ValidateParty(2);
 			assertEquals(1, service.getAllPartiesNotValidated().size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testValidatePart");
@@ -192,7 +199,7 @@ public class MyPartyTest {
 		Calendar calendar = new GregorianCalendar(2013, 04, 15);
 		Calendar time = new GregorianCalendar(0, 0, 0, 20, 30, 00);
 		try {
-			list = service.getPartiesCriteria(25.50, 30.00, calendar, time);
+			list = service.getPartiesCriteria(0,5,25.50, 30.00, calendar, time);
 			assertEquals(1, list.size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesCriteria");
@@ -204,6 +211,13 @@ public class MyPartyTest {
 	public void testK_addUser(){
 		service.addUser(user);
 		assertEquals("Jean", service.getUser(1).getFirstname());
+	}
+	
+	@Test
+	public void testL_addCustomer(){
+		serviceBilling.addCustomer(customer);
+		serviceBilling.addCustomer(customer);
+		assertEquals(1,serviceBilling.getCustomer("Patrick", "George", "pg@gmail.com").getId());
 	}
 	
 	@After

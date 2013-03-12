@@ -84,9 +84,10 @@ public interface InterfacePartyDao {
 	
 	/**
 	 * obtient toutes les party suivant différents critères et étant validées
+	 * prend également en compte le nombre de résultats retournés
 	 * @return List<Party>
 	 */
-	public List<Party> getPartiesCriteria(double priceBegin, double priceEnd, Calendar date, Calendar time) throws Exception;
+	public List<Party> getPartiesCriteria(int startPosition, int length, double priceBegin, double priceEnd, Calendar date, Calendar time) throws Exception;
 	
 	/**
 	 * ajoute un user

@@ -81,12 +81,11 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		}
 	}
 	
-	public void ValidateParty(int id, String pathTicket){
+	public void ValidateParty(int id){
 		Party party = new Party();
 		try {
 			party = dao.getParty(id);
 			party.setValidated(true);
-			party.setPathTicket(pathTicket);
 			dao.updateParty(party);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -161,11 +160,11 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		return list;
 	}
 
-	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd,
+	public List<Party> getPartiesCriteria(int startPosition, int length, Double priceBegin, Double priceEnd,
 			Calendar date, Calendar time){
 		List<Party> list = new ArrayList<Party>();
 		try {
-			list = dao.getPartiesCriteria(priceBegin, priceEnd, date, time);
+			list = dao.getPartiesCriteria(startPosition,length,priceBegin, priceEnd, date, time);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

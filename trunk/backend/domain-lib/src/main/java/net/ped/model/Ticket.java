@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -14,22 +15,22 @@ public class Ticket implements java.io.Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@OneToOne
-	@JoinColumn(name="PARTY_FK", nullable=false)
+	@ManyToOne
 	private Party party;
-	private String firstname;
-	private String lastname;
-	private String mail;
 	
+	@ManyToOne
+	private Customer customer;
+	
+	private String secretCode;
+
 	public Ticket() {
 
 	}
 
-	public Ticket(Party party, String firstname, String lastname, String mail) {
+	public Ticket(Party party, Customer customer, String secretCode) {
 		this.party = party;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.mail = mail;
+		this.customer = customer;
+		this.secretCode = secretCode;
 	}
 
 	public int getId() {
@@ -48,27 +49,19 @@ public class Ticket implements java.io.Serializable{
 		this.party = party;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getSecretCode() {
+		return secretCode;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setSecretCode(String secretCode) {
+		this.secretCode = secretCode;
 	}
 }
