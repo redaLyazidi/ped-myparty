@@ -1,0 +1,54 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+    
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="brand" href="accueil.xhtml"><img src="../img/logo.png"/></a>
+
+				<div class="nav-collapse collapse">
+					<h:form id="form" class="navbar-form pull-right">
+						
+						<h:panelGroup id="panelLogin" rendered="#{!loginBean.loginSuccess}">		
+							<h:inputText style="margin-right: 5px" styleClass="span2" id="mail" value="#{loginBean.login}" />				
+	        				<p:watermark for="mail" value="Email" />
+	        				
+	        				<h:inputSecret style="margin-right: 5px" styleClass="span2" id="password" value="#{loginBean.password}" />
+	        				<p:watermark for="password" value="Password" />
+	        					
+	        				<h:commandButton style="margin-right: 5px" styleClass="btn" value="Se connecter" >
+	        					<f:ajax listener="#{loginBean.connect}" render=":form:panelLoginSucces :form:panelLogin :form2:panelGestParty"/>
+	        				</h:commandButton>
+	        				
+	        				<h:outputText style="color: red" value="#{loginBean.errorMsg}" rendered="#{loginBean.connectFailed}"/>        				
+        				</h:panelGroup>
+        				
+        				<h:panelGroup id="panelLoginSucces" rendered="#{loginBean.loginSuccess}">
+							<h:outputText style="margin-right: 5px; color: white" value="Bienvenue #{loginBean.userLogged.firstname} #{loginBean.userLogged.lastname}.&#160;&#160;&#160;" />
+							
+							<h:commandButton styleClass="btn" value="Se déconnecter" action="#{loginBean.logout}">
+								<f:ajax listener="#{loginBean.logout}" render=":form:panelLoginSucces :form:panelLogin :form2:panelGestParty"/>
+	        				</h:commandButton>			
+        				
+        				</h:panelGroup>
+        				   
+					</h:form>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+    
+    
+</ui:composition>

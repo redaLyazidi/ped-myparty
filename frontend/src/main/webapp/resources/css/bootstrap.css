@@ -6187,6 +6187,24 @@ a.badge:focus {
 	margin-top: -10px;
 }
 
+.ongletNewParty{
+	background-color: #EFF6FA;
+}
+
+.bandeauGestParty{
+	background: #191919; 
+	height: 36px; 
+	margin-top: -10px;
+}
+
+.itemGestParty {
+	padding: 10px;
+}
+
+.GestPartyLinks {
+	color: black;
+}
+
 .formPadding{
 	padding: 10px;
 }
