@@ -189,4 +189,14 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		}
 		return u;
 	}
+	
+	public User login(String login, String password) {
+		User u = new User();
+		try {
+			u = dao.login(login, password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return u;
+	}
 }

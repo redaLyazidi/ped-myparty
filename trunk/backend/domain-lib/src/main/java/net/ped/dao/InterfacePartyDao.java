@@ -98,5 +98,11 @@ public interface InterfacePartyDao {
 	 * @return User
 	 */
 	public User getUser(int id) throws Exception;
+	
+	/**
+	 *  Permet d'établir la connexion
+	 */
+	public User login(String login, String password) throws Exception;
+	
 
 }
