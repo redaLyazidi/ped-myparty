@@ -34,28 +34,6 @@
 				<img src="../img/concert.jpg" alt="" style="width: 1170px; max-height: 300px;"/>
 			</div>
 		
-			<h:panelGroup id="panelGestParty" rendered="#{loginBean.userAdmin}">
-				<div class="sidebar">
-					<div class="row-fluid">
-						<div class="span3">
-							<div class="well sidebar-nav ongletNewParty">
-								<div class="bandeauGestParty">
-									<h5>Gestion des party</h5>
-								</div>
-								<div class="itemGestParty">
-									<div>
-										<h:commandLink class="nav-header" value="Créer une party" action="newParty" />
-									</div>
-									<div>
-										<h:commandLink class="nav-header" value="Voir les party non validées" action="partiesNotValidated" />
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</h:panelGroup>
-		
 			<!--  Sidebar -->
 			<div class="sidebar">
 				<div class="row-fluid">
@@ -68,44 +46,44 @@
 							<div style="padding: 15px;">
 								<ul class="nav nav-list formPadding">
 									<li class="nav-header">Lieu</li>
-									<li><h:inputText value="#{searchParty.lieu}" /></li>
+									<li><h:inputText value="#{accueilBean.place}" /></li>
 									<li> 
 									
 									
 									<!-- A COMPLETER -->
 										<h:panelGrid columns="1" style="margin-bottom:10px">                      
-									        <h:outputText id="displayRange" value="PRIX ENTRE #{searchParty.priceMin} € ET #{searchParty.priceMax} €" style="font-weight:bold; font-size:11px;"/>                      
+									        <h:outputText id="displayRange" value="PRIX ENTRE #{accueilBean.priceMin} € ET #{accueilBean.priceMax} €" style="font-weight:bold; font-size:11px;"/>                      
 									        <p:slider for="min,max" display="displayRange" style="width:175px" range="true" displayTemplate="Between {min} and {max}"/>  
 								    	</h:panelGrid>  
-									    <h:inputHidden id="min" value="#{searchParty.priceMin}" />  
-									    <h:inputHidden id="max" value="#{searchParty.priceMax}" />
+									    <h:inputHidden id="min" value="#{accueilBean.priceMin}" />  
+									    <h:inputHidden id="max" value="#{accueilBean.priceMax}" />
 									<!--  -->
 									    
 								    </li>
 									<li class="nav-header">Date</li>
-									<li><p:calendar value="#{searchParty.dateParty}"
+									<li><p:calendar value="#{accueilBean.dateParty}"
 											id="popupCal" /></li>
 									<li class="nav-header">Heure</li>
 									<li> 
 									
 									
 									<!-- A COMPLETER -->
-					 					<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade" style="width:73px; float: left;">  
+					 					<p:selectOneMenu value="#{accueilBean.selectedHour}" effect="fade" style="width:73px; float: left;">  
 									    	<f:selectItem itemLabel="Choisir" itemValue="" />  
-									        <f:selectItems value="#{createParty.hour}" />
+									        <f:selectItems value="#{accueilBean.hour}" />
 								       	</p:selectOneMenu>
 								       	
 					 					<div id="essai2" style="float: left; margin-left: 10px; margin-top: 5px;">H</div>
 					 					
-					 					<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade" style="width:73px; margin-left:10px;">  
+					 					<p:selectOneMenu value="#{accueilBean.selectedMinute}" effect="fade" style="width:73px; margin-left:10px;">  
 									    	<f:selectItem itemLabel="Choisir" itemValue="" />  
-									    	<f:selectItems value="#{createParty.minute}"/>  
+									    	<f:selectItems value="#{accueilBean.minute}"/>  
 								       	</p:selectOneMenu>
 								     <!--  -->
 								       	
 								    </li>
 									<li class="active">
-										<h:commandButton class="btn btn-primary" value="RECHERCHER" ajax="false" action="#"/>
+										<h:commandButton class="btn btn-primary" value="RECHERCHER" ajax="false" action="#{accueilBean.search}"/>
 									</li>
 								</ul>
 							</div>

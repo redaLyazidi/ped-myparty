@@ -2,6 +2,8 @@ package net.ped.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +35,27 @@ public class AccueilBean implements Serializable {
 	private int numPage;
 	private Party partySelect;
 	
+	private String place;
+	private double priceMin=0;
+	private double priceMax=0;
+	private Date dateParty;
+	private int selectedHour;
+	private int selectedMinute;
+	
+	private List<Integer> hour;
+	private List<Integer> minute;
+	
+	
 	public AccueilBean(){
+		hour = new ArrayList<Integer>();
+		minute = new ArrayList<Integer>();
+		
+		for(int i=0; i<=23; i++){
+			hour.add(i);
+		}
+		for(int j=0; j<60; j=j+5){
+			minute.add(j);
+		}
 				
 		listParty = new ArrayList<Party>();
 		numPage = 0;
@@ -136,6 +158,84 @@ public class AccueilBean implements Serializable {
 
 	public void setPartySelect(Party partySelect) {
 		this.partySelect = partySelect;
+	}
+	
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
+	public double getPriceMin() {
+		return priceMin;
+	}
+
+	public void setPriceMin(double priceMin) {
+		this.priceMin = priceMin;
+	}
+
+	public double getPriceMax() {
+		return priceMax;
+	}
+
+	public void setPriceMax(double priceMax) {
+		this.priceMax = priceMax;
+	}
+
+	public Date getDateParty() {
+		return dateParty;
+	}
+
+	public void setDateParty(Date dateParty) {
+		this.dateParty = dateParty;
+	}
+
+	public int getSelectedHour() {
+		return selectedHour;
+	}
+
+	public void setSelectedHour(int selectedHour) {
+		this.selectedHour = selectedHour;
+	}
+
+	public int getSelectedMinute() {
+		return selectedMinute;
+	}
+
+	public void setSelectedMinute(int selectedMinute) {
+		this.selectedMinute = selectedMinute;
+	}
+
+	public List<Integer> getHour() {
+		return hour;
+	}
+
+	public void setHour(List<Integer> hour) {
+		this.hour = hour;
+	}
+
+	public List<Integer> getMinute() {
+		return minute;
+	}
+
+	public void setMinute(List<Integer> minute) {
+		this.minute = minute;
+	}
+
+	public void search(){
+		Calendar dateParty2 = null;
+		if(dateParty != null){
+			dateParty2 = Calendar.getInstance();
+			dateParty2.setTime(dateParty);
+		}
+		
+		try {
+			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE,priceMin, priceMax, dateParty2, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void preRenderView() {  

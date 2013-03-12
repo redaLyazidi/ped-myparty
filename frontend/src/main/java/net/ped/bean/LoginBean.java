@@ -42,9 +42,8 @@ public class LoginBean implements Serializable {
 		if(login != null && password != null ) {
 			
 			userLogged = FrontPartyService.getInstance().login(login, password);
-			//userLogged = FrontPartyService.getInstance().login("jean", "123");
 			
-			if(userLogged != null) {
+			if(userLogged.getId() != 0) {
 			
 				this.loginSuccess = true;
 				this.connectFailed = false;

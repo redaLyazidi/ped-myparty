@@ -12,37 +12,40 @@
 			<div class="container">
 				<button type="button" class="btn btn-navbar" data-toggle="collapse"
 					data-target=".nav-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</button>
 				<a class="brand" href="accueil.xhtml"><img src="../img/logo.png"/></a>
 
 				<div class="nav-collapse collapse">
-					<h:form id="form" class="navbar-form pull-right">
-						
-						<h:panelGroup id="panelLogin" rendered="#{!loginBean.loginSuccess}">		
-							<h:inputText style="margin-right: 5px" styleClass="span2" id="mail" value="#{loginBean.login}" />				
-	        				<p:watermark for="mail" value="Email" />
+				
+					<h:form id="form" styleClass="navbar-form">
+            			<ul class="nav">
+              				<li ><h:commandLink value="CREER PARTY" action="newParty" rendered="#{loginBean.userAdmin}" style="color: white"/></li>
+            				<li ><h:commandLink value="VALIDER PARTY" action="partiesNotValidated" rendered="#{loginBean.userAdmin}" style="color: white"/></li>
+            			</ul>
+					
+						<div class="pull-right">
+							<h:panelGroup id="panelLogin" rendered="#{!loginBean.loginSuccess}">
+								<h:outputText style="color: red; margin-right: 20px;" value="#{loginBean.errorMsg}" rendered="#{loginBean.connectFailed}"/>   
+									
+								<h:inputText style="margin-right: 5px" styleClass="span2" id="login" value="#{loginBean.login}" />				
+		        				<p:watermark for="login" value="Login" />
+		        				
+		        				<h:inputSecret style="margin-right: 5px" styleClass="span2" id="password" value="#{loginBean.password}" />
+		        				<p:watermark for="password" value="Password" />
+		        					
+		        				<h:commandButton style="margin-right: 5px" styleClass="btn" value="Se connecter" action="#{loginBean.connect}" render=":form:panelLoginSucces :form:panelLogin :form2:panelGestParty"/>     				
+	        				</h:panelGroup>
 	        				
-	        				<h:inputSecret style="margin-right: 5px" styleClass="span2" id="password" value="#{loginBean.password}" />
-	        				<p:watermark for="password" value="Password" />
-	        					
-	        				<h:commandButton style="margin-right: 5px" styleClass="btn" value="Se connecter" >
-	        					<f:ajax listener="#{loginBean.connect}" render=":form:panelLoginSucces :form:panelLogin :form2:panelGestParty"/>
-	        				</h:commandButton>
+	        				<h:panelGroup id="panelLoginSucces" rendered="#{loginBean.loginSuccess}">
+								<h:outputText style="margin-right: 5px; color: white" value="Bienvenue #{loginBean.userLogged.firstname} #{loginBean.userLogged.lastname}&#160;&#160;&#160;" />
+								
+								<h:commandButton styleClass="btn" value="Se déconnecter" action="#{loginBean.logout}" render=":form:panelLoginSucces :form:panelLogin :form2:panelGestParty"/>			
 	        				
-	        				<h:outputText style="color: red" value="#{loginBean.errorMsg}" rendered="#{loginBean.connectFailed}"/>        				
-        				</h:panelGroup>
-        				
-        				<h:panelGroup id="panelLoginSucces" rendered="#{loginBean.loginSuccess}">
-							<h:outputText style="margin-right: 5px; color: white" value="Bienvenue #{loginBean.userLogged.firstname} #{loginBean.userLogged.lastname}.&#160;&#160;&#160;" />
-							
-							<h:commandButton styleClass="btn" value="Se déconnecter" action="#{loginBean.logout}">
-								<f:ajax listener="#{loginBean.logout}" render=":form:panelLoginSucces :form:panelLogin :form2:panelGestParty"/>
-	        				</h:commandButton>			
-        				
-        				</h:panelGroup>
-        				   
+	        				</h:panelGroup>
+        				</div>
 					</h:form>
 				</div>
 				<!--/.nav-collapse -->
