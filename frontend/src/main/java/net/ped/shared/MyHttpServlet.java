@@ -17,7 +17,7 @@ public class MyHttpServlet extends HttpServlet {
     	instance = this;
     }
 
-    public HttpServlet getInstance() {
+    public static HttpServlet getInstance() {
     	return instance;
     }
 }
