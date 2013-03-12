@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -39,7 +40,6 @@ public class Party implements java.io.Serializable{
 	private int nbPlaceBought = 0;
 	private int nbPlaceScanned = 0;
 	private String image;
-	private String pathTicket;
 	private boolean validated = false;
 	
 	private String street;
@@ -217,14 +217,6 @@ public class Party implements java.io.Serializable{
 
 	public void setArtists(List<Artist> artists) {
 		this.artists = artists;
-	}
-
-	public String getPathTicket() {
-		return pathTicket;
-	}
-
-	public void setPathTicket(String pathTicket) {
-		this.pathTicket = pathTicket;
 	}
 
 	public boolean isValidated() {

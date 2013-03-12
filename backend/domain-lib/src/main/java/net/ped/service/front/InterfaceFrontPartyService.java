@@ -43,7 +43,7 @@ public interface InterfaceFrontPartyService {
 	 * valide une party -> l'étape de création de billet a été faite
 	 * ajoute le chemin du billet à la party
 	 */
-	public void ValidateParty(int id, String pathTicket);
+	public void ValidateParty(int id);
 	
 	/**
 	 * supprime une party
@@ -91,7 +91,7 @@ public interface InterfaceFrontPartyService {
 	 * obtient toutes les party suivant différents critères et étant validées
 	 * @return List<Party>
 	 */
-	public List<Party> getPartiesCriteria(Double priceBegin, Double priceEnd, Calendar date, Calendar time);
+	public List<Party> getPartiesCriteria(int startPosition, int length, Double priceBegin, Double priceEnd, Calendar date, Calendar time);
 	
 	/**
 	 * ajoute un user
