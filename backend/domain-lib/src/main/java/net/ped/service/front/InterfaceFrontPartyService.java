@@ -103,5 +103,9 @@ public interface InterfaceFrontPartyService {
 	 * @return User
 	 */
 	public User getUser(int id);
-
+	
+	/**
+	 * Permet d'établir la connexion
+	 */
+	public User login(String login, String password);
 }

@@ -416,6 +416,31 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 		}
 		return u;
 	}
+	
+	public User login(String login, String password) throws Exception {
+		LOG.info("> login");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		User u = new User();
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query = em.createQuery("from User u where u.login=:login and u.password=:password");
+			query.setParameter("login", login);
+			query.setParameter("password", password);
+			u = (User)query.getSingleResult();
+			tx.commit();
+			LOG.debug("User trouve, login ok");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction login",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return u;
+	}
 
 
 }
