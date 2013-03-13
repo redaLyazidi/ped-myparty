@@ -88,6 +88,12 @@ public interface InterfaceFrontPartyService {
 	public List<Party> getPartiesNotBegunMaxResult(int startPosition, int length);
 	
 	/**
+	 *  Retourne le nombre total de parties qui n'ont pas encore commencé
+	 * @return int
+	 */
+	public int getNbPartiesNotBegun();
+	
+	/**
 	 * obtient toutes les party suivant différents critères et étant validées
 	 * @return List<Party>
 	 */

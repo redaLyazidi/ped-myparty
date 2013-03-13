@@ -319,6 +319,34 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao{
 		}
 		return list;
 	}
+	
+	public int getNbPartiesNotBegun() throws Exception {
+		long nbParties = 0;
+		
+		LOG.info("> getNbPartiesNotBegun");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query=em.createQuery("select count(p.id) from Party p " +
+					"where p.dateParty>:param and p.validated=true");
+			query.setParameter("param", Calendar.getInstance());
+			nbParties = (Long)query.getSingleResult();
+			LOG.debug("Total Count result = " + nbParties);
+			tx.commit();
+			LOG.debug("calcul effectue");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction getNbPartiesNotBegun",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		
+		return (int) nbParties;
+	}
 
 	public List<Party> getPartiesCriteria(int startPosition, int length, double priceBegin, double priceEnd, Calendar date, Calendar time) throws Exception{
 		LOG.info("> getPartiesCriteria");
