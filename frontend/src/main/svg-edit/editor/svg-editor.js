@@ -2669,9 +2669,11 @@ if (!alert)
             
             var clickValidate = function(){
                 if (toolButtonClick('#tool_validate')) {
+                    console.log("Validate idParty ticket : ", Editor.curConfig.idParty);
                     jQuery.post(curConfig.sendsvgtoserver, {
+                        'idParty': Editor.curConfig.idParty,
                         'svgstr' : svgCanvas.svgCanvasToString()
-                        },
+                    },
                     function (data) {
                         console.log('data: ',data);
                         jQuery.alert('Response from the server: ' + data);
@@ -3182,7 +3184,6 @@ if (!alert)
                 curConfig.baseUnit = $('#base_unit').val();
 
                 svgCanvas.setConfig(curConfig);
-
                 updateCanvas();
                 hidePreferences();
             }
