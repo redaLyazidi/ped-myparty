@@ -57,7 +57,7 @@ public class AccueilBean implements Serializable {
 		listParty = new ArrayList<Party>();
 		numPage = 1;
 		//La numérotation des pages commencent à 1 mais les parties commencent à 0, d'où le numPage -1
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
 		
 		int nbParties = FrontPartyService.getInstance().getNbPartiesNotBegun();
 		if(nbParties == ConstantesWeb.NUMBER_PARTY_PAGE) {
@@ -90,19 +90,19 @@ public class AccueilBean implements Serializable {
 	public void gotoPage(int page) {
 		numPage = page;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 	
 	public void nextPage() {
 		numPage ++;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 
 	public void prevPage() {
 		numPage --;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 
 	public List<Party> getListParty() {
