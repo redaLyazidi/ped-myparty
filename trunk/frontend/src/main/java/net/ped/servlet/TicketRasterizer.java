@@ -42,27 +42,10 @@ public class TicketRasterizer extends PedHttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		// Get parameters
-		// parameters : Id party, Id client, Secret code
-		TicketInformation ticketInfos = new TicketInformation();
-
-		try {
-			ticketInfos.idParty = Commons.getMandatoryIntParameter(request,
-					"idparty");
-			ticketInfos.idClient = Commons.getMandatoryIntParameter(request,
-					"idclient");
-			ticketInfos.secretCode = Commons.getMandatoryStringParameter(
-					request, "secretcode");
-		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			return;
-		}
-
-		// Check valid parameters
-		if (checkValidTicketInformation(ticketInfos) == false) {
+		TicketInformation ticketInfos = getTicketInformations(request, response);
+		if (ticketInfos == null || checkValidTicketInformation(ticketInfos) == false) {
 			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
 		}
-
 		Ticket ticket = checkAuthorizedAccess(ticketInfos);
 		if (ticket == null) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -89,12 +72,29 @@ public class TicketRasterizer extends PedHttpServlet {
 		Commons.sendFileDownloadResponse(request, response, clientPdfTicket, "ticket.pdf");
 	}
 
-	private boolean checkValidTicketInformation(TicketInformation ticketInfos) {
+	protected TicketInformation getTicketInformations(HttpServletRequest request, HttpServletResponse response) {
+		TicketInformation ticketInfos = new TicketInformation();
+
+		try {
+			ticketInfos.idParty = Commons.getMandatoryIntParameter(request,
+					"idparty");
+			ticketInfos.idClient = Commons.getMandatoryIntParameter(request,
+					"idclient");
+			ticketInfos.secretCode = Commons.getMandatoryStringParameter(
+					request, "secretcode");
+		} catch (Exception e) {
+			sendError(response, HttpServletResponse.SC_NOT_ACCEPTABLE);
+			return null;
+		}
+		return ticketInfos;
+	}
+
+	protected boolean checkValidTicketInformation(TicketInformation ticketInfos) {
 		return (ticketInfos.idClient >= 0 && ticketInfos.idParty >= 0 && ticketInfos.secretCode
 				.length() == 16);
 	}
 
-	private Ticket checkAuthorizedAccess(TicketInformation ticketInfos) {
+	protected Ticket checkAuthorizedAccess(TicketInformation ticketInfos) {
 		Ticket ticket;
 		try {
 			ticket = new BillingDaoImpl().getTicket(ticketInfos.idParty, ticketInfos.idClient); // TODO : check param order !!
@@ -136,4 +136,12 @@ public class TicketRasterizer extends PedHttpServlet {
 	private File convertSvgToPdf(File svg) {
 		return null;
 	}
+	
+	protected void sendError(HttpServletResponse response, int error) {
+		try {
+			response.sendError(error);
+		} catch (IOException e) {
+		}
+	}
+
 }
