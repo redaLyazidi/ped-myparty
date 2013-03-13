@@ -1,16 +1,10 @@
 package net.ped.servlet;
 
-import java.awt.JobAttributes.DestinationType;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,19 +12,18 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+
+import net.ped.dao.PartyDaoImpl;
+import net.ped.shared.PedHttpServlet;
 
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Servlet implementation class SaveAs
  */
-public class StoreSvgTickets extends HttpServlet {
+public class StoreSvgTickets extends PedHttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOG = LoggerFactory.getLogger(StoreSvgTickets.class);
+	//private static final Logger LOG = LoggerFactory.getLogger(StoreSvgTickets.class);
 	private static final String tmpDirPath = System.getProperty("java.io.tmpdir");
 	private static final String ticketDirPath = "/resources/tickets";
 	/**
@@ -57,19 +50,19 @@ public class StoreSvgTickets extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		DOMSource source2 = new DOMSource(svgXmlDoc);
-//		FileOutputStream fOut = new FileOutputStream(svgFile);
-//		try { transformer.transform(source2, new StreamResult(fOut)); }
-//		finally { fOut.close(); }
-//
-//		// Convert the SVG into PDF
-//		File outputFile = File.createTempFile("result-", ".pdf");
-//		SVGConverter converter = new SVGConverter();
-//		converter.setDestinationType(DestinationType.PDF);
-//		converter.setSources(new String[] { svgFile.toString() });
-//		converter.setDst(outputFile);
-//		converter.execute();
-//		doDownload(request, response,tmpDirPath, request.getParameter("url"), "ticket.svg");
+		//		DOMSource source2 = new DOMSource(svgXmlDoc);
+		//		FileOutputStream fOut = new FileOutputStream(svgFile);
+		//		try { transformer.transform(source2, new StreamResult(fOut)); }
+		//		finally { fOut.close(); }
+		//
+		//		// Convert the SVG into PDF
+		//		File outputFile = File.createTempFile("result-", ".pdf");
+		//		SVGConverter converter = new SVGConverter();
+		//		converter.setDestinationType(DestinationType.PDF);
+		//		converter.setSources(new String[] { svgFile.toString() });
+		//		converter.setDst(outputFile);
+		//		converter.execute();
+		//		doDownload(request, response,tmpDirPath, request.getParameter("url"), "ticket.svg");
 	}
 
 	/**
@@ -78,12 +71,28 @@ public class StoreSvgTickets extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LOG.info("jQuery.post received");
 		String svgstr = request.getParameter("svgstr");
+		String idPartyString = request.getParameter("idParty");
+		int idParty;
+		try {
+			idParty = Integer.parseInt(idPartyString);
+		} catch (NumberFormatException nfe) {
+			LOG.debug("The idParty given isn't a number : " + idPartyString);
+			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			return;
+		}
+		
+		if ( ! new PartyDaoImpl().containsParty(idParty)) {
+			LOG.debug("This id : " + idParty+ " doesn't match to any party");
+			return;
+		}
+
 		LOG.info(svgstr);
 		String webappPath = getServletContext().getRealPath("/");
 		String absoluteTicketDirPath = new StringBuilder(webappPath).append(ticketDirPath).toString();
-		File ticket = new File(absoluteTicketDirPath,"ticket.svg");
+		File ticket = new File(absoluteTicketDirPath, idParty + ".svg");
 		FileOutputStream ticketoutput = new FileOutputStream( ticket );
 		IOUtils.write(svgstr, ticketoutput);
+		IOUtils.closeQuietly(ticketoutput);
 		response.getWriter().println(true);
 	}
 
