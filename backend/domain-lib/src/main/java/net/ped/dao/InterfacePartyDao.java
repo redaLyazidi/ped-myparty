@@ -83,6 +83,13 @@ public interface InterfacePartyDao {
 	public List<Party> getPartiesNotBegunMaxResult(int startPosition, int length) throws Exception;
 	
 	/**
+	 *  Retourne le nombre total de parties qui n'ont pas encore commencé
+	 * @return int
+	 * @throws Exception
+	 */
+	public int getNbPartiesNotBegun() throws Exception;
+	
+	/**
 	 * obtient toutes les party suivant différents critères et étant validées
 	 * prend également en compte le nombre de résultats retournés
 	 * @return List<Party>
