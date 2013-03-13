@@ -31,7 +31,9 @@ public class SaveAs extends PedHttpServlet {
 		File tempFile = File.createTempFile("ticket", ".svg", new File(tmpDirPath));
 		LOG.info(tempFile.getPath());
 		LOG.info(getServletContext().getMimeType(tempFile.getName()));
-		Commons.getPartySvgFile(0);
+		
+	//	Commons.getPartySvgFile(8);
+		
 		// write to file
 		FileWriter fw = new FileWriter(tempFile);
 		try {
