@@ -6302,10 +6302,8 @@ a.badge:focus {
 	clear: both;
 }
 
-.pageParty {
-	padding-top: 3%;
-	margin: auto;
-	width: 50%;
+.vueParty {
+	margin-top: 50px;	
 }
 
 .partyCadreImg {
@@ -6414,4 +6412,9 @@ a.badge:focus {
     {
         width: 270px!important;
     }
+    #blocDescription, #blocReservation
+    {
+    	margin-top: 40px;
+    }
+    
 }
