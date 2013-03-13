@@ -79,8 +79,36 @@
 					<div class="partyNbPlace">
 						<h:outputText value="#{partyBean.accueilBean.partySelect.nbPlace - partyBean.accueilBean.partySelect.nbPlaceBought} places restantes" />
 					</div>
-					<h:commandLink action="#{partyBean.buyTicket}" value="Réservez"
-						disabled="#{partyBean.disableBuyButton}" />
+					<table>
+						<tr>
+							<td style="padding: 10px">
+								<h:commandButton class="btn btn-primary" value="Réservez" ajax="false" action="#{partyBean.buyTicket}" disabled="#{partyBean.disableBuyButton}"/>
+							</td>
+						</tr>
+						<c:choose>
+							<c:when test="#{partyBean.dateCourante.before(partyBean.accueilBean.partySelect.dateBegin)}">
+								<tr>
+									<td style="padding: 10px">
+										<h:commandButton class="btn btn-warning" value="Modifier" ajax="false" action="#{partyBean.buyTicket}" rendered="#{loginBean.userAdmin}"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 10px">
+										<h:commandButton class="btn btn-warning" value="Supprimer" ajax="false" action="#{partyBean.deleteParty}" rendered="#{loginBean.userAdmin}"/>
+									</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td><span class="label label-warning">Vous ne pouvez pas éditer la Party</span></td>
+								</tr>
+								<tr>
+									<td><span class="label label-warning">les préventes ont commencées</span></td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</table>
+					
 				</div>
 			</div>
 		</h:form>
