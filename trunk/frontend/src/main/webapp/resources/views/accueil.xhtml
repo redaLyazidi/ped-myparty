@@ -8,9 +8,13 @@
 	xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
+	
+<f:view contentType="text/html">
+	
 <h:head>
 
 	<meta charset="utf-8" />
+	<meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
 	<title>MyParty</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="" />
@@ -53,7 +57,7 @@
 									<!-- A COMPLETER -->
 										<h:panelGrid columns="1" style="margin-bottom:10px">                      
 									        <h:outputText id="displayRange" value="PRIX ENTRE #{accueilBean.priceMin} € ET #{accueilBean.priceMax} €" style="font-weight:bold; font-size:11px;"/>                      
-									        <p:slider for="min,max" display="displayRange" style="width:175px" range="true" displayTemplate="Between {min} and {max}"/>  
+									        <p:slider for="min,max" display="displayRange" style="width:175px" range="true" displayTemplate="PRIX ENTRE {min} € ET {max} €"/>  
 								    	</h:panelGrid>  
 									    <h:inputHidden id="min" value="#{accueilBean.priceMin}" />  
 									    <h:inputHidden id="max" value="#{accueilBean.priceMax}" />
@@ -116,9 +120,7 @@
 											</div>
 											<div class="descriptionParty">
 												<div class="listeItemTitle">
-													<h:commandLink action="#{accueilBean.outcome}" value="#{party.title}">
-														<f:param name="idParty" value="#{party.id}" />
-													</h:commandLink>
+													<h:commandLink action="#{accueilBean.outcome(party.id)}" value="#{party.title}"/>
 												</div>
 												<div class="listeItemTheme">
 													<h:outputText value="#{party.theme}" />
@@ -152,12 +154,9 @@
 												<div>
 													<h:outputText value="#{party.price} €" />
 												</div>
-												<h:commandLink action="#{accueilBean.outcome}" value="Réservez">
-													<f:param name="idParty" value="#{party.id}" />
-												</h:commandLink>
+												<h:commandLink action="#{accueilBean.outcome(party.id)}" value="Réservez"/>
 											</div>
 										</td>
-										<div class="clear"></div>
 									</tr>
 								</c:forEach>
 								</tbody>
@@ -190,4 +189,6 @@
 
 	<!-- 	</h:panelGroup> -->
 </h:body>
+
+</f:view>
 </html>
