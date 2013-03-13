@@ -1,17 +1,16 @@
 package net.ped.servlet;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import net.ped.dao.PartyDaoImpl;
 import net.ped.shared.PedHttpServlet;
@@ -24,8 +23,7 @@ import org.apache.commons.io.IOUtils;
 public class StoreSvgTickets extends PedHttpServlet {
 	private static final long serialVersionUID = 1L;
 	//private static final Logger LOG = LoggerFactory.getLogger(StoreSvgTickets.class);
-	private static final String tmpDirPath = System.getProperty("java.io.tmpdir");
-	private static final String ticketDirPath = "/resources/tickets";
+//	private static final String tmpDirPath = System.getProperty("java.io.tmpdir");
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -37,32 +35,36 @@ public class StoreSvgTickets extends PedHttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LOG.debug(tmpDirPath);
-		//boolean b = FrontPartyService.getInstance().containsParty(id); TO test if the id matches a Party
-		// Save this SVG into a file (required by SVG -> PDF transformation process)
-		File svgFile = File.createTempFile("graphic-", ".svg");
+		String idPartyString = request.getParameter("idParty");
+		int idParty;
 		try {
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerFactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			idParty = Integer.parseInt(idPartyString);
+		} catch (NumberFormatException nfe) {
+			LOG.debug("The idParty given isn't a number : " + idPartyString);
+			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			return;
 		}
-		//		DOMSource source2 = new DOMSource(svgXmlDoc);
-		//		FileOutputStream fOut = new FileOutputStream(svgFile);
-		//		try { transformer.transform(source2, new StreamResult(fOut)); }
-		//		finally { fOut.close(); }
-		//
-		//		// Convert the SVG into PDF
-		//		File outputFile = File.createTempFile("result-", ".pdf");
-		//		SVGConverter converter = new SVGConverter();
-		//		converter.setDestinationType(DestinationType.PDF);
-		//		converter.setSources(new String[] { svgFile.toString() });
-		//		converter.setDst(outputFile);
-		//		converter.execute();
-		//		doDownload(request, response,tmpDirPath, request.getParameter("url"), "ticket.svg");
+		
+		if ( ! new PartyDaoImpl().containsParty(idParty)) {
+			LOG.debug("This id : " + idParty+ " doesn't match to any party");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		String webappPath = getServletContext().getRealPath("/");
+		String absoluteTicketDirPath = new StringBuilder(webappPath)
+		.append(getServletContext().getInitParameter("ticketsDir")).toString();
+		File ticket = new File(absoluteTicketDirPath, idParty + ".svg");
+		if (! ticket.exists()) {
+			LOG.debug("This id : " + idParty+ " doesn't match to any ticket");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+		}
+		InputStream ticketinput = new FileInputStream( ticket );
+		List<String> contentTicket = IOUtils.readLines(ticketinput);
+		StringBuilder svgstrbuilder = new StringBuilder();
+		for (String is : contentTicket)
+			svgstrbuilder.append(is);
+		String svgstr = svgstrbuilder.toString();
+		response.getWriter().println(svgstr);
 	}
 
 	/**
@@ -70,6 +72,7 @@ public class StoreSvgTickets extends PedHttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LOG.info("jQuery.post received");
+		request.getParameter("");
 		String svgstr = request.getParameter("svgstr");
 		String idPartyString = request.getParameter("idParty");
 		int idParty;
@@ -88,12 +91,14 @@ public class StoreSvgTickets extends PedHttpServlet {
 
 		LOG.info(svgstr);
 		String webappPath = getServletContext().getRealPath("/");
-		String absoluteTicketDirPath = new StringBuilder(webappPath).append(ticketDirPath).toString();
+		String absoluteTicketDirPath = new StringBuilder(webappPath)
+		.append(getServletContext().getInitParameter("ticketsDir")).toString();
 		File ticket = new File(absoluteTicketDirPath, idParty + ".svg");
 		FileOutputStream ticketoutput = new FileOutputStream( ticket );
 		IOUtils.write(svgstr, ticketoutput);
 		IOUtils.closeQuietly(ticketoutput);
 		response.getWriter().println(true);
+		
 	}
 
 	/**

@@ -66,11 +66,11 @@ public class SearchParty implements Serializable{
 			dateParty2.setTime(dateParty);
 		}
 		
-		try {
-			list = FrontPartyService.getInstance().getPartiesCriteria(priceMin, priceMax, dateParty2, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			list = FrontPartyService.getInstance().getPartiesCriteria(priceMin, priceMax, dateParty2, null);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		for(Party p : list){
 			System.out.println(p.getTitle());
