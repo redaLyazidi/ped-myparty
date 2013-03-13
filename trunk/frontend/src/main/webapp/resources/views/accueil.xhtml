@@ -97,11 +97,6 @@
 
 					<!-- Body -->
 					<div class="span9">
-						
-
-							<!-- 							<div class="bandeauSupListeParty"> -->
-							<!-- 								Prochaines party -->
-							<!-- 							</div> -->
 
 							<table class="table table-hover">
 								
@@ -171,13 +166,11 @@
 							<!-- A MODIFIER POUR LA PAGINATION -->
 							<div class="pagination pagination-right">
 								<ul>
-									<li><h:commandLink action="#{accueilBean.prevPage}"	value="Précédent"/></li>
-									<li><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><h:commandLink action="#{accueilBean.nextPage}" value="Suivant"/></li>
+									<li><h:commandLink action="#{accueilBean.prevPage}"	value="Précédent" disabled="#{accueilBean.disableButtonPrev}"/></li>
+									<c:forEach var="i" begin="1" end="#{accueilBean.nbPages}">
+										<li> <h:commandLink value="#{i}" action="#{accueilBean.gotoPage(i)}" /> </li>
+									</c:forEach>
+									<li><h:commandLink action="#{accueilBean.nextPage}" value="Suivant" disabled="#{accueilBean.disableButtonNext}"/></li>
 								</ul>
 							</div>
 							
