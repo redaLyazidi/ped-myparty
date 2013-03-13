@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import net.ped.constante.ConstantesWeb;
+
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
@@ -34,6 +35,7 @@ public class AccueilBean implements Serializable {
 	private boolean disableButtonNext;
 	private int numPage;
 	private Party partySelect;
+	private int nbPages;
 	
 	private String place;
 	private double priceMin=0;
@@ -58,9 +60,17 @@ public class AccueilBean implements Serializable {
 		}
 				
 		listParty = new ArrayList<Party>();
-		numPage = 0;
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage, ConstantesWeb.NUMBER_PARTY_PAGE);
-
+		numPage = 1;
+		//La numérotation des pages commencent à 1 mais les parties commencent à 0, d'où le numPage -1
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
+		
+		int nbParties = FrontPartyService.getInstance().getNbPartiesNotBegun();
+		if(nbParties == ConstantesWeb.NUMBER_PARTY_PAGE) {
+			nbPages = 1;
+		}
+		else {
+			nbPages = (nbParties / ConstantesWeb.NUMBER_PARTY_PAGE) + 1;
+		}
 	}
 	
 	public String outcome() {
@@ -93,17 +103,22 @@ public class AccueilBean implements Serializable {
 		return party;
 	}
 	
+	public void gotoPage(int page) {
+		numPage = page;
+		listParty.clear();
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
+	}
 	
 	public void nextPage() {
 		numPage ++;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage, ConstantesWeb.NUMBER_PARTY_PAGE);
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 	
 	public void prevPage() {
 		numPage --;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage, ConstantesWeb.NUMBER_PARTY_PAGE);
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 	
 	public List<Party> getListParty() {
@@ -138,7 +153,7 @@ public class AccueilBean implements Serializable {
 	}
 
 	public boolean isDisableButtonNext() {
-		if(listParty.size() < ConstantesWeb.NUMBER_PARTY_PAGE) {
+		if(numPage == nbPages) {
 			disableButtonNext = true;
 		}
 		else {
@@ -240,6 +255,14 @@ public class AccueilBean implements Serializable {
 	
 	public void preRenderView() {  
 	      HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );  
+	}
+
+	public int getNbPages() {
+		return nbPages;
+	}
+
+	public void setNbPages(int nbPages) {
+		this.nbPages = nbPages;
 	} 
 	 
 
