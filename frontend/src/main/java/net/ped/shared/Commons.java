@@ -44,9 +44,7 @@ public class Commons {
 			return null;
 		}
 
-
-		// new PartyDaoImpl().getParty(idParty);
-		if ( ! new PartyDaoImpl().containsParty(idParty)) {
+		if (new PartyDaoImpl().containsParty(idParty) == false) {
 			LOG.debug("This id : " + idParty+ " doesn't match to any party");
 			return null;
 		}
@@ -55,7 +53,6 @@ public class Commons {
 		String ticketsDir = myservlet.getServletContext().getInitParameter("ticketsDir");
 		LOG.info("fromparameter: " + ticketsDir);
 
-
 		String thisPartyticketPath = new StringBuilder(webappPath).append(ticketsDir).append(idParty).append(ticketsextension).toString();
 		LOG.info("thisPartyticketPath: " + thisPartyticketPath);
 		File ticketOfIdParty = new File(thisPartyticketPath);
@@ -63,7 +60,6 @@ public class Commons {
 			LOG.debug("There no svg file with name: " + idParty);
 			return null;
 		}
-
 		return ticketOfIdParty;
 	}
 
