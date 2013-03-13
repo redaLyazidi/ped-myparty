@@ -23,6 +23,9 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/myparty" />
 			<property name="hibernate.connection.username" value="root"/>
 			<property name="hibernate.connection.password" value=""/>
+			<!-- 			<property name="hibernate.connection.username" value="rlyazidi" /> -->
+<!-- 			<property name="hibernate.connection.password" value="aldgwt" /> -->
+<!-- 			<property name="hibernate.connection.url" value="jdbc:mysql://dbserver:3306/rlyazidi" /> -->
 		</properties>
 	</persistence-unit>
 </persistence>
