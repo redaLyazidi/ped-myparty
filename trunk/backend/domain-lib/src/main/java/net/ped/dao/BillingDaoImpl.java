@@ -2,9 +2,11 @@ package net.ped.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import net.ped.model.Customer;
+import net.ped.model.Ticket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +93,78 @@ public class BillingDaoImpl extends GenericDAO implements InterfaceBillingDao{
 			closeEntityManager();
 		}
 		return c;
+	}
+	
+	public Customer getCustomerById(int id) throws Exception{
+		LOG.info("> getCustomerById");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		Customer c = new Customer();
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query = em.createQuery("from Customer p " +
+					"where p.id=:param");
+			query.setParameter("param", id);
+			c = (Customer)query.getSingleResult();
+			tx.commit();
+			LOG.debug("Client trouve");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction getCustomerById",re);
+			tx.rollback();
+		}finally{
+			closeEntityManager();
+		}
+		return c;
+	}
+
+	public void addTicket(Ticket t) throws Exception{
+		LOG.info("> addTicket");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			em.persist(t); 
+			tx.commit();
+			LOG.debug("Ajout du ticket");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction addTicket",re);
+			tx.rollback();
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+	}
+
+	public Ticket getTicket(int idCustomer, int idParty) throws Exception{
+		LOG.info("> getTicket");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		Ticket t = new Ticket();
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query = em.createQuery("from Ticket p " +
+					"where p.customer.id=:param1 and "+
+					"p.party.id=:param2");
+			query.setParameter("param1", idCustomer);
+			query.setParameter("param2", idParty);
+			t = (Ticket)query.getSingleResult();
+			tx.commit();
+			LOG.debug("Ticket trouve");
+		}catch (NoResultException nre) {
+			LOG.debug("Le ticket n'existe pas");	
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction getTicket",re);
+			tx.rollback();
+		}finally{
+			closeEntityManager();
+		}
+		return t;
 	}
 }
 

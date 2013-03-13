@@ -15,6 +15,7 @@ import net.ped.dao.RESTDaoImpl;
 import net.ped.model.Artist;
 import net.ped.model.Customer;
 import net.ped.model.Party;
+import net.ped.model.Ticket;
 import net.ped.model.User;
 import net.ped.service.front.FrontBillingService;
 import net.ped.service.front.FrontPartyService;
@@ -218,6 +219,13 @@ public class MyPartyTest {
 		serviceBilling.addCustomer(customer);
 		serviceBilling.addCustomer(customer);
 		assertEquals(1,serviceBilling.getCustomer("Patrick", "George", "pg@gmail.com").getId());
+		assertEquals(1,serviceBilling.getCustomerById(1).getId());
+	}
+	
+	@Test
+	public void testM_addTicket(){
+		serviceBilling.addTicket(1, 1);
+		assertEquals(1,serviceBilling.getTicket(1, 1).getId());
 	}
 	
 	@After
