@@ -5,14 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -22,19 +17,17 @@ import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
 @ManagedBean(name="accueilBean")
-@ViewScoped
+@SessionScoped
 public class AccueilBean implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private List<Party> listParty = new ArrayList<Party>();
 	private boolean disableButtonPrev;
 	private boolean disableButtonNext;
 	private int numPage;
 	private Party partySelect;
+
 	private int nbPages;
 	
 	private String place;
@@ -43,22 +36,24 @@ public class AccueilBean implements Serializable {
 	private Date dateParty;
 	private int selectedHour;
 	private int selectedMinute;
-	
+
 	private List<Integer> hour;
 	private List<Integer> minute;
-	
-	
+
+	private int idParty;
+
+
 	public AccueilBean(){
 		hour = new ArrayList<Integer>();
 		minute = new ArrayList<Integer>();
-		
+
 		for(int i=0; i<=23; i++){
 			hour.add(i);
 		}
 		for(int j=0; j<60; j=j+5){
 			minute.add(j);
 		}
-				
+
 		listParty = new ArrayList<Party>();
 		numPage = 1;
 		//La numérotation des pages commencent à 1 mais les parties commencent à 0, d'où le numPage -1
@@ -72,36 +67,25 @@ public class AccueilBean implements Serializable {
 			nbPages = (nbParties / ConstantesWeb.NUMBER_PARTY_PAGE) + 1;
 		}
 	}
-	
-	public String outcome() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ELContext el = facesContext.getELContext();
-		Application app = facesContext.getApplication();
-		ExpressionFactory ef = app.getExpressionFactory();
-		ValueExpression ve = ef.createValueExpression(el, "#{partyBean}", PartyBean.class);
-		PartyBean b = new PartyBean();
-		
-		this.partySelect = getPartySelect(facesContext);
-		b.setPartySelect(partySelect);
-		ve.setValue(el, b);
 
-		// puis redirection vers ce bean
+	public String outcome(int id) {
+		this.idParty = id;
+		partySelect = getPartySelect(idParty);
 		return "party";
 	}
-	
-	//get value from "f:param"
-	public Party getPartySelect(FacesContext fc){
-		Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+
+	public Party getPartySelect(int id){
 		Party party = null;
 		for(Party p : listParty) {
-			if (Integer.valueOf(params.get("idParty")).compareTo(Integer.valueOf(p.getId())) == 0) {
+			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
 				party = p;
 				break;
 			}
-		}
-			
+		}	
 		return party;
 	}
+
+
 	
 	public void gotoPage(int page) {
 		numPage = page;
@@ -114,13 +98,13 @@ public class AccueilBean implements Serializable {
 		listParty.clear();
 		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
-	
+
 	public void prevPage() {
 		numPage --;
 		listParty.clear();
 		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult(numPage - 1, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
-	
+
 	public List<Party> getListParty() {
 		return listParty;
 	}
@@ -144,7 +128,7 @@ public class AccueilBean implements Serializable {
 		else {
 			disableButtonPrev = false;
 		}
-		
+
 		return disableButtonPrev;
 	}
 
@@ -159,7 +143,7 @@ public class AccueilBean implements Serializable {
 		else {
 			disableButtonNext = false;
 		}
-		
+
 		return disableButtonNext;
 	}
 
@@ -174,7 +158,7 @@ public class AccueilBean implements Serializable {
 	public void setPartySelect(Party partySelect) {
 		this.partySelect = partySelect;
 	}
-	
+
 	public String getPlace() {
 		return place;
 	}
@@ -239,22 +223,30 @@ public class AccueilBean implements Serializable {
 		this.minute = minute;
 	}
 
+	public int getIdParty() {
+		return idParty;
+	}
+
+	public void setIdParty(int idParty) {
+		this.idParty = idParty;
+	}
+
 	public void search(){
 		Calendar dateParty2 = null;
 		if(dateParty != null){
 			dateParty2 = Calendar.getInstance();
 			dateParty2.setTime(dateParty);
 		}
-		
+
 		try {
 			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE,priceMin, priceMax, dateParty2, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void preRenderView() {  
-	      HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );  
+		HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );  
 	}
 
 	public int getNbPages() {
@@ -263,7 +255,5 @@ public class AccueilBean implements Serializable {
 
 	public void setNbPages(int nbPages) {
 		this.nbPages = nbPages;
-	} 
-	 
-
+	}
 }

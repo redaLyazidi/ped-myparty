@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -22,79 +23,61 @@
 
 <h:body>
 
-	<!-- 	<h:panelGroup> -->
-	<!--     <ui:include src="header.xhtml" /> -->
-
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="brand" href="#">MyParty</a>
-
-				<div class="nav-collapse collapse">
-					<form class="navbar-form pull-right">
-						<input class="span2" type="text" placeholder="Email" /> <input
-							class="span2" type="password" placeholder="Password" />
-						<button type="submit" class="btn">Sign in</button>
-					</form>
-				</div>
-				<!--/.nav-collapse -->
-			</div>
-		</div>
-	</div>
+<ui:include src="header.xhtml" />
 
 	<div class="pageParty">
 		<h:form>
 			<div class="partyCadreImg">
 				<div class="partyImg">
-					<h:outputText value="Image" />
+					<h:graphicImage value="../upload/#{partyBean.accueilBean.partySelect.image}"/>
 				</div>
 			</div>
 			<div class="partyPartDetails">
 				<div class="partyPartTitle">
 					<div class="partyItemTitle">
-						<h:outputText value="#{partyBean.partySelect.title}" />
+						<h:outputText value="#{partyBean.accueilBean.partySelect.title}" />
 					</div>
 					<div class="partyItemArtist">
-						<c:forEach var="artist" items="#{partyBean.partySelect.artists}">
+						<c:forEach var="artist" items="#{partyBean.accueilBean.partySelect.artists}">
 							<h:outputText value="#{artist.name}   " />
 						</c:forEach>
 					</div>
 					<div class="partyItemGenre">
-						<h:outputText value="#{partyBean.partySelect.theme}" />
+						<h:outputText value="#{partyBean.accueilBean.partySelect.theme}" />
 					</div>
 					<div class="partyItemDate">
-						<h:outputText value="Le 30/02/2013 à 19h" />
+						<h:outputText value="#{partyBean.accueilBean.partySelect.dateParty.getTime()}" >
+							<f:convertDateTime pattern="dd/MM/yyyy à " timeZone="Europe/Paris" />
+						</h:outputText>
+													
+						<h:outputText value="#{partyBean.accueilBean.partySelect.timeParty.getTime()}">
+							<f:convertDateTime pattern="HH:mm" timeZone="Europe/Paris" />
+						</h:outputText>
 					</div>
 				</div>
 				<div class="partyPartAdd">
 					<div class="partyItemLieu">
-						<h:outputText value="#{partyBean.partySelect.place}" />
+						<h:outputText value="#{partyBean.accueilBean.partySelect.place}" />
 					</div>
 					<div>
-						<h:outputText value="#{partyBean.partySelect.street}" />
+						<h:outputText value="#{partyBean.accueilBean.partySelect.street}" />
 					</div>
-					<h:outputText value="#{partyBean.partySelect.CP} #{partyBean.partySelect.town}" />
+					<h:outputText value="#{partyBean.accueilBean.partySelect.CP} #{partyBean.accueilBean.partySelect.town}" />
 				</div>
 				<div class="partyPartDesc">
-					<h:outputText value="#{partyBean.partySelect.description}" />
+					<h:outputText value="#{partyBean.accueilBean.partySelect.description}" />
 				</div>
 			</div>
 			<div class="partyPartReserv">
 				<div>
-					<h:outputText value="#{partyBean.partySelect.price} €" />
+					<h:outputText value="#{partyBean.accueilBean.partySelect.price} €" />
 				</div>
 				<div class="partyNbPlace">
-					<h:outputText value="#{partyBean.nbPlaceRest} places restantes" />
+					<h:outputText value="#{partyBean.accueilBean.partySelect.nbPlace - partyBean.accueilBean.partySelect.nbPlaceBought} places restantes" />
 				</div>
 				<h:commandLink action="#{partyBean.buyTicket}" value="Réservez"
 					disabled="#{partyBean.disableBuyButton}" />
 			</div>
-			<div class="clear"></div>
 		</h:form>
 	</div>
 

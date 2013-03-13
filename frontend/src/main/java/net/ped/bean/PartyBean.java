@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import net.ped.model.Party;
@@ -12,41 +13,21 @@ import net.ped.model.Party;
 @SessionScoped
 public class PartyBean implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private boolean disableBuyButton;
 	
-	private Party partySelect;
-	private int nbPlaceRest;
-	
-	public PartyBean() {
-		if(partySelect == null ) {
-			System.out.println("yataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		}
-		else {
-			System.out.println(partySelect.getTitle());
-		}
-	}
-
-	public Party getPartySelect() {
-		return partySelect;
-	}
-
-	public void setPartySelect(Party partySelect) {
-		this.partySelect = partySelect;
-	}
+	@ManagedProperty(value="#{accueilBean}")
+	private AccueilBean accueilBean;
 	
 	public String buyTicket() {
 		return "buyTicket";
 	}
 
 	public boolean isDisableBuyButton() {
-		if(partySelect.getDateBegin().after(Calendar.getInstance().getTime()) &&
-				partySelect.getDateEnd().before(Calendar.getInstance().getTime()) &&
-				partySelect.getNbPlace() > partySelect.getNbPlaceBought()) {
+		if(accueilBean.getPartySelect().getDateBegin().after(Calendar.getInstance().getTime()) &&
+				accueilBean.getPartySelect().getDateEnd().before(Calendar.getInstance().getTime()) &&
+				accueilBean.getPartySelect().getNbPlace() > accueilBean.getPartySelect().getNbPlaceBought()) {
 			disableBuyButton = true;
 		}
 		else {
@@ -59,13 +40,11 @@ public class PartyBean implements Serializable {
 		this.disableBuyButton = disableBuyButton;
 	}
 
-	public int getNbPlaceRest() {
-			nbPlaceRest = partySelect.getNbPlace() - partySelect.getNbPlaceBought();
-		return nbPlaceRest;
+	public AccueilBean getAccueilBean() {
+		return accueilBean;
 	}
 
-	public void setNbPlaceRest(int nbPlaceRest) {
-		this.nbPlaceRest = nbPlaceRest;
+	public void setAccueilBean(AccueilBean accueilBean) {
+		this.accueilBean = accueilBean;
 	}
-
 }
