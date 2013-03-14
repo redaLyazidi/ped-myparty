@@ -199,8 +199,9 @@ public class MyPartyTest {
 		List<Party> list = new ArrayList<Party>();
 		Calendar calendar = new GregorianCalendar(2013, 04, 15);
 		Calendar time = new GregorianCalendar(0, 0, 0, 20, 30, 00);
+		String place="PATINOIRE MERIADECK";
 		try {
-			list = service.getPartiesCriteria(0,5,25.50, 30.00, calendar, time);
+			list = service.getPartiesCriteria(0, 5, place, 25.50, 30.00, calendar, time);
 			assertEquals(1, list.size());
 		} catch (Exception e) {
 			LOG.error("erreur lors de l'execution de la methode testPartiesCriteria");
