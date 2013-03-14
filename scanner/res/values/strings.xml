@@ -8,5 +8,6 @@
     <string name="login">Identifiant</string>
     <string name="confirm">Confirmer</string>
     <string name="error_login">Identifiant ou mot de passe incorrect.</string>
+    <string name="connecting">Connexion...</string>
 
 </resources>

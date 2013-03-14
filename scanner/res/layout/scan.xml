@@ -5,11 +5,17 @@
     android:layout_gravity="center"
     android:orientation="vertical" >
     
-    <Button android:layout_width="match_parent"
+    <TextView android:id="@+id/result" android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dip" 
+    android:layout_gravity="center" />
+    
+    <Button android:padding="50dip"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Scanner"
+            android:onClick="launchScanner"
     />
     
-
 </LinearLayout>

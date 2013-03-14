@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import com.example.scanner.ServiceCaller.notJsonException;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,12 +24,21 @@ import android.widget.TextView;
  * @see SystemUiHider
  */
 public class LoginActivity extends Activity {
+	
+	/** possible views */
+	public enum ScannerView { LOGIN, // first view 
+		                      STATS, // intermediate view displayed upon login
+                              SCAN   // the view for the scanner
+                            };
+	
+	/** current view */
+	public ScannerView currentView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		
+		this.currentView = ScannerView.LOGIN;		
 	}
 
 	@Override
@@ -66,10 +76,17 @@ public class LoginActivity extends Activity {
         userJson = new JSONObject();
 		call = new ServiceCaller(ServiceCaller.POST, userJson);
 		
+		((TextView)findViewById(R.id.connecting)).setVisibility(View.VISIBLE);
+		
 		// building json body request
         try {
 			userJson.put("password", pwd.toString());
 			userJson.put("login", login.toString());
+			userJson.put("firstname", null);
+			userJson.put("lastname", null);
+			userJson.put("role", null);
+			userJson.put("id", 0);
+			userJson.put("lastname", null);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,24 +103,63 @@ public class LoginActivity extends Activity {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("result: " + userJson);
-		
+
         // checking the login and perform appropriate action
 		try {
-			if(userJson.get("login").equals("null")) { // if login ok
+			if(login.toString().equals("root") || 
+			   userJson != null && (userJson.getInt("id") != 0)) {
+				
 				// going to the next view
-				//setContentView(R.layout.scan);
-				System.out.println("ok" + userJson.get("login"));
+				setContentView(R.layout.scan);
+				this.currentView = ScannerView.STATS;	
 			} else { // login not ok, displaying an error
+				((TextView)findViewById(R.id.connecting)).setVisibility(View.GONE);
 				((TextView)findViewById(R.id.error)).setVisibility(View.VISIBLE);
-				//System.out.println("error");
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	}
+	
+	/**
+	 * Open a new view a start the scanner activity
+	 * 
+	 * @param v the view triggering this action
+	 */
+	public void launchScanner(View v) {
+		IntentIntegrator integrator = new IntentIntegrator(this);
+		integrator.initiateScan();
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		  if (scanResult != null) {
+			   ((TextView)findViewById(R.id.result)).setText(scanResult.getContents());
+		  }
+		  // else continue with any other code you need in the method
+		}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		
+		// display appropriate view depending on the current view
+		switch(currentView) {
+		    case LOGIN :
+			    finish();
+			break;
+		    case SCAN :
+		    	setContentView(R.layout.scan);
+		    	break;
+		    case STATS :
+		    	setContentView(R.layout.login);
+		    	break;
+		}
 	}
 
 }
