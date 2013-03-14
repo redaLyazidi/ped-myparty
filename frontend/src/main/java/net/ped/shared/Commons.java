@@ -27,17 +27,12 @@ public class Commons {
 	private static final Logger LOG = LoggerFactory.getLogger(Commons.class);
 	private static HttpServlet myservlet = MyHttpServlet.getInstance();
 
-	public static String getMandatoryStringParameter(HttpServletRequest request, String name) throws Exception {
-		String param = request.getParameter(name);
-		if (param == null)
-			throw new Exception();
-		return param;
-	}
 
-	public static int getMandatoryIntParameter(HttpServletRequest request, String name) throws Exception {
-		return Integer.getInteger(getMandatoryStringParameter(request, name));
+	public static String getProjectConfigParameter(String name) {
+		return myservlet.getServletContext().getInitParameter(name);
 	}
-
+	
+	
 	public static File getPartySvgFile(int idParty) {
 		if (idParty < 0) {
 			LOG.debug("The id can't be lower than 0, id = " + idParty);
@@ -49,23 +44,25 @@ public class Commons {
 			return null;
 		}
 
-		String webappPath = myservlet.getServletContext().getRealPath("/");
 		String ticketsDir = myservlet.getServletContext().getInitParameter("ticketsDir");
-		LOG.info("fromparameter: " + ticketsDir);
-
-		String thisPartyticketPath = new StringBuilder(webappPath).append(ticketsDir).append(idParty).append(ticketsextension).toString();
-		LOG.info("thisPartyticketPath: " + thisPartyticketPath);
-		File ticketOfIdParty = new File(thisPartyticketPath);
-		if (! ticketOfIdParty.exists()) {
-			LOG.debug("There no svg file with name: " + idParty);
+		File ticketOfIdParty;
+		try {
+			ticketOfIdParty = FileStorage.getPermanentFile(ticketsDir, idParty + ticketsextension);
+		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
+		LOG.info("thisPartyticketPath: " + ticketOfIdParty);
+		/*if (! ticketOfIdParty.exists()) {
+			LOG.debug("There no svg file with name: " + idParty);
+			return null;
+		}*/
 		return ticketOfIdParty;
 	}
 
 	public static String QRCodeString(Ticket t) {
 		Customer c = t.getCustomer();
-		LOG.info( myservlet.getServletContext().getInitParameter("svgQRcodetag"));
+		LOG.info(getProjectConfigParameter("svgQRcodetag"));
 		return c.getId() + '\n' + t.getParty().getId() + '\n' + t.getSecretCode();
 	}
 
