@@ -13,19 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.ped.shared.BackgroundRessourceCleaner;
 import net.ped.shared.Commons;
+import net.ped.shared.FileStorage;
 import net.ped.shared.PedHttpServlet;
 
 import org.apache.commons.io.IOUtils;
 
 @SuppressWarnings("serial")
-public class SaveAs extends PedHttpServlet {
-	private static final String tmpDirPath = System.getProperty("java.io.tmpdir");
-
-	
-    public void init(ServletConfig config) throws ServletException {
-    	super.init(config);
+public class SaveAs extends PedHttpServlet {	
+    public void init() {
     	try {
-    		BackgroundRessourceCleaner.getInstance().watchFiles(new File(tmpDirPath), Pattern.compile("ticket(.*)\\.svg"));
+    		BackgroundRessourceCleaner.getInstance().watchFiles(
+    				FileStorage.getTemporaryDirPath(), Pattern.compile("ticket(.*)\\.svg"));
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
@@ -33,9 +31,10 @@ public class SaveAs extends PedHttpServlet {
 	
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		LOG.debug(tmpDirPath);
 		String filename = request.getParameter("url");
-		File diskFile = new File(tmpDirPath, filename);
+		if (filename == null)
+			throw new ServletException("Missing config parameter : url");
+		File diskFile = FileStorage.getTempFile("saveas", filename);
 		if (diskFile.exists())
 			Commons.sendFileDownloadResponse(request, response, diskFile, "ticket.svg");
 		else
@@ -46,12 +45,11 @@ public class SaveAs extends PedHttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		InputStream svgstr = request.getInputStream();
 		// create a temporary file in that directory
-		File tempFile = File.createTempFile("ticket", ".svg", new File(tmpDirPath));
+		File tempFile = FileStorage.createTempFile("saveas", "ticket", ".svg");
 		LOG.info(tempFile.getPath());
 		LOG.info(getServletContext().getMimeType(tempFile.getName()));
 		
-	//	Commons.getPartySvgFile(8);
-		
+		//	Commons.getPartySvgFile(8);
 		// write to file
 		FileWriter fw = new FileWriter(tempFile);
 		try {
@@ -61,8 +59,8 @@ public class SaveAs extends PedHttpServlet {
 		} finally {
 			response.setContentType("text/plain");
 			response.getWriter().println(tempFile.getName());
-			svgstr.close();
-			fw.close();
+			IOUtils.closeQuietly(svgstr);
+			IOUtils.closeQuietly(fw);
 		}
 	}
 }

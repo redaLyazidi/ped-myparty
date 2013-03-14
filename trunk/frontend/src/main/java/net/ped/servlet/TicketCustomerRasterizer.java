@@ -16,9 +16,9 @@ public class TicketCustomerRasterizer extends TicketRasterizer {
 		TicketInformation ticketInfos = new TicketInformation();
 
 		try {
-			ticketInfos.idParty = Commons.getMandatoryIntParameter(request,	"idparty");
-			ticketInfos.idClient = Commons.getMandatoryIntParameter(request,"idclient");
-			ticketInfos.secretCode = Commons.getMandatoryStringParameter(request, "secretcode");
+			ticketInfos.idParty    = getMandatoryIntParameter(request,    "idparty");
+			ticketInfos.idClient   = getMandatoryIntParameter(request,    "idclient");
+			ticketInfos.secretCode = getMandatoryStringParameter(request, "secretcode");
 		} catch (Exception e) {
 			return null;
 		}
