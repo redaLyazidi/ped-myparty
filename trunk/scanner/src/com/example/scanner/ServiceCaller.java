@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.util.JsonWriter;
+import android.util.Log;
 
 /**
  * Utility class to call Rest/JSon based web services.
@@ -112,8 +113,9 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 			System.out.println("ok");
 
 			if (response.getStatusLine().getStatusCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
+				Log.d("dogetrequest", "Failed : HTTP error code : "
 						+ response.getStatusLine().getStatusCode());
+				return json;
 			}
 
 			BufferedReader br = new BufferedReader(
@@ -145,7 +147,7 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 		JSONObject json; // final json object to return 
 		
 		output = result =  "";     
-		json= null;
+		json = null;
 		
 		try {
  
@@ -164,8 +166,9 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 			System.out.println(param.toString());
 
 			if (response.getStatusLine().getStatusCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
+				Log.d("dogetrequest", "Failed : HTTP error code : "
 						+ response.getStatusLine().getStatusCode());
+				return json;
 			}
 
 			BufferedReader br = new BufferedReader(
