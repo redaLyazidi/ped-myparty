@@ -23,7 +23,8 @@ public class BackgroundRessourceCleaner implements Runnable {
 		this.checkIntervalSeconds = checkIntervalSeconds;
 	}
 
-	public static BackgroundRessourceCleaner getInstance(int checkIntervalSeconds) {
+	public static BackgroundRessourceCleaner getInstance() {//int checkIntervalSeconds) {
+		int checkIntervalSeconds = 10;
 		if (instance == null)
 			instance = new BackgroundRessourceCleaner(checkIntervalSeconds);
 		return instance;
