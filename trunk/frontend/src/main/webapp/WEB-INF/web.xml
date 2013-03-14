@@ -91,13 +91,13 @@
 </servlet-mapping>
 
 <servlet>
- <servlet-name>TicketRasterizer</servlet-name>
- <servlet-class>net.ped.servlet.TicketRasterizer</servlet-class>
+ <servlet-name>TicketCustomerRasterizer</servlet-name>
+ <servlet-class>net.ped.servlet.TicketCustomerRasterizer</servlet-class>
 </servlet>
 
 <servlet-mapping>
- <servlet-name>TicketRasterizer</servlet-name>
- <url-pattern>/ticketrasterizer</url-pattern>
+ <servlet-name>TicketCustomerRasterizer</servlet-name>
+ <url-pattern>/ticketcustomerrasterizer</url-pattern>
 </servlet-mapping>
 
   <!-- Map these files with JSF -->
