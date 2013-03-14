@@ -11,11 +11,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -23,13 +27,14 @@ import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.ped.constante.ConstantesWeb;
 import net.ped.constante.ConstantesWeb.ThemeParty;
 import net.ped.model.Artist;
 import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class CreateParty implements Serializable{
 
 	private static final Logger LOG = LoggerFactory.getLogger(CreateParty.class);
@@ -56,7 +61,9 @@ public class CreateParty implements Serializable{
 	
 	private List<Artist> selectedArtists;
 	private List<Artist> artists;
-	private List<String> selectedTexts; 
+	private List<String> selectedTexts;
+	
+	private Party partyEdited;
 
 	public CreateParty(){
 		hour = new ArrayList<Integer>();
@@ -324,4 +331,76 @@ public class CreateParty implements Serializable{
 		FacesMessage msg = new FacesMessage("La party a été créée");
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
 	}
+	
+	public String edit(int id){
+		partyEdited = FrontPartyService.getInstance().getParty(id);
+		title = partyEdited.getTitle();
+		description = partyEdited.getDescription();
+		nbPlace = partyEdited.getNbPlace();
+		price = partyEdited.getPrice();
+		street = partyEdited.getStreet();
+		town = partyEdited.getTown();
+		place = partyEdited.getPlace();
+		codepostal = partyEdited.getCP();
+		dateParty = partyEdited.getDateParty().getTime();
+		selectedHour = partyEdited.getTimeParty().getTime().getHours();
+		selectedMinute = partyEdited.getTimeParty().getTime().getMinutes();
+		dateBegin = partyEdited.getDateBegin().getTime();
+		dateEnd = partyEdited.getDateEnd().getTime();
+		selectedTheme = partyEdited.getTheme();
+		
+		selectedTexts = new ArrayList<String>();
+		for(Artist a : partyEdited.getArtists()){
+			selectedTexts.add(a.getName());
+		}
+		
+		System.out.println("description :"+ description);
+		
+		return "editParty";
+	}
+	
+	public String validateEdit(){
+		
+		partyEdited.setTitle(title);
+		partyEdited.setDescription(description);
+		partyEdited.setNbPlace(nbPlace);
+		partyEdited.setTheme(selectedTheme);
+		partyEdited.setPrice(price);
+		partyEdited.setStreet(street);
+		partyEdited.setTown(town);
+		partyEdited.setCP(codepostal);
+		partyEdited.setPlace(place);
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(dateBegin);
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTime(dateEnd);
+		Calendar cal3 = Calendar.getInstance();
+		cal3.setTime(dateParty);
+		partyEdited.setDateBegin(cal1);
+		partyEdited.setDateEnd(cal2);
+		partyEdited.setDateParty(cal3);
+		Calendar hourParty = new GregorianCalendar(0,0,0,selectedHour,selectedMinute);
+		partyEdited.setTimeParty(hourParty);
+		
+		selectedArtists = new ArrayList<Artist>();
+		for(String s : selectedTexts){
+			LOG.debug("DEBUG: " + s);
+			selectedArtists.add(FrontPartyService.getInstance().getArtistByName(s));
+		}
+		
+		partyEdited.setArtists(selectedArtists);
+		FrontPartyService.getInstance().updateParty(partyEdited);
+		
+		// On réinitialise le bean createParty (pour ne pas garder les valeurs losqu'on va dans la vue newParty)
+		// On réinitialise le bean accueilBean pour forcer l'affichage des parties avec la prise en compte des modifications
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		session.removeAttribute("createParty");
+		session.removeAttribute("accueilBean");
+	
+		return "accueil";
+	}
+	
 }
+
+//<label class="labelForm">Image</label>
+//<p:fileUpload value="#{createParty.file}" mode="simple" required="true" requiredMessage="Champ Image non rempli"/>

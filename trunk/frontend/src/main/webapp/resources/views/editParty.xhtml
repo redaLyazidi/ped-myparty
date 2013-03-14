@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Création d'une Party</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+
+	<!-- Le styles -->
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="bootstrap-responsive.css" />
+</h:head>
+
+<h:body>
+
+	<ui:include src="header.xhtml" />
+	
+	<f:event type="javax.faces.event.PreRenderViewEvent"
+						listener="#{accueilBean.preRenderView}" />
+	
+	<h:form enctype="multipart/form-data">
+	 <div class="container">
+	 
+	 	<div class="row-fluid">
+	 		<div class="span12">
+	 			<h3>Modifier la Party</h3>
+	 			<p:messages/>
+	 			
+	 			<div class="row-fluid">
+	 				<div class="span6">
+	 				
+	 					<h1><small>Description</small></h1>
+						
+						<label class="labelForm">Intitulé de la party</label>
+						<p:inputText id="title" value="#{createParty.title}" required="true" requiredMessage="Champ Titre non rempli" styleClass="span9"/>
+						
+						<label class="labelForm">Description</label>
+						<p:inputTextarea rows="6" cols="33"
+							value="#{createParty.description}" required="true" requiredMessage="Champ Description non rempli" styleClass="span9"/>
+								
+						<label class="labelForm">Thème</label> 
+					       <p:selectOneMenu value="#{createParty.selectedTheme}" effect="fade" required="true" requiredMessage="Champ Thème non rempli">  
+					           <f:selectItem itemLabel="#{createParty.selectedTheme.toUpperCase()}" itemValue="#{createParty.selectedTheme}" />
+					           <f:selectItems value="#{createParty.themes}"/>
+					       </p:selectOneMenu>
+					       
+						<label class="labelForm">Prix</label>
+						<p:inputText value="#{createParty.price}" label="Prix" required="true" requiredMessage="Champ Prix non rempli" styleClass="span6">
+							<f:convertNumber type="number" />
+						</p:inputText>
+						
+						<label class="labelForm">Nombre de places</label>
+						<p:inputText value="#{createParty.nbPlace}" label="Nombre de places" required="true" requiredMessage="Champ Nombre de places non rempli" styleClass="span6">
+						</p:inputText>
+						
+					</div>
+					
+					<div class="span6">
+						<h1><small>Dates</small></h1>
+							
+		 					<label class="labelForm">Date de la party</label>
+							<p:calendar value="#{createParty.dateParty}" id="popupCal1" required="true" requiredMessage="Champ Date party non rempli"/>
+		 						
+		 					<label class="labelForm">Heure</label>
+		 					<p:selectOneMenu value="#{createParty.selectedHour}" effect="fade" style="width:100px;" required="true" requiredMessage="Champ Heure non rempli">  
+						    	<f:selectItem itemLabel="Choisir" itemValue="" />  
+						        <f:selectItems value="#{createParty.hour}" />  
+					       	</p:selectOneMenu>
+		 						
+		 					<label class="labelForm">Minutes</label>
+		 					<p:selectOneMenu value="#{createParty.selectedMinute}" effect="fade" style="width:100px;" required="true" requiredMessage="Champ Minutes non rempli">  
+						    	<f:selectItem itemLabel="Choisir" itemValue="" />  
+						    	<f:selectItems value="#{createParty.minute}"/>  
+					       	</p:selectOneMenu>
+		 						
+							<label class="labelForm">Début préventes</label>
+							<p:calendar value="#{createParty.dateBegin}" id="popupCal2" required="true" requiredMessage="Champ Début préventes non rempli"/>
+							<label class="labelForm">Fin préventes</label>
+							<p:calendar value="#{createParty.dateEnd}" id="popupCal3" required="true" requiredMessage="Champ Fin préventes non rempli"/>
+					</div>					
+				</div>
+				
+				<div class="row-fluid">
+					<div class="span6 bottom-form">
+					
+						<h1><small>Localisation</small></h1>
+
+						<label class="labelForm">Lieu</label>
+						<p:inputText value="#{createParty.place}" required="true" requiredMessage="Champ Lieu non rempli" styleClass="span9"/>
+																					
+						<label class="labelForm">Rue</label>
+						<p:inputText value="#{createParty.street}" required="true" requiredMessage="Champ Rue non rempli" styleClass="span9"/>
+								
+						<label class="labelForm">Code postal</label>
+						<p:inputText value="#{createParty.codepostal}" required="true" requiredMessage="Champ Code postal non rempli" validatorMessage="Code postal invalide" styleClass="span9">
+							<f:validateRegex pattern="[0-9]{5}"></f:validateRegex>
+						</p:inputText>
+							
+						<label class="labelForm">Ville</label>
+						<p:inputText value="#{createParty.town}" required="true" requiredMessage="Champ Ville non rempli" styleClass="span9"/>
+
+					</div>
+					
+					<div class="span6 bottom-form">
+					
+						<h1><small>Artistes</small></h1>
+						
+						<label class="labelForm">Nom des groupes</label>
+						<p:autoComplete value="#{createParty.selectedTexts}" completeMethod="#{createParty.complete}" multiple="true" required="true" requiredMessage="Champ Artistes non rempli"/>
+					
+					</div>
+					
+				</div>
+				
+				<h:commandButton class="btn btn-primary" value="MODIFIER" ajax="false" action="#{createParty.validateEdit}"/>
+				<h:commandButton class="btn annuler" value="ANNULER" />
+				
+			</div>
+		</div>
+	
+	</div>
+	</h:form>
+	
+	
+	
+</h:body>
+</html>
