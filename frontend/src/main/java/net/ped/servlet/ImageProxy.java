@@ -66,7 +66,7 @@ public final class ImageProxy  extends PedHttpServlet {
 				//System.out.println("Added http");
 			}
 			URL url = new URL(strUrl);
-			LOG.debug("Get on url : " + url);
+			LOG.debug("Get or post on url : " + url);
 	
 			proxyMethod.setPath(url.toString());
 			HttpClient proxy = new HttpClient();
@@ -75,7 +75,7 @@ public final class ImageProxy  extends PedHttpServlet {
 			try {
 				proxy.executeMethod(proxyMethod);
 			} catch (InvalidRedirectLocationException e) { // crashes with http://google.fr (redirected to http://www.google.fr). Why ?
-				throw new ServletException();
+				response.sendError(HttpServletResponse.SC_USE_PROXY);
 			}
 			
 			/*=long length = proxyMethod.getResponseContentLength();

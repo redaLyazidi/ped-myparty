@@ -17,12 +17,11 @@ public class ImageProxyITCase extends TestCase {
 	static String proxyUrl = "http://localhost:8080/myparty-frontend/imgUrl?url=";
 	
 	String[] variousUrls = {
-			"http://www.commentcamarche.net/forum/affich-24008559-tester-image-existe-sur-un-serveur-web-java",
 			"zozozo",
 			"http://zozozo.fr",
 			//"https://ssl.gstatic.com/images/icons/feature/filing_cabinet-g42.png", // https OK but not covered by tests (httpUrlConnection -> HttpsUrlConversion)
 			"http://www.commentcamarche.net/forum/affich-24008559-tester-image-existe-sur-un-serveur-web-java", // not an image
-			"http://google.fr" // redirection
+			"http://google.fr"
 		};
 	
 	private URL proxyForURL(String externalUrl) {
@@ -47,6 +46,7 @@ public class ImageProxyITCase extends TestCase {
 			return;
 		}
 		
+		LOG.debug("Response : " + connection1.getResponseCode() + ", proxy response : " + connection2.getResponseCode() + "-- for url : " + baseUrl);
 		assertEquals (
 				(connection1.getResponseCode() == 200),
 				(connection2.getResponseCode() == 200)
@@ -65,7 +65,7 @@ public class ImageProxyITCase extends TestCase {
 	
 	public void testValidUrl() throws Exception {
 		URL baseUrl = new URL("http://openwalls.com/image/399/explosion_of_colors_1920x1200.jpg");
-		URL routedUrl = proxyForURL("http://openwalls.com/image/399/explosion_of_colors_1920x1200.jpg");
+		URL routedUrl = proxyForURL(baseUrl.toString());
 		
 		HttpURLConnection connection1 = (HttpURLConnection) baseUrl.openConnection(); 
 		assertTrue(connection1.getResponseCode() == 200);
