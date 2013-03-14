@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -231,20 +232,6 @@ public class AccueilBean implements Serializable {
 		this.idParty = idParty;
 	}
 
-	public void search(){
-		Calendar dateParty2 = null;
-		if(dateParty != null){
-			dateParty2 = Calendar.getInstance();
-			dateParty2.setTime(dateParty);
-		}
-
-		try {
-			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE,priceMin, priceMax, dateParty2, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void preRenderView() {  
 		HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );  
 	}
@@ -255,5 +242,25 @@ public class AccueilBean implements Serializable {
 
 	public void setNbPages(int nbPages) {
 		this.nbPages = nbPages;
+	}
+
+	public void search(){
+		Calendar dateParty2 = null;
+		Calendar time = null;
+		if(dateParty != null){
+			dateParty2 = Calendar.getInstance();
+			dateParty2.setTime(dateParty);
+		}
+		if(selectedHour!=0){
+			time = new GregorianCalendar(0, 0, 0, selectedHour, selectedMinute, 00);
+		}
+		
+		try {
+			listParty.clear();
+			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, dateParty2, time);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
