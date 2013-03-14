@@ -204,36 +204,32 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 	}
 
 	public boolean containsParty(int id) {
-		try {
-			LOG.info("> containsParty");
-			EntityManager em = createEntityManager();
-			EntityTransaction tx = null;
-			long number = 0;
-			try {
-				tx = em.getTransaction();
-				tx.begin();
-				Query query = em
-						.createQuery("select count(p.id) FROM Party p where p.id=:param");
-				query.setParameter("param", id);
-				number = (Long) query.getSingleResult();
-				LOG.debug("Total Count result = " + number);
-				tx.commit();
-				LOG.debug("calcul effectue");
-			} catch (Exception re) {
-				if (tx != null)
-					LOG.error("Erreur dans la fonction containsParty", re);
-				tx.rollback();
-				throw re;
-			} finally {
-				closeEntityManager();
-			}
-			if (number == 0)
-				return false;
-			return true;
-		} catch(Exception e) {
+		LOG.info("> containsParty");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		long number=0;
+		try{
+			tx = em.getTransaction(); 
+			tx.begin();
+			Query query=em.createQuery("select count(p.id) FROM Party p where p.id=:param");
+			query.setParameter("param", id);
+			number = (Long)query.getSingleResult();
+			LOG.debug("Total Count result = "+number);
+			tx.commit();
+			LOG.debug("calcul effectue");
+		}catch(Exception re){
+			if(tx!=null)
+				LOG.error("Erreur dans la fonction containsParty",re);
+			tx.rollback();
+			//			throw re; rather
 			return false;
+		}finally{
+			closeEntityManager();
 		}
-	}
+		if (number == 0)
+			return false;
+		return true;
+	} 
 
 	public Party getParty(int id) throws Exception {
 		LOG.info("> getParty");
@@ -365,7 +361,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 
 	public List<Party> getPartiesCriteria(int startPosition, int length,
 			double priceBegin, double priceEnd, Calendar date, Calendar time)
-			throws Exception {
+					throws Exception {
 		LOG.info("> getPartiesCriteria");
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
