@@ -1,16 +1,35 @@
 package net.ped.servlet;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import net.ped.shared.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.ped.shared.BackgroundRessourceCleaner;
+import net.ped.shared.Commons;
+import net.ped.shared.PedHttpServlet;
+
 import org.apache.commons.io.IOUtils;
 
 @SuppressWarnings("serial")
 public class SaveAs extends PedHttpServlet {
-	private static final String tmpDirPath = System
-			.getProperty("java.io.tmpdir");
+	private static final String tmpDirPath = System.getProperty("java.io.tmpdir");
 
+	
+    public void init(ServletConfig config) throws ServletException {
+    	super.init(config);
+    	try {
+    		BackgroundRessourceCleaner.watchFiles(new File(tmpDirPath), Pattern.compile("ticket(.*)\\.svg"));
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
 	
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -22,7 +41,6 @@ public class SaveAs extends PedHttpServlet {
 		else
 			response.sendError(404);
 	}
-
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {

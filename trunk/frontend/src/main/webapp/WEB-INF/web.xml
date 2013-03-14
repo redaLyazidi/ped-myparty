@@ -170,4 +170,8 @@
 		<param-value>xlink:href="images/myparty/qrcode.png"</param-value>
 	</context-param>
 	
+	<!-- Auto delete old files -->
+	<listener>
+	    <listener-class>net.ped.shared.BackgroundRessourceCleanerScheduler</listener-class>
+	</listener>
 </web-app>
