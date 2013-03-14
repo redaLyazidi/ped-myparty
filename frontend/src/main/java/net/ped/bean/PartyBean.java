@@ -2,14 +2,14 @@ package net.ped.bean;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import net.ped.model.Customer;
 import net.ped.constante.ConstantesWeb;
-import net.ped.model.Party;
+import net.ped.service.front.FrontBillingService;
 import net.ped.service.front.FrontPartyService;
 
 @ManagedBean(name="partyBean")
@@ -21,6 +21,12 @@ public class PartyBean implements Serializable {
 	private boolean disableBuyButton;
 	private Calendar dateCourante;
 	
+	//Réservation d'un ticket
+	private String mail;
+	private String name;
+	private String firstname;
+	
+	
 	@ManagedProperty(value="#{accueilBean}")
 	private AccueilBean accueilBean;
 	
@@ -29,13 +35,17 @@ public class PartyBean implements Serializable {
 	}
 	
 	public String buyTicket() {
-		return "buyTicket";
+		
+		Customer c = new Customer(firstname, name, mail);
+		FrontBillingService.getInstance().addCustomer(c);
+		
+		return "confirmBilling";
 	}
 
 	public boolean isDisableBuyButton() {
 		if(accueilBean.getPartySelect().getDateBegin().after(Calendar.getInstance().getTime()) &&
 				accueilBean.getPartySelect().getDateEnd().before(Calendar.getInstance().getTime()) &&
-				accueilBean.getPartySelect().getNbPlace() > accueilBean.getPartySelect().getNbPlaceBought()) {
+				accueilBean.getPartySelect().getNbPlace() <= accueilBean.getPartySelect().getNbPlaceBought()) {
 			disableBuyButton = true;
 		}
 		else {
@@ -55,6 +65,30 @@ public class PartyBean implements Serializable {
 	public void setAccueilBean(AccueilBean accueilBean) {
 		this.accueilBean = accueilBean;
 	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 	
 	public Calendar getDateCourante() {
 		return dateCourante;
@@ -69,4 +103,5 @@ public class PartyBean implements Serializable {
 		accueilBean.setListParty(FrontPartyService.getInstance().getPartiesNotBegunMaxResult(0, ConstantesWeb.NUMBER_PARTY_PAGE));
 		return "accueil";
 	}
+	
 }
