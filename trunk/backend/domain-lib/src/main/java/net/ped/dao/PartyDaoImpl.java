@@ -359,7 +359,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 		return (int) nbParties;
 	}
 
-	public List<Party> getPartiesCriteria(int startPosition, int length,
+	public List<Party> getPartiesCriteria(int startPosition, int length, String place,
 			double priceBegin, double priceEnd, Calendar date, Calendar time)
 					throws Exception {
 		LOG.info("> getPartiesCriteria");
@@ -380,24 +380,30 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 
 			Predicate p0 = criteria.equal(from.get("validated"), true);
 			list.add(p0);
-
-			if (priceBegin != 0 && priceEnd != 0) {
-				LOG.debug("ajout prix");
-				Predicate p1 = criteria.between(from.<Double> get("price"),
-						priceBegin, priceEnd);
+			
+			if (!place.equals("")){
+				LOG.debug("ajout lieu");
+				Predicate p1 = criteria.equal(from.get("place"), place);
 				list.add(p1);
+			}
+
+			if (priceEnd != 0) {
+				LOG.debug("ajout prix");
+				Predicate p2 = criteria.between(from.<Double> get("price"),
+						priceBegin, priceEnd);
+				list.add(p2);
 			}
 
 			if (date != null) {
 				LOG.debug("ajout date");
-				Predicate p2 = criteria.equal(from.get("dateParty"), date);
-				list.add(p2);
+				Predicate p3 = criteria.equal(from.get("dateParty"), date);
+				list.add(p3);
 			}
 
 			if (time != null) {
 				LOG.debug("ajout time");
-				Predicate p3 = criteria.equal(from.get("timeParty"), time);
-				list.add(p3);
+				Predicate p4 = criteria.equal(from.get("timeParty"), time);
+				list.add(p4);
 			}
 
 			Predicate[] predicates = new Predicate[list.size()];

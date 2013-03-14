@@ -97,7 +97,7 @@ public interface InterfaceFrontPartyService {
 	 * obtient toutes les party suivant différents critères et étant validées
 	 * @return List<Party>
 	 */
-	public List<Party> getPartiesCriteria(int startPosition, int length, Double priceBegin, Double priceEnd, Calendar date, Calendar time);
+	public List<Party> getPartiesCriteria(int startPosition, int length, String place, Double priceBegin, Double priceEnd, Calendar date, Calendar time);
 	
 	/**
 	 * ajoute un user

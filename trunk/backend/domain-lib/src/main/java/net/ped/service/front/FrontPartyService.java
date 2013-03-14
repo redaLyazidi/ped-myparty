@@ -170,11 +170,12 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		return nbParties;
 	}
 
-	public List<Party> getPartiesCriteria(int startPosition, int length, Double priceBegin, Double priceEnd,
+	public List<Party> getPartiesCriteria(int startPosition, int length, String place, Double priceBegin, Double priceEnd,
 			Calendar date, Calendar time){
 		List<Party> list = new ArrayList<Party>();
+		
 		try {
-			list = dao.getPartiesCriteria(startPosition,length,priceBegin, priceEnd, date, time);
+			list = dao.getPartiesCriteria(startPosition, length, place, priceBegin, priceEnd, date, time);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
