@@ -19,15 +19,18 @@ public class BackgroundRessourceCleaner implements Runnable {
 	private List<Pair<File, Pattern>> locations = new ArrayList<Pair<File, Pattern>>();
 	private int checkIntervalSeconds;
 	
-	private BackgroundRessourceCleaner(int checkIntervalSeconds) {
-		this.checkIntervalSeconds = checkIntervalSeconds;
+	private BackgroundRessourceCleaner() {
+		this.checkIntervalSeconds = 10 * 60; // 10 minutes
 	}
 
-	public static BackgroundRessourceCleaner getInstance() {//int checkIntervalSeconds) {
-		int checkIntervalSeconds = 10;
+	public static BackgroundRessourceCleaner getInstance() {
 		if (instance == null)
-			instance = new BackgroundRessourceCleaner(checkIntervalSeconds);
+			instance = new BackgroundRessourceCleaner();
 		return instance;
+	}
+	
+	public void setInterval(int checkIntervalSeconds) {
+		this.checkIntervalSeconds = checkIntervalSeconds;
 	}
 
 	public void watchFiles(File directory, Pattern filenamePattern)

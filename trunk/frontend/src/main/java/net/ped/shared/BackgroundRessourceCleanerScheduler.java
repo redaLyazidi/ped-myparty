@@ -14,7 +14,8 @@ public class BackgroundRessourceCleanerScheduler implements ServletContextListen
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		scheduler = Executors.newSingleThreadScheduledExecutor();
-		BackgroundRessourceCleaner task = BackgroundRessourceCleaner.getInstance(checkIntervalSeconds);
+		BackgroundRessourceCleaner task = BackgroundRessourceCleaner.getInstance();
+		task.setInterval(10);
 		scheduler.scheduleAtFixedRate(task, 0, checkIntervalSeconds, TimeUnit.SECONDS);
 	}
 
