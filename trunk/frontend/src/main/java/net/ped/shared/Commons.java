@@ -75,6 +75,7 @@ public class Commons {
 		ServletContext context = MyHttpServlet.getInstance().getServletContext();
 		String mimetype = context.getMimeType(diskFile.getAbsolutePath());
 
+		response.setCharacterEncoding(System.getProperty("file.encoding"));
 		// Set the response and go!
 		response.setContentType((mimetype != null) ? mimetype
 				: "application/octet-stream");
