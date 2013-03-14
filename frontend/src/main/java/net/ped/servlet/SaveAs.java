@@ -25,7 +25,7 @@ public class SaveAs extends PedHttpServlet {
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);
     	try {
-    		BackgroundRessourceCleaner.watchFiles(new File(tmpDirPath), Pattern.compile("ticket(.*)\\.svg"));
+    		BackgroundRessourceCleaner.getInstance().watchFiles(new File(tmpDirPath), Pattern.compile("ticket(.*)\\.svg"));
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
