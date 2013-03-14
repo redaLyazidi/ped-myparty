@@ -251,7 +251,26 @@ public class CreateParty implements Serializable{
                 suggestions.add(a.getName());  
         }  
         return suggestions;  
-    }  
+    }
+	
+	private boolean validationDate(){
+		if(dateBegin.after(dateEnd)){
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "La date de début des préventes doit se situer avant la date de fin des préventes", "");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return false;
+		}
+		if(dateBegin.after(dateParty) || dateEnd.after(dateParty)){
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Les dates de début/fin de préventes doivent se situer avant la date de la party", "");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return false;
+		}
+		if(Calendar.getInstance().getTime().after(dateParty) || Calendar.getInstance().getTime().after(dateBegin) || Calendar.getInstance().getTime().after(dateEnd)){
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de choisir une date déjà passée", "");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return false;
+		}
+		return true;
+	}
 
 	public void save(){
 
@@ -279,23 +298,9 @@ public class CreateParty implements Serializable{
 			} 
 		}
 		
-		if(dateBegin.after(dateEnd)){
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "La date de début des préventes doit se situer avant la date de fin des préventes", "");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+		if(!validationDate())
 			return;
-		}
-		if(dateBegin.after(dateParty) || dateEnd.after(dateParty)){
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Les dates de début/fin de préventes doivent se situer avant la date de la party", "");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
-		}
-		if(Calendar.getInstance().getTime().after(dateParty) || Calendar.getInstance().getTime().after(dateBegin) || Calendar.getInstance().getTime().after(dateEnd)){
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible de choisir une date déjà passée", "");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			return;
-		}
 		
-
 		Party party = new Party();
 		party.setImage(filename);
 		party.setTitle(title);
@@ -354,12 +359,13 @@ public class CreateParty implements Serializable{
 			selectedTexts.add(a.getName());
 		}
 		
-		System.out.println("description :"+ description);
-		
 		return "editParty";
 	}
 	
 	public String validateEdit(){
+		
+		if(!validationDate())
+			return "";
 		
 		partyEdited.setTitle(title);
 		partyEdited.setDescription(description);
