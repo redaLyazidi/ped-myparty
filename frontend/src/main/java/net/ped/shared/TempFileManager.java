@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TempFileManager {
-	protected static final Logger LOG = LoggerFactory	.getLogger(TempFileManager.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(TempFileManager.class);
 
 	private String context;
 	private String name;
@@ -30,7 +30,7 @@ public class TempFileManager {
 	}
 
 	public File create() {
-		return FileStorage.createTempFile(context, name, extension);
+		return FileStorage.createTempFile(context, name, "." + extension);
 	}
 	
 	public File get(int id) {
@@ -39,7 +39,7 @@ public class TempFileManager {
 	
 	public File get(String name) {
 		if (pattern.matcher(name).find() == false)
-			LOG.info("Problem : deleting file : " + name + "in fileManager : " + this);
+			LOG.info("Problem : getting file : " + name + " in fileManager : " + this);
 		return FileStorage.getTempFile(context, name);
 	}
 }
