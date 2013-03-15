@@ -332,6 +332,10 @@ public class CreateParty implements Serializable{
 		
 		party.setArtists(selectedArtists);
 		FrontPartyService.getInstance().addParty(party);
+		
+		// On réinitialise le bean createParty (pour ne pas garder les valeurs losqu'on va dans la vue newParty)
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		session.removeAttribute("createParty");
 
 		FacesMessage msg = new FacesMessage("La party a été créée");
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
@@ -398,10 +402,8 @@ public class CreateParty implements Serializable{
 		FrontPartyService.getInstance().updateParty(partyEdited);
 		
 		// On réinitialise le bean createParty (pour ne pas garder les valeurs losqu'on va dans la vue newParty)
-		// On réinitialise le bean accueilBean pour forcer l'affichage des parties avec la prise en compte des modifications
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		session.removeAttribute("createParty");
-		session.removeAttribute("accueilBean");
 	
 		return "accueil";
 	}

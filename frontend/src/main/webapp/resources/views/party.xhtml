@@ -32,62 +32,62 @@
 			<div class="row-fluid vueParty">
 				<div class="span3 offset1">
 					<div class="partyImg">
-						<h:graphicImage value="../upload/#{partyBean.accueilBean.partySelect.image}"/>
+						<h:graphicImage value="../upload/#{partyBean.partySelect.image}"/>
 					</div>
 				</div>
 				
 				<div class="span4" id="blocDescription">
 					<div class="partyPartTitle">
 						<div class="partyItemTitle">
-							<h:outputText value="#{partyBean.accueilBean.partySelect.title}" />
+							<h:outputText value="#{partyBean.partySelect.title}" />
 						</div>
 						<div class="partyItemArtist">
-							<c:forEach var="artist" items="#{partyBean.accueilBean.partySelect.artists}">
+							<c:forEach var="artist" items="#{partyBean.partySelect.artists}">
 								<h:outputText value="#{artist.name}   " />
 							</c:forEach>
 						</div>
 						<div class="partyItemGenre">
-							<h:outputText value="#{partyBean.accueilBean.partySelect.theme}" />
+							<h:outputText value="#{partyBean.partySelect.theme}" />
 						</div>
 						<div class="partyItemDate">
-							<h:outputText value="#{partyBean.accueilBean.partySelect.dateParty.getTime()}" >
+							<h:outputText value="#{partyBean.partySelect.dateParty.getTime()}" >
 								<f:convertDateTime pattern="dd/MM/yyyy à " timeZone="Europe/Paris" />
 							</h:outputText>
 														
-							<h:outputText value="#{partyBean.accueilBean.partySelect.timeParty.getTime()}">
+							<h:outputText value="#{partyBean.partySelect.timeParty.getTime()}">
 								<f:convertDateTime pattern="HH:mm" timeZone="Europe/Paris" />
 							</h:outputText>
 						</div>
 					</div>
 					<div class="partyPartAdd">
 						<div class="partyItemLieu">
-							<h:outputText value="#{partyBean.accueilBean.partySelect.place}" />
+							<h:outputText value="#{partyBean.partySelect.place}" />
 						</div>
 						<div>
-							<h:outputText value="#{partyBean.accueilBean.partySelect.street}" />
+							<h:outputText value="#{partyBean.partySelect.street}" />
 						</div>
-						<h:outputText value="#{partyBean.accueilBean.partySelect.CP} #{partyBean.accueilBean.partySelect.town}" />
+						<h:outputText value="#{partyBean.partySelect.CP} #{partyBean.partySelect.town}" />
 					</div>
 					<div class="partyPartDesc">
-						<h:outputText value="#{partyBean.accueilBean.partySelect.description}" />
+						<h:outputText value="#{partyBean.partySelect.description}" />
 					</div>
 				</div>
 				<div class="span3 offset1" id="blocReservation">
 					<div>
-						<h:outputText value="#{partyBean.accueilBean.partySelect.price} €" />
+						<h:outputText value="#{partyBean.partySelect.price} €" />
 					</div>
 					<div class="partyNbPlace">
-						<h:outputText value="#{partyBean.accueilBean.partySelect.nbPlace - partyBean.accueilBean.partySelect.nbPlaceBought} places restantes" />
+						<h:outputText value="#{partyBean.partySelect.nbPlace - partyBean.partySelect.nbPlaceBought} places restantes" />
 					</div>
 					<div>
 						Début préventes: 
-						<h:outputText value="#{partyBean.accueilBean.partySelect.dateBegin.getTime()}">
+						<h:outputText value="#{partyBean.partySelect.dateBegin.getTime()}">
 							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Europe/Paris" />
 						</h:outputText>
 					</div>
 					<div>
 						Fin préventes: 
-						<h:outputText value="#{partyBean.accueilBean.partySelect.dateEnd.getTime()}">
+						<h:outputText value="#{partyBean.partySelect.dateEnd.getTime()}">
 							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Europe/Paris" />
 						</h:outputText>
 					</div>
@@ -98,10 +98,10 @@
 							</td>
 						</tr>
 						<c:choose>
-							<c:when test="#{partyBean.dateCourante.before(partyBean.accueilBean.partySelect.dateBegin)}">
+							<c:when test="#{partyBean.dateCourante.before(partyBean.partySelect.dateBegin)}">
 								<tr>
 									<td style="padding: 10px">
-										<h:commandButton class="btn btn-warning" value="Modifier" ajax="false" action="#{createParty.edit(partyBean.accueilBean.partySelect.id)}" rendered="#{loginBean.userAdmin}"/>
+										<h:commandButton class="btn btn-warning" value="Modifier" ajax="false" action="#{createParty.edit(partyBean.partySelect.id)}" rendered="#{loginBean.userAdmin}"/>
 									</td>
 								</tr>
 								<tr>

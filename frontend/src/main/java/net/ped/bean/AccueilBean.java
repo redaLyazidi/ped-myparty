@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -18,7 +19,7 @@ import net.ped.model.Party;
 import net.ped.service.front.FrontPartyService;
 
 @ManagedBean(name="accueilBean")
-@SessionScoped
+@ViewScoped
 public class AccueilBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,8 +28,6 @@ public class AccueilBean implements Serializable {
 	private boolean disableButtonPrev;
 	private boolean disableButtonNext;
 	private int numPage;
-	private Party partySelect;
-
 	private int nbPages;
 	
 	private String place;
@@ -40,9 +39,6 @@ public class AccueilBean implements Serializable {
 
 	private List<Integer> hour;
 	private List<Integer> minute;
-
-	private int idParty;
-
 
 	public AccueilBean(){
 		hour = new ArrayList<Integer>();
@@ -69,25 +65,6 @@ public class AccueilBean implements Serializable {
 		}
 	}
 
-	public String outcome(int id) {
-		this.idParty = id;
-		partySelect = getPartySelect(idParty);
-		return "party";
-	}
-
-	public Party getPartySelect(int id){
-		Party party = null;
-		for(Party p : listParty) {
-			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
-				party = p;
-				break;
-			}
-		}	
-		return party;
-	}
-
-
-	
 	public void gotoPage(int page) {
 		numPage = page;
 		listParty.clear();
@@ -152,14 +129,6 @@ public class AccueilBean implements Serializable {
 		this.disableButtonNext = disableButtonNext;
 	}
 
-	public Party getPartySelect() {
-		return partySelect;
-	}
-
-	public void setPartySelect(Party partySelect) {
-		this.partySelect = partySelect;
-	}
-
 	public String getPlace() {
 		return place;
 	}
@@ -222,14 +191,6 @@ public class AccueilBean implements Serializable {
 
 	public void setMinute(List<Integer> minute) {
 		this.minute = minute;
-	}
-
-	public int getIdParty() {
-		return idParty;
-	}
-
-	public void setIdParty(int idParty) {
-		this.idParty = idParty;
 	}
 
 	public void preRenderView() {  
