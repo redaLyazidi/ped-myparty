@@ -5517,6 +5517,20 @@ $.SvgCanvas = function(container, config)
         });
     }
 
+    this.sendSVGToServer = function(route) {
+        jQuery.alert('route: ' + route);
+        sendToServer(route, this.svgCanvasToString());
+//        jQuery.ajax({
+//            type : 'POST',
+//            async : false,
+//            url : route,
+//            data : "svgstr=" + this.svgCanvasToString(),
+//            success : function (data) {
+//                downloadFromServer(data,route);
+//            }
+//        });
+    }
+
     function downloadFromServer(filePath, route) {
         console.log("DOWNLOAD : ", filePath, route);
 
@@ -5525,6 +5539,7 @@ $.SvgCanvas = function(container, config)
         iframe.style.display = "none"; 
         document.body.appendChild(iframe);
     }
+    
     this.saveAsSVG = function() {
         // remove the selected outline before serializing
         clearSelection();
@@ -5540,7 +5555,8 @@ $.SvgCanvas = function(container, config)
         var str = this.svgCanvasToString();
         var uriContent = "data:image/svg+xml," + encodeURIComponent(str);
         // location.href = uriContent;
-        sendToServer(svgEditor.curConfig.saveAsUrl,str);
+//        sendToServer(svgEditor.curConfig.saveAsUrl,str);
+        this.sendSVGToServer(svgEditor.curConfig.saveAsUrl);
     // var newWindow = window.open(uriContent, 'neuesDokument');
        
     }

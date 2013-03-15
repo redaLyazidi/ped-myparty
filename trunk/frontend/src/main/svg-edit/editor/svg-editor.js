@@ -75,7 +75,7 @@ if (!alert)
             shortcuts: true,
             saveAsUrl: self.location.protocol + '//' + self.location.host + mypartyurlbase + '/saveas',
             sendsvgtoserver: self.location.protocol + '//' + self.location.host + mypartyurlbase + '/storesvgtickets',
-            sendsvgtopdf : self.location.protocol + '//' + self.location.host + mypartyurlbase + '/convertsvg'
+            sendsvgtopdf : self.location.protocol + '//' + self.location.host + mypartyurlbase + '/ticketcustomerrasterizer'
         },
         uiStrings = Editor.uiStrings = {
             common: {
@@ -2662,7 +2662,7 @@ if (!alert)
                         },
                         function (data) {
                             console.log('data: ',data);
-                            jQuery.alert('Server is ok');
+                            window.open(data,"width=950 height=450");
                         });
                 }
             };
