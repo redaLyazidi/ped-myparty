@@ -4,51 +4,40 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.regex.Pattern;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.ped.shared.BackgroundRessourceCleaner;
 import net.ped.shared.Commons;
 import net.ped.shared.FileStorage;
 import net.ped.shared.PedHttpServlet;
+import net.ped.shared.TempFileManager;
 
 import org.apache.commons.io.IOUtils;
 
 @SuppressWarnings("serial")
-public class SaveAs extends PedHttpServlet {	
-    public void init() {
-    	try {
-    		BackgroundRessourceCleaner.getInstance().watchFiles(
-    				FileStorage.getTemporaryDirPath(), Pattern.compile("ticket(.*)\\.svg"));
-    	} catch(Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-	
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		String filename = request.getParameter("url");
-		if (filename == null)
-			throw new ServletException("Mis+sing config parameter : url");
-		File diskFile = FileStorage.getTempFile("saveas", filename);
-		if (diskFile.exists())
-			Commons.sendFileDownloadResponse(request, response, diskFile, "ticket.svg");
-		else
-			response.sendError(404);
+public class SaveAs extends PedHttpServlet {
+	static TempFileManager tempFileManager = null;
+
+	public void init() {
+		if (tempFileManager == null) {
+			try {
+				tempFileManager = new TempFileManager("saveas", "ticket", "svg", true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
+	// step 1
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		InputStream svgstr = request.getInputStream();
 		// create a temporary file in that directory
-		File tempFile = FileStorage.createTempFile("saveas", "ticket", ".svg");
+		File tempFile = tempFileManager.create();
 		LOG.info(tempFile.getPath());
 		LOG.info(getServletContext().getMimeType(tempFile.getName()));
-		
 
 		// write to file
 		FileWriter fw = new FileWriter(tempFile);
@@ -62,5 +51,19 @@ public class SaveAs extends PedHttpServlet {
 			IOUtils.closeQuietly(svgstr);
 			IOUtils.closeQuietly(fw);
 		}
+	}
+
+	// step 2
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String filename = request.getParameter("url");
+		if (filename == null)
+			throw new ServletException("Missing config parameter : url");
+		File diskFile = tempFileManager.get(filename);
+		if (FileStorage.exists(diskFile))
+			Commons.sendFileDownloadResponse(request, response, diskFile,
+					"ticket.svg");
+		else
+			response.sendError(404);
 	}
 }
