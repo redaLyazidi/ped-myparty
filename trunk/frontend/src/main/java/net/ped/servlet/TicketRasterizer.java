@@ -6,9 +6,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,25 +23,38 @@ import net.ped.model.Customer;
 import net.ped.model.Ticket;
 import net.ped.shared.BatikSvgToPdf;
 import net.ped.shared.Commons;
+import net.ped.shared.FileStorage;
 import net.ped.shared.InkscapeSvgToPdf;
 import net.ped.shared.PedHttpServlet;
+import net.ped.shared.TempFileManager;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 @SuppressWarnings("serial")
 public abstract class TicketRasterizer extends PedHttpServlet {
 
-	protected static final String tmpDirPath = System
-			.getProperty("java.io.tmpdir");
+	static TempFileManager pdfTempFileManager = null;
+	static TempFileManager clientSvgTempFileManager = null;
 
+	public void init() {
+		if (pdfTempFileManager == null) {
+			pdfTempFileManager = new TempFileManager("rasterized-pdf", "ticket", "pdf", true);
+		}
+		if (clientSvgTempFileManager == null) {
+			clientSvgTempFileManager = new TempFileManager("client-specific-ticket", "ticket", "svg", true);
+		}
+	}
+		
 	class TicketInformation {
 		public int idParty, idClient;
 		public String secretCode;
 	}
 
 	public String htmlPersonnalErrorMessage(TicketInformation infos) {
-		return "<html><body><h1>Il y a eu une erreur...</h1><br/>"
-				+ "Mais tout n'est pas perdu ! Veuillez contacter le service après vente avec les informations suivantes :<br/>"
+		return "<html><body><h2>Il y a eu une erreur...</h2><br/>"
+				+ "<h3>Mais tout n'est pas perdu !</h3><br/>"
+				+ "Veuillez contacter le service après vente avec les informations suivantes :<br/>"
 				+ "identifiant client : " + infos.idClient   + "<br/>"
 				+ "identifiant party : " +  infos.idParty    + "<br/>"
 				+ "code secret : " +        infos.secretCode + "</body></html>";
@@ -67,6 +82,12 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		File clientPdfTicket = null;
 		try {
 			File genericSvgTicket = getGenericSvgTicket(request, ticketInfos);
+			LOG.debug("genericSvgTicket : " + genericSvgTicket);
+
+			if (FileStorage.exists(genericSvgTicket) == false) {
+				LOG.error("Asking for a ticket present in database but not in the local filesystem : " + ticketInfos.idParty);
+				throw new Exception();
+			}
 			LOG.debug("getGenericSvgTicket passed");
 			clientSvgTicket = generateClientSpecificSvgTicket(ticket, genericSvgTicket);
 			LOG.debug("generateClientSpecificSvgTicket passed");
@@ -82,6 +103,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		}
 
 		if (clientPdfTicket == null || clientPdfTicket.exists() == false) { 
+			LOG.error("No pdf generated...");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().write(htmlPersonnalErrorMessage(ticketInfos));
 			cleanupRessources(clientSvgTicket, clientPdfTicket);
@@ -89,8 +111,13 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		}
 
 		// Send valid response
-		Commons.sendFileDownloadResponse(request, response, clientPdfTicket, "ticket.pdf");
+		try {
+			Commons.sendFileDownloadResponse(request, response, clientPdfTicket, "ticket.pdf");
+		} catch(Exception e) {
+			LOG.warn("Cannot sent file download response...");
+		}
 		cleanupRessources(clientSvgTicket, clientPdfTicket);
+		LOG.info("Ticket pdf download : success !");
 	}
 
 	protected abstract TicketInformation getTicketInformations(HttpServletRequest request, HttpServletResponse response);
@@ -102,24 +129,28 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		// Generate qrcode
 		String qrText = "Toto tata\nRololo !"; //Commons.QRCodeString(null, null);
 		ByteArrayOutputStream out = QRCode.from(qrText).to(ImageType.PNG).stream();
-		String QRDataUri = "data:image/png;base64," +
-				DatatypeConverter.printBase64Binary(out.toByteArray());
+		String qrData = DatatypeConverter.printBase64Binary(out.toByteArray());
+		String qrDataUri = "xlink:href=\"data:image/png;base64," + qrData + "\"";
 
 		// replace qrcode path with the real image
-		String SvgQrcodeTag = "xlink:href=\"images/myparty/qrcode.png\"";
-		File specificFile = File.createTempFile("specific-ticket", ".svg");
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(generalTicket)));
+		String SvgQrcodeTag = "xlink:href=\"images/myparty/qrcode.png\""; // oops ! could be on two lines !
+		File specificFile = clientSvgTempFileManager.create();
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(specificFile)));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(generalTicket)));
 
 		Customer customer = ticket.getCustomer();
 		String clientName = customer.getFirstname() + " " + customer.getFirstname();
 
+		//List<String> txt = IOUtils.readLines(new FileReader(generalTicket));
+		//LOG.debug("Size : " + txt.size());
+		
 		String line;
 		while((line = reader.readLine()) != null) {
-			String line2 = line.replace(SvgQrcodeTag, QRDataUri)
-					.replace("$NAME", clientName);
+			String line2 = line.replace(SvgQrcodeTag, qrDataUri)
+					.replace("$NAME$", clientName); // TODO : add id
 			writer.write(line2);
 		}
+		writer.flush();
 		reader.close();
 		writer.close();
 		return specificFile;
@@ -127,20 +158,22 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 
 	private File convertSvgToPdf(File svg) {
-		if (! svg.exists()) {
-			LOG.debug("There no such svg file: " + svg.getAbsolutePath());
+		if (! FileStorage.exists(svg)) {
+			LOG.error("There no such svg file: " + svg);
 			return null;
 		}
-		File pdf = new InkscapeSvgToPdf().convert(svg);
-		if (pdf == null) {
-			pdf = new BatikSvgToPdf().convert(svg);
-		}
-		return pdf;
+		File pdfOutput = pdfTempFileManager.create();
+		if (new InkscapeSvgToPdf().convert(svg, pdfOutput) == true)
+			return pdfOutput;
+		if (new BatikSvgToPdf().convert(svg, pdfOutput))
+			return pdfOutput;
+		pdfOutput.delete();
+		return null;
 	}
 
 	protected void cleanupRessources(File clientSvgTicket, File clientPdfTicket) {
-		FileUtils.deleteQuietly(clientSvgTicket);
-		FileUtils.deleteQuietly(clientPdfTicket);
+		//FileUtils.deleteQuietly(clientSvgTicket);
+		//FileUtils.deleteQuietly(clientPdfTicket);
 	}
 
 	protected void sendError(HttpServletResponse response, int error) {

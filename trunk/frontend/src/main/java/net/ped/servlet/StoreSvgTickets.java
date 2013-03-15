@@ -25,11 +25,11 @@ public class StoreSvgTickets extends PedHttpServlet {
 	/** Called when the admin wants to edit the ticket (and load it) after having validated it */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idPartyString = request.getParameter("idParty");
-		int idParty;
+		int idParty = -1;
 		try {
-			idParty = Integer.parseInt(idPartyString);
-		} catch (NumberFormatException nfe) {
-			LOG.debug("The idParty given isn't a number : " + idPartyString);
+			idParty= getMandatoryIntParameter(request, "idparty");
+		} catch (Exception e) {
+			LOG.info("Bad parameter" + idParty);
 			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			return;
 		}

@@ -22,8 +22,7 @@ public class TicketPreview extends TicketRasterizer {
 
 	public void init() {
 		if (tempFileManager == null) {
-			tempFileManager = new TempFileManager("preview", "ticket", "svg",
-					true);
+			tempFileManager = new TempFileManager("preview", "ticket", "svg", true);
 		}
 	}
 
