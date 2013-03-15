@@ -18,28 +18,37 @@ public class TempFileManager {
 		this.context = context;
 		this.name = name;
 		this.extension = extension;
-		File dir = new File(FileStorage.getTemporaryDirPath(), context);
-		pattern = Pattern.compile(name + "(.*)\\." + extension);
-		if (autoDelete) {
-			try {
+		try {
+			setupDir();
+			File dir = new File(FileStorage.getTemporaryDirPath(), context);
+			pattern = Pattern.compile(name + "(.*)\\." + extension);
+			if (autoDelete) 
 				BackgroundRessourceCleaner.getInstance().watchFiles(dir, pattern);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	public File create() {
+		setupDir();
 		return FileStorage.createTempFile(context, name, "." + extension);
 	}
 	
 	public File get(int id) {
+		setupDir();
 		return FileStorage.getTempFile(context, name + id + "." + extension);
 	}
 	
 	public File get(String name) {
+		setupDir();
 		if (pattern.matcher(name).find() == false)
 			LOG.info("Problem : getting file : " + name + " in fileManager : " + this);
 		return FileStorage.getTempFile(context, name);
+	}
+	
+	private void setupDir() {
+		File dir = new File(FileStorage.getTemporaryDirPath(), context);
+		dir.mkdirs();
 	}
 }
