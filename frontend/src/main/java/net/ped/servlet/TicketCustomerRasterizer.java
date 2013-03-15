@@ -38,11 +38,14 @@ public class TicketCustomerRasterizer extends TicketRasterizer {
 	protected Ticket checkAuthorizedAccess(TicketInformation ticketInfos) {
 		Ticket ticket;
 		try {
-			ticket = new BillingDaoImpl().getTicket(ticketInfos.idParty, ticketInfos.idClient); // TODO : check param order !!
+			ticket = new BillingDaoImpl().getTicket(ticketInfos.idClient, ticketInfos.idParty);
 		} catch(Exception e) {
+			e.printStackTrace();
 			return null;
 		}
-		if (ticketInfos.secretCode != ticket.getSecretCode())
+		
+		LOG.debug("Secret code : " + ticketInfos.secretCode + " " + ticket.getSecretCode());
+		if (ticketInfos.secretCode.compareTo(ticket.getSecretCode()) != 0)
 			return null;
 		return ticket;
 	}

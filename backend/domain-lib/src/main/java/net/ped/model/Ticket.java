@@ -1,12 +1,11 @@
 package net.ped.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Ticket implements java.io.Serializable{
@@ -21,6 +20,7 @@ public class Ticket implements java.io.Serializable{
 	@ManyToOne
 	private Customer customer;
 	
+	@Column(length = 16)
 	private String secretCode;
 
 	public Ticket() {

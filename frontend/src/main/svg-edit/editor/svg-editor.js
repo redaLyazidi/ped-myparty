@@ -2670,20 +2670,23 @@ if (!alert)
             var clickValidate = function(){
                 if (toolButtonClick('#tool_validate')) {
                     console.log("Validate idParty ticket : ", Editor.curConfig.idParty);
+                    if (typeof(Editor.curConfig.idParty) !== "number")
+                        window.alert("No party id !");
                     jQuery.post(curConfig.sendsvgtoserver, {
-                        'idParty': Editor.curConfig.idParty,
+                        'idparty': Editor.curConfig.idParty,
                         'svgstr' : svgCanvas.svgCanvasToString()
                     },
                     function (data) {
-                        console.log('data: ',data);
-                        jQuery.alert('Response from the server: ' + data);
-                        if(data === true) 
-                            jQuery.alert('Response from the server: ' + data);
-                        if(data === 'true')
-                            jQuery.alert('Raté: ' + data);
+                        //console.log('data: ',data);
+                        //jQuery.alert('Response from the server: ' + data);
+                        //if(data === true)
+                        //    jQuery.alert('Response from the server: ' + data);
+                        //if(data === 'true') {
+                        //    jQuery.alert('Connexion impossible avec le serveur... ');
                     });
                 }
             };
+            
             var clickCircle = function(){
                 if (toolButtonClick('#tool_circle')) {
                     svgCanvas.setMode('circle');

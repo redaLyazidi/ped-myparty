@@ -27,6 +27,6 @@ public abstract class PedHttpServlet extends HttpServlet {
 	}
 
 	public static int getMandatoryIntParameter(HttpServletRequest request, String name) throws Exception {
-		return Integer.getInteger(getMandatoryStringParameter(request, name));
+		return Integer.parseInt(getMandatoryStringParameter(request, name));
 	}
 }

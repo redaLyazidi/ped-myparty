@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 @SuppressWarnings("serial")
 public class StoreSvgTickets extends PedHttpServlet {
 
+	/** Called when the admin wants to edit the ticket (and load it) after having validated it */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idPartyString = request.getParameter("idParty");
 		int idParty;
@@ -52,15 +53,16 @@ public class StoreSvgTickets extends PedHttpServlet {
 		IOUtils.closeQuietly(output);
 	}
 
+	/** Validate the ticket */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LOG.info("jQuery.post received");
-		String svgstr = request.getParameter("svgstr");
-		String idPartyString = request.getParameter("idParty");
-		int idParty;
+		LOG.info("post received");
+		int idParty = -1;
+		String svgstr = null;
 		try {
-			idParty = Integer.parseInt(idPartyString);
-		} catch (NumberFormatException nfe) {
-			LOG.debug("The idParty given isn't a number : " + idPartyString);
+			idParty= getMandatoryIntParameter(request, "idparty");
+			svgstr = getMandatoryStringParameter(request, "svgstr"); // should stream here
+		} catch (Exception e) {
+			LOG.info("Bad parameters" + idParty + svgstr);
 			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			return;
 		}
@@ -72,9 +74,11 @@ public class StoreSvgTickets extends PedHttpServlet {
 		LOG.debug(svgstr);
 
 		File ticket = Commons.getPartySvgFile(idParty);
-		FileOutputStream ticketoutput = new FileOutputStream( ticket );
+		LOG.debug("TICKET : " + ticket);
+		FileOutputStream ticketoutput = new FileOutputStream(ticket);
 		IOUtils.write(svgstr, ticketoutput);
 		IOUtils.closeQuietly(ticketoutput);
 		//response.getWriter().println(true);
+		LOG.debug("Post ok");
 	}
 }
