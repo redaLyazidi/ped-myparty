@@ -51,7 +51,7 @@ public class TicketCustomerRasterizer extends TicketRasterizer {
 	}
 
 	@Override
-	protected File getGenericSvgTicket(TicketInformation infos) {
+	protected File getGenericSvgTicket(HttpServletRequest request, TicketInformation infos) {
 		return Commons.getPartySvgFile(infos.idParty);
 	}
 

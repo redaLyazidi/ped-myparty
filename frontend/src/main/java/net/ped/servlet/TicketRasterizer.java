@@ -48,6 +48,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
+		
 		TicketInformation ticketInfos = getTicketInformations(request, response);
 		if (ticketInfos == null || checkValidTicketInformation(ticketInfos) == false) {
 			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
@@ -65,7 +66,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		File clientSvgTicket = null;
 		File clientPdfTicket = null;
 		try {
-			File genericSvgTicket = getGenericSvgTicket(ticketInfos);
+			File genericSvgTicket = getGenericSvgTicket(request, ticketInfos);
 			LOG.debug("getGenericSvgTicket passed");
 			clientSvgTicket = generateClientSpecificSvgTicket(ticket, genericSvgTicket);
 			LOG.debug("generateClientSpecificSvgTicket passed");
@@ -95,7 +96,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 	protected abstract TicketInformation getTicketInformations(HttpServletRequest request, HttpServletResponse response);
 	protected abstract boolean checkValidTicketInformation(TicketInformation ticketInfos);
 	protected abstract Ticket checkAuthorizedAccess(TicketInformation ticketInfos);
-	protected abstract File getGenericSvgTicket(TicketInformation infos);
+	protected abstract File getGenericSvgTicket(HttpServletRequest request, TicketInformation infos);
 
 	private File generateClientSpecificSvgTicket(Ticket ticket, File generalTicket) throws Exception {
 		// Generate qrcode

@@ -28,7 +28,13 @@ public class FileStorage {
 	public static File createTempFile(String context, String name, String extension) {
 		try {
 			File dir = new File(tmpDirPath, context);
-			return File.createTempFile(name, extension, dir);
+			LOG.debug("tmpDirPath: " + tmpDirPath);
+			LOG.debug("name: " + name);
+			LOG.debug("extension: " + extension);
+			LOG.debug("dir: " + dir);
+			File f =  File.createTempFile(name, extension, dir);
+			LOG.debug(""+f);
+			return f;
 		} catch(Exception e) {
 			LOG.info("Toto!!");
 			e.printStackTrace();

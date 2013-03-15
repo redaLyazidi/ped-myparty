@@ -26,7 +26,7 @@ public class SaveAs extends PedHttpServlet {
 	// step 1
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		InputStream svgstr = request.getInputStream();
+		/*InputStream svgstr = request.getInputStream();
 		// create a temporary file in that directory
 		File tempFile = tempFileManager.create();
 		LOG.info(tempFile.getPath());
@@ -34,8 +34,8 @@ public class SaveAs extends PedHttpServlet {
 
 		Commons.writeSvgInServer(svgstr, tempFile);
 		response.setContentType("text/plain");
-		response.getWriter().println(tempFile.getName());
-		LOG.info("Commons write in Server");
+		response.getWriter().println(tempFile.getName());*/
+		Commons.writeSvgInTmp(request,response,tempFileManager);
 	}
 
 	// step 2
