@@ -42,8 +42,10 @@ public class TempFileManager {
 	
 	public File get(String name) {
 		setupDir();
-		if (pattern.matcher(name).find() == false)
+		if (pattern.matcher(name).find() == false) {
 			LOG.info("Problem : getting file : " + name + " in fileManager : " + this);
+			return null;
+		}
 		return FileStorage.getTempFile(context, name);
 	}
 	

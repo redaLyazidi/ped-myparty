@@ -43,7 +43,7 @@ public class Commons {
 		}
 
 		if (permanentSvgTicketFileManager == null) {
-			permanentSvgTicketFileManager = new PermanentFileManager("ticketsdir", "ticket", "svg", true);
+			permanentSvgTicketFileManager = new PermanentFileManager("ticketsdir", "ticket", "svg");
 		}
 		try {
 			return permanentSvgTicketFileManager.get(idParty);

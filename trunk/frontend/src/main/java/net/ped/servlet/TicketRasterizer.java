@@ -40,9 +40,9 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 	public String htmlPersonnalErrorMessage(TicketInformation infos) {
 		return "<html><body><h1>Il y a eu une erreur...</h1><br/>"
 				+ "Mais tout n'est pas perdu ! Veuillez contacter le service après vente avec les informations suivantes :<br/>"
-				+ "identifiant client : " + infos.idClient
-				+ "identifiant party : " + infos.idParty + "code secret : "
-				+ infos.secretCode + "</body></html>";
+				+ "identifiant client : " + infos.idClient   + "<br/>"
+				+ "identifiant party : " +  infos.idParty    + "<br/>"
+				+ "code secret : " +        infos.secretCode + "</body></html>";
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -54,29 +54,35 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 			return;
 		}
 
+		LOG.debug("getTicketInformations passed");
 		Ticket ticket = checkAuthorizedAccess(ticketInfos);
 		if (ticket == null) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
-
+		LOG.debug("checkAuthorizedAccess passed");
+		
 		File clientSvgTicket = null;
 		File clientPdfTicket = null;
 		try {
 			File genericSvgTicket = getGenericSvgTicket(ticketInfos);
+			LOG.debug("getGenericSvgTicket passed");
 			clientSvgTicket = generateClientSpecificSvgTicket(ticket, genericSvgTicket);
+			LOG.debug("generateClientSpecificSvgTicket passed");
 			clientPdfTicket = convertSvgToPdf(clientSvgTicket);
+			LOG.debug("convertSvgToPdf passed");
+
 		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-					htmlPersonnalErrorMessage(ticketInfos));
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().write(htmlPersonnalErrorMessage(ticketInfos));
 			return;
 		} finally {
 			cleanupRessources(clientSvgTicket, clientPdfTicket);
 		}
 
 		if (clientPdfTicket == null || clientPdfTicket.exists() == false) { 
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-					htmlPersonnalErrorMessage(ticketInfos));
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().write(htmlPersonnalErrorMessage(ticketInfos));
 			cleanupRessources(clientSvgTicket, clientPdfTicket);
 			return;
 		}
