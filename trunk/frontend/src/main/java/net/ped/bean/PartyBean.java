@@ -6,8 +6,10 @@ import java.util.Calendar;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import net.ped.model.Customer;
+import net.ped.model.Party;
 import net.ped.constante.ConstantesWeb;
 import net.ped.service.front.FrontBillingService;
 import net.ped.service.front.FrontPartyService;
@@ -26,12 +28,20 @@ public class PartyBean implements Serializable {
 	private String name;
 	private String firstname;
 	
-	
-	@ManagedProperty(value="#{accueilBean}")
-	private AccueilBean accueilBean;
+	private Party partySelect;
 	
 	public PartyBean(){
 		dateCourante = Calendar.getInstance();
+	}
+	
+	public String showParty(int id){
+		for(Party p : FrontPartyService.getInstance().getPartiesNotBegun()) {
+			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
+				partySelect = p;
+				break;
+			}
+		}	
+		return "party";
 	}
 	
 	public String buyTicket() {
@@ -43,9 +53,9 @@ public class PartyBean implements Serializable {
 	}
 
 	public boolean isDisableBuyButton() {
-		if(accueilBean.getPartySelect().getDateBegin().after(Calendar.getInstance().getTime()) &&
-				accueilBean.getPartySelect().getDateEnd().before(Calendar.getInstance().getTime()) &&
-				accueilBean.getPartySelect().getNbPlace() <= accueilBean.getPartySelect().getNbPlaceBought()) {
+		if(partySelect.getDateBegin().after(Calendar.getInstance().getTime()) &&
+		partySelect.getDateEnd().before(Calendar.getInstance().getTime()) &&
+		partySelect.getNbPlace() <= partySelect.getNbPlaceBought()) {
 			disableBuyButton = true;
 		}
 		else {
@@ -58,12 +68,12 @@ public class PartyBean implements Serializable {
 		this.disableBuyButton = disableBuyButton;
 	}
 
-	public AccueilBean getAccueilBean() {
-		return accueilBean;
+	public Party getPartySelect() {
+		return partySelect;
 	}
 
-	public void setAccueilBean(AccueilBean accueilBean) {
-		this.accueilBean = accueilBean;
+	public void setPartySelect(Party partySelect) {
+		this.partySelect = partySelect;
 	}
 
 	public String getMail() {
@@ -99,8 +109,7 @@ public class PartyBean implements Serializable {
 	}
 
 	public String deleteParty(){
-		FrontPartyService.getInstance().deleteParty(accueilBean.getIdParty());
-		accueilBean.setListParty(FrontPartyService.getInstance().getPartiesNotBegunMaxResult(0, ConstantesWeb.NUMBER_PARTY_PAGE));
+		FrontPartyService.getInstance().deleteParty(partySelect.getId());
 		return "accueil";
 	}
 	

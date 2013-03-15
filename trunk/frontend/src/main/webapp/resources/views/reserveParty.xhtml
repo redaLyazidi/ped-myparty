@@ -40,34 +40,34 @@
 								<div class="partyCadreImg">
 									<div class="partyImg">
 										<h:graphicImage
-											value="../upload/#{partyBean.accueilBean.partySelect.image}" />
+											value="../upload/#{partyBean.partySelect.image}" />
 									</div>
 								</div>
 								<div class="partyPartDetails">
 									<div class="partyPartTitle">
 										<div class="partyItemTitle">
 											<h:outputText
-												value="#{partyBean.accueilBean.partySelect.title}" />
+												value="#{partyBean.partySelect.title}" />
 										</div>
 										<div class="partyItemArtist">
 											<c:forEach var="artist"
-												items="#{partyBean.accueilBean.partySelect.artists}">
+												items="#{partyBean.partySelect.artists}">
 												<h:outputText value="#{artist.name}   " />
 											</c:forEach>
 										</div>
 										<div class="partyItemGenre">
 											<h:outputText
-												value="#{partyBean.accueilBean.partySelect.theme}" />
+												value="#{partyBean.partySelect.theme}" />
 										</div>
 										<div class="partyItemDate">
 											<h:outputText
-												value="#{partyBean.accueilBean.partySelect.dateParty.getTime()}">
+												value="#{partyBean.partySelect.dateParty.getTime()}">
 												<f:convertDateTime pattern="dd/MM/yyyy à "
 													timeZone="Europe/Paris" />
 											</h:outputText>
 
 											<h:outputText
-												value="#{partyBean.accueilBean.partySelect.timeParty.getTime()}">
+												value="#{partyBean.partySelect.timeParty.getTime()}">
 												<f:convertDateTime pattern="HH:mm" timeZone="Europe/Paris" />
 											</h:outputText>
 										</div>
@@ -75,20 +75,20 @@
 									<div class="partyPartAdd">
 										<div class="partyItemLieu">
 											<h:outputText
-												value="#{partyBean.accueilBean.partySelect.place}" />
+												value="#{partyBean.partySelect.place}" />
 										</div>
 										<div>
 											<h:outputText
-												value="#{partyBean.accueilBean.partySelect.street}" />
+												value="#{partyBean.partySelect.street}" />
 										</div>
 										<h:outputText
-											value="#{partyBean.accueilBean.partySelect.CP} #{partyBean.accueilBean.partySelect.town}" />
+											value="#{partyBean.partySelect.CP} #{partyBean.partySelect.town}" />
 									</div>
 								</div>
 								<div class="partyPartReserv">
 									<div>
 										<h:outputText style="color: rgb(255,155,55)"
-											value="#{partyBean.accueilBean.partySelect.price} €" />
+											value="#{partyBean.partySelect.price} €" />
 									</div>
 								</div>
 
