@@ -1,7 +1,6 @@
 package net.ped.servlet;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -14,19 +13,13 @@ import net.ped.shared.FileStorage;
 import net.ped.shared.PedHttpServlet;
 import net.ped.shared.TempFileManager;
 
-import org.apache.commons.io.IOUtils;
-
 @SuppressWarnings("serial")
 public class SaveAs extends PedHttpServlet {
 	static TempFileManager tempFileManager = null;
 
 	public void init() {
 		if (tempFileManager == null) {
-			try {
-				tempFileManager = new TempFileManager("saveas", "ticket", "svg", true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			tempFileManager = new TempFileManager("saveas", "ticket", "svg", true);
 		}
 	}
 

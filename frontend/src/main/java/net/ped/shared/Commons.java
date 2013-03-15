@@ -23,38 +23,33 @@ import org.slf4j.LoggerFactory;
 
 
 public class Commons {
-
-	private static final String ticketsextension =".svg";
-
 	private static final Logger LOG = LoggerFactory.getLogger(Commons.class);
 	private static HttpServlet myservlet = MyHttpServlet.getInstance();
+	static PermanentFileManager permanentSvgTicketFileManager = null;
 
-
+	
 	public static String getProjectConfigParameter(String name) {
 		return myservlet.getServletContext().getInitParameter(name);
 	}
-
 
 	public static File getPartySvgFile(int idParty) {
 		if (idParty < 0) {
 			LOG.debug("The id can't be lower than 0, id = " + idParty);
 			return null;
 		}
-
 		if (new PartyDaoImpl().containsParty(idParty) == false) {
 			LOG.debug("This id : " + idParty+ " doesn't match to any party");
 			return null;
 		}
 
-		String ticketsDir = myservlet.getServletContext().getInitParameter("ticketsDir");
-		File ticketOfIdParty;
-		ticketOfIdParty = FileStorage.getPermanentFile(ticketsDir, idParty + ticketsextension);
-		LOG.info("thisPartyticketPath: " + ticketOfIdParty);
-		/*if (! ticketOfIdParty.exists()) {
-			LOG.debug("There no svg file with name: " + idParty);
+		if (permanentSvgTicketFileManager == null) {
+			permanentSvgTicketFileManager = new PermanentFileManager("ticketsdir", "ticket", "svg", true);
+		}
+		try {
+			return permanentSvgTicketFileManager.get(idParty);
+		} catch (IOException e) {
 			return null;
-		}*/
-		return ticketOfIdParty;
+		}
 	}
 
 	public static String QRCodeString(Ticket t) {
@@ -70,14 +65,12 @@ public class Commons {
 		String mimetype = context.getMimeType(diskFile.getAbsolutePath());
 
 		response.setCharacterEncoding(System.getProperty("file.encoding"));
-		// Set the response and go!
 		response.setContentType((mimetype != null) ? mimetype
 				: "application/octet-stream");
 		response.setContentLength((int) diskFile.length());
 		response.setHeader("Content-Disposition", "attachment; filename=\""
 				+ downloadName + "\"");
 
-		// Stream to the requester.
 		DataInputStream in = new DataInputStream(new FileInputStream(diskFile));
 		IOUtils.copy(in, op);
 		in.close();
@@ -86,7 +79,6 @@ public class Commons {
 	}
 
 	public static void writeSvgInServer(InputStream svgstr, File svgFile) throws IOException {
-		// write to file
 		FileWriter fw = new FileWriter(svgFile);
 		try {
 			IOUtils.skip(svgstr, "svgstr=".length());

@@ -11,18 +11,29 @@ public class PermanentFileManager {
 	private String extension;
 
 	public PermanentFileManager(String context, String name, String extension,
-			boolean autoDelete) throws Exception {
-		this.context = context;
-		this.name = name;
-		this.extension = extension;
-		if (autoDelete) {
-			File dir = new File(FileStorage.getServletDirPath(), context);
-			Pattern filenamePattern = Pattern.compile(name + "(.*)\\." + extension);
-			BackgroundRessourceCleaner.getInstance().watchFiles(dir, filenamePattern);
+			boolean autoDelete) {
+		try {
+			this.context = context;
+			this.name = name;
+			this.extension = extension;
+			setupDir();
+			if (autoDelete) {
+				File dir = new File(FileStorage.getServletDirPath(), context);
+				Pattern filenamePattern = Pattern.compile(name + "(.*)\\." + extension);
+				BackgroundRessourceCleaner.getInstance().watchFiles(dir, filenamePattern);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	public File get(int id) throws IOException {
+		setupDir();
 		return FileStorage.getTempFile(context, name + id + "." + extension);
+	}
+	
+	private void setupDir() {
+		File dir = new File(FileStorage.getServletDirPath(), context);
+		dir.mkdirs();
 	}
 }
