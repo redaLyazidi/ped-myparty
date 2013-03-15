@@ -4,5 +4,5 @@ import java.io.File;
 
 public interface SvgToPdf {
 
-	public  File convert(File svg);
+	public boolean convert(File svg, File output);
 }

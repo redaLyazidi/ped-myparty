@@ -11,31 +11,33 @@ public class InkscapeSvgToPdf implements SvgToPdf {
 	protected static final Logger LOG = LoggerFactory.getLogger(SvgToPdf.class);
 
 	@Override
-	public File convert(File svg) {
-		Runtime runtime = Runtime.getRuntime();
+	public boolean convert(File svg, File output) {
+		//String svgfullname = svg.getName();
+		//String svgname = svgfullname.substring(0, svgfullname.length() -4);
 		StringBuilder cmdBuilder = new StringBuilder();
-		
-		File pdf = null;
-		pdf = FileStorage.createTempFile("ticketpdf", "ticket", ".pdf");
-		String svgfullname = svg.getName();
-		String svgname = svgfullname.substring(0, svgfullname.length() -4);
-		cmdBuilder.append("inkscape -f ").append(svg.getAbsolutePath()).append(" -A ").append(svg.getParent())
-		.append('/').append(svgname).append(".pdf");
-//		String cmd = "inkscape -f " + svg.getAbsolutePath() + " -A " + svg.getParent() + '/' + svg.getName() + ".pdf";
+		cmdBuilder.append("inkscape -f ").append(svg.getAbsolutePath()).append(" -A ").append(output.getAbsolutePath());
+		//String cmd = "inkscape -f " + svg.getAbsolutePath() + " -A " + svg.getParent() + '/' + svg.getName() + ".pdf";
 		String cmd = cmdBuilder.toString();
 		LOG.info("cmd: " + cmd);
-		if(! cmd.isEmpty()) {
-			try {
-				runtime.exec(cmd);
-			} catch (SecurityException se) {
-				LOG.debug("You're not allowed to use that command on this server\n" + cmd);
-				return null;
-			} catch (IOException ioe) {
-				LOG.debug("An error occured during the execution of the command:\n" + cmd);
-				return null;
-			}
+		try {
+			Runtime runtime = Runtime.getRuntime();
+			runtime.exec(cmd);
+			int delay = 3 * 1000;
+			LOG.debug("Let me sleep some time...");
+	        try {
+	            Thread.sleep(delay);
+	        } catch (InterruptedException e1) {
+	        	LOG.debug("I can't sleep...");
+	        }
+	        LOG.debug("Ahhh... let's go !");
+			
+		} catch (SecurityException se) {
+			LOG.debug("You're not allowed to use that command on this server\n" + cmd);
+			return false;
+		} catch (IOException ioe) {
+			LOG.debug("An error occured during the execution of the command:\n" + cmd);
+			return false;
 		}
-		return pdf;
+		return true;
 	}
-
 }

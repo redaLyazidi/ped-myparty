@@ -1,14 +1,9 @@
 package net.ped.servlet;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
 
 import net.ped.dao.BillingDaoImpl;
 import net.ped.model.Ticket;
@@ -55,7 +50,7 @@ public class TicketCustomerRasterizer extends TicketRasterizer {
 		return Commons.getPartySvgFile(infos.idParty);
 	}
 
-	protected void doPost(HttpServletRequest request,
+	/*protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String svgstr = request.getParameter("svgstr");
 		LOG.info("svgstr: " + svgstr);
@@ -81,5 +76,5 @@ public class TicketCustomerRasterizer extends TicketRasterizer {
 			response.getWriter().println(previewpdf.getName());
 			//Commons.sendFileDownloadResponse(request, response, previewpdf, previewpdf.getName());
 		}
-	}
+	}*/
 }

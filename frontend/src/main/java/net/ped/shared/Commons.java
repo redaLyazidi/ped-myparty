@@ -60,10 +60,11 @@ public class Commons {
 
 	public static void sendFileDownloadResponse(HttpServletRequest request,
 			HttpServletResponse response, File diskFile, String downloadName) throws IOException {
+		LOG.debug("sendFileDownloadResponse : " + diskFile);
+		
 		ServletOutputStream op = response.getOutputStream();
 		ServletContext context = MyHttpServlet.getInstance().getServletContext();
 		String mimetype = context.getMimeType(diskFile.getAbsolutePath());
-
 		response.setCharacterEncoding(System.getProperty("file.encoding"));
 		response.setContentType((mimetype != null) ? mimetype
 				: "application/octet-stream");
