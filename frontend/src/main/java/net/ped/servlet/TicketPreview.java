@@ -27,7 +27,7 @@ public class TicketPreview extends TicketRasterizer {
 		// il faut créer un fichier temporaire lors de la requête post.
 		// il faut remplir le champ svgTicket lors de la requête get.
 		try {
-			ticketInfos.idParty = Commons.getMandatoryIntParameter(request, "idparty");
+			ticketInfos.idParty = getMandatoryIntParameter(request, "idparty");
 		} catch (Exception e) {
 			LOG.debug("No id given");
 			return null;

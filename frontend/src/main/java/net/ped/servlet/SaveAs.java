@@ -33,7 +33,7 @@ public class SaveAs extends PedHttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String filename = request.getParameter("url");
 		if (filename == null)
-			throw new ServletException("Missing config parameter : url");
+			throw new ServletException("Mis+sing config parameter : url");
 		File diskFile = FileStorage.getTempFile("saveas", filename);
 		if (diskFile.exists())
 			Commons.sendFileDownloadResponse(request, response, diskFile, "ticket.svg");
@@ -49,7 +49,7 @@ public class SaveAs extends PedHttpServlet {
 		LOG.info(tempFile.getPath());
 		LOG.info(getServletContext().getMimeType(tempFile.getName()));
 		
-		//	Commons.getPartySvgFile(8);
+
 		// write to file
 		FileWriter fw = new FileWriter(tempFile);
 		try {
