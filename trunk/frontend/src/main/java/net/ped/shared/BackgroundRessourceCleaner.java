@@ -36,7 +36,7 @@ public class BackgroundRessourceCleaner implements Runnable {
 	public void watchFiles(File directory, Pattern filenamePattern)
 			throws Exception {
 		if (!directory.isDirectory())
-			throw new Exception();
+			throw new Exception("Directory : " + directory);
 		LOG.info("Added an entry to watch and auto delete files : "
 				+ directory.getAbsolutePath());
 		synchronized (locations) {

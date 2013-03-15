@@ -1,37 +1,43 @@
 package net.ped.servlet;
 
 import java.io.File;
+import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.FileUtils;
 
 import net.ped.model.Customer;
 import net.ped.model.Party;
 import net.ped.model.Ticket;
-import net.ped.servlet.TicketRasterizer.TicketInformation;
 import net.ped.shared.Commons;
+import net.ped.shared.TempFileManager;
+
+import org.apache.commons.io.FileUtils;
 
 @SuppressWarnings("serial")
 public class TicketPreview extends TicketRasterizer {
-	private File svgTicket = null;
-	
-	@Override
-	protected TicketInformation getTicketInformations(HttpServletRequest request, HttpServletResponse response) {
-		TicketInformation ticketInfos = new TicketInformation();
-		ticketInfos.idParty = 0;
-		LOG.debug("Get ticket information");
-		
-		// pas bon : il faut le svg et non l'id. => requête POST nécessaire
-		// il faut créer un fichier temporaire lors de la requête post.
-		// il faut remplir le champ svgTicket lors de la requête get.
-		try {
-			ticketInfos.idParty = getMandatoryIntParameter(request, "idparty");
-		} catch (Exception e) {
-			LOG.debug("No id given");
-			return null;
+	private File svgTicket;
+	static TempFileManager tempFileManager = null;
+
+	public void init() {
+		if (tempFileManager == null) {
+			tempFileManager = new TempFileManager("preview", "ticket", "svg",
+					true);
 		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		Commons.writeSvgInTmp(request, response, tempFileManager);
+	}
+
+	@Override
+	protected TicketInformation getTicketInformations(
+			HttpServletRequest request, HttpServletResponse response) {
+		TicketInformation ticketInfos = new TicketInformation();
+		LOG.debug("dummy get ticket information");
 		return ticketInfos;
 	}
 
@@ -43,16 +49,25 @@ public class TicketPreview extends TicketRasterizer {
 	@Override
 	protected Ticket checkAuthorizedAccess(TicketInformation ticketInfos) {
 		// long name
-		Customer c = new Customer("Peyronnelle Clémentine", "Wong Wun Gatchunk", "clems@hotmail.fr");
+		Customer c = new Customer("Peyronnelle Clémentine",
+				"Wong Wun Gatchunk", "clems@hotmail.fr");
 		Ticket ticket = new Ticket(new Party(), c, "0123456789ABCDEF");
 		return ticket;
 	}
-	
+
 	@Override
-	protected File getGenericSvgTicket(TicketInformation infos) {
+	protected File getGenericSvgTicket(HttpServletRequest request,
+			TicketInformation infos) {
+		String filename = request.getParameter("url");
+		if (filename == null) {
+			LOG.info("Missing parameter url in request");
+			return null;
+		}
+		LOG.info("filename " + filename);
+		svgTicket = tempFileManager.get(filename);
 		return svgTicket;
 	}
-	
+
 	protected void cleanupRessources(File clientSvgTicket, File clientPdfTicket) {
 		super.cleanupRessources(clientSvgTicket, clientPdfTicket);
 		FileUtils.deleteQuietly(svgTicket);
