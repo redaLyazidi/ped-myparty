@@ -43,11 +43,7 @@ public class BatikSvgToPdf implements SvgToPdf {
 		TranscoderInput input_svg_image = new TranscoderInput(svg_URI_input);        
 		//Step-2: Define OutputStream to PDF file and attach to TranscoderOutput
 		File pdf = null;
-		try {
-			pdf = FileStorage.createTempFile("ticketpdf", "ticket", ".pdf");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		pdf = FileStorage.createTempFile("ticketpdf", "ticket", ".pdf");
 		OutputStream pdf_ostream = null;
 		try {
 			pdf_ostream = new FileOutputStream(pdf);

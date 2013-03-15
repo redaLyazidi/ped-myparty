@@ -126,27 +126,9 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		}
 		File pdf = new InkscapeSvgToPdf().convert(svg);
 		if (pdf == null) {
-			 pdf = new BatikSvgToPdf().convert(svg);
+			pdf = new BatikSvgToPdf().convert(svg);
 		}
 		return pdf;
-		/*
-		LOG.info("before the exec");
-		Runtime runtime = Runtime.getRuntime();
-		String cmd = "inkscape -f " + svg.getAbsolutePath() + " -A " + svg.getParent() + '/' + svg.getName() + ".pdf";
-		if(! cmd.isEmpty()) {
-			LOG.info(cmd);
-			try {
-				runtime.exec(cmd);
-			} catch (SecurityException se) {
-				LOG.debug("You're not allowed to use that command on this server\n" + cmd);
-				return null;
-			} catch (IOException ioe) {
-				LOG.debug("An error occured during the execution of the command:\n" + cmd);
-			}
-		}
-		LOG.info("after the exec");
-
-		return null; */
 	}
 
 	protected void cleanupRessources(File clientSvgTicket, File clientPdfTicket) {

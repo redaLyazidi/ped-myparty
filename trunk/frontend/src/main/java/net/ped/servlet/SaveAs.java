@@ -39,18 +39,10 @@ public class SaveAs extends PedHttpServlet {
 		LOG.info(tempFile.getPath());
 		LOG.info(getServletContext().getMimeType(tempFile.getName()));
 
-		// write to file
-		FileWriter fw = new FileWriter(tempFile);
-		try {
-			IOUtils.skip(svgstr, "svgstr=".length());
-			IOUtils.copy(svgstr, fw);
-			fw.flush();
-		} finally {
-			response.setContentType("text/plain");
-			response.getWriter().println(tempFile.getName());
-			IOUtils.closeQuietly(svgstr);
-			IOUtils.closeQuietly(fw);
-		}
+		Commons.writeSvgInServer(svgstr, tempFile);
+		response.setContentType("text/plain");
+		response.getWriter().println(tempFile.getName());
+		LOG.info("Commons write in Server");
 	}
 
 	// step 2
@@ -59,7 +51,9 @@ public class SaveAs extends PedHttpServlet {
 		String filename = request.getParameter("url");
 		if (filename == null)
 			throw new ServletException("Missing config parameter : url");
+		LOG.info("filename " + filename);
 		File diskFile = tempFileManager.get(filename);
+		LOG.debug("diskFile: " + diskFile.getAbsolutePath());
 		if (FileStorage.exists(diskFile))
 			Commons.sendFileDownloadResponse(request, response, diskFile,
 					"ticket.svg");

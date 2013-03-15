@@ -16,11 +16,7 @@ public class InkscapeSvgToPdf implements SvgToPdf {
 		StringBuilder cmdBuilder = new StringBuilder();
 		
 		File pdf = null;
-		try {
-			pdf = FileStorage.createTempFile("ticketpdf", "ticket", ".pdf");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		pdf = FileStorage.createTempFile("ticketpdf", "ticket", ".pdf");
 
 		cmdBuilder.append("inkscape -f ").append(svg.getAbsolutePath()).append(" -A ").append(svg.getParent())
 		.append('/').append(svg.getName()).append(".pdf");

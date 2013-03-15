@@ -3,7 +3,9 @@ package net.ped.shared;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
@@ -31,8 +33,8 @@ public class Commons {
 	public static String getProjectConfigParameter(String name) {
 		return myservlet.getServletContext().getInitParameter(name);
 	}
-	
-	
+
+
 	public static File getPartySvgFile(int idParty) {
 		if (idParty < 0) {
 			LOG.debug("The id can't be lower than 0, id = " + idParty);
@@ -46,12 +48,7 @@ public class Commons {
 
 		String ticketsDir = myservlet.getServletContext().getInitParameter("ticketsDir");
 		File ticketOfIdParty;
-		try {
-			ticketOfIdParty = FileStorage.getPermanentFile(ticketsDir, idParty + ticketsextension);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		ticketOfIdParty = FileStorage.getPermanentFile(ticketsDir, idParty + ticketsextension);
 		LOG.info("thisPartyticketPath: " + ticketOfIdParty);
 		/*if (! ticketOfIdParty.exists()) {
 			LOG.debug("There no svg file with name: " + idParty);
@@ -87,4 +84,18 @@ public class Commons {
 		op.flush();
 		op.close();
 	}
+
+	public static void writeSvgInServer(InputStream svgstr, File svgFile) throws IOException {
+		// write to file
+		FileWriter fw = new FileWriter(svgFile);
+		try {
+			IOUtils.skip(svgstr, "svgstr=".length());
+			IOUtils.copy(svgstr, fw);
+			fw.flush();
+		} finally {
+			IOUtils.closeQuietly(svgstr);
+			IOUtils.closeQuietly(fw);
+		}
+	}
 }
+
