@@ -39,7 +39,7 @@ public class CreateParty implements Serializable{
 
 	private static final Logger LOG = LoggerFactory.getLogger(CreateParty.class);
 	private static final String imageUploadPath = "/resources/upload";
-	
+
 	private UploadedFile file;
 	private String title;
 	private String description;
@@ -58,11 +58,11 @@ public class CreateParty implements Serializable{
 	private Date dateEnd;
 	private String selectedTheme;
 	private List<String> themes;
-	
+
 	private List<Artist> selectedArtists;
 	private List<Artist> artists;
 	private List<String> selectedTexts;
-	
+
 	private Party partyEdited;
 
 	public CreateParty(){
@@ -79,7 +79,7 @@ public class CreateParty implements Serializable{
 		for(ThemeParty t : ThemeParty.values()){
 			themes.add(t.toString());
 		}
-		
+
 		artists = FrontPartyService.getInstance().getAllArtists();
 	}
 
@@ -244,15 +244,15 @@ public class CreateParty implements Serializable{
 	}
 
 	public List<String> complete(String query) {  
-        List<String> suggestions = new ArrayList<String>();  
-          
-        for(Artist a : artists) {  
-            if(a.getName().startsWith(query))  
-                suggestions.add(a.getName());  
-        }  
-        return suggestions;  
-    }
-	
+		List<String> suggestions = new ArrayList<String>();  
+
+		for(Artist a : artists) {  
+			if(a.getName().startsWith(query))  
+				suggestions.add(a.getName());  
+		}  
+		return suggestions;  
+	}
+
 	private boolean validationDate(){
 		if(dateBegin.after(dateEnd)){
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "La date de début des préventes doit se situer avant la date de fin des préventes", "");
@@ -281,14 +281,14 @@ public class CreateParty implements Serializable{
 			OutputStream output=null;
 			ServletContext sc = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String webappPath = sc.getRealPath("/");
-			
+
 			try {
 				input = file.getInputstream();
 				// à changer en mettant la destination de son workspace
 				output = new FileOutputStream(new File(webappPath + imageUploadPath, filename));
 				if( output == null)
 					LOG.debug("REP FAUX\n");
-//				output = new FileOutputStream(new File("//D://Fac//AL//workspace//trunk//frontend//src//main//webapp//resources//upload" + "//", filename));
+				//				output = new FileOutputStream(new File("//D://Fac//AL//workspace//trunk//frontend//src//main//webapp//resources//upload" + "//", filename));
 				IOUtils.copy(input, output);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -297,10 +297,10 @@ public class CreateParty implements Serializable{
 				IOUtils.closeQuietly(output);
 			} 
 		}
-		
+
 		if(!validationDate())
 			return;
-		
+
 		Party party = new Party();
 		party.setImage(filename);
 		party.setTitle(title);
@@ -323,16 +323,16 @@ public class CreateParty implements Serializable{
 		party.setDateParty(cal3);
 		Calendar hourParty = new GregorianCalendar(0,0,0,selectedHour,selectedMinute);
 		party.setTimeParty(hourParty);
-		
+
 		selectedArtists = new ArrayList<Artist>();
 		for(String s : selectedTexts){
 			LOG.debug("DEBUG: " + s);
 			selectedArtists.add(FrontPartyService.getInstance().getArtistByName(s));
 		}
-		
+
 		party.setArtists(selectedArtists);
 		FrontPartyService.getInstance().addParty(party);
-		
+
 		// On réinitialise le bean createParty (pour ne pas garder les valeurs losqu'on va dans la vue newParty)
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		session.removeAttribute("createParty");
@@ -340,7 +340,7 @@ public class CreateParty implements Serializable{
 		FacesMessage msg = new FacesMessage("La party a été créée");
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
 	}
-	
+
 	public String edit(int id){
 		partyEdited = FrontPartyService.getInstance().getParty(id);
 		title = partyEdited.getTitle();
@@ -357,20 +357,20 @@ public class CreateParty implements Serializable{
 		dateBegin = partyEdited.getDateBegin().getTime();
 		dateEnd = partyEdited.getDateEnd().getTime();
 		selectedTheme = partyEdited.getTheme();
-		
+
 		selectedTexts = new ArrayList<String>();
 		for(Artist a : partyEdited.getArtists()){
 			selectedTexts.add(a.getName());
 		}
-		
+
 		return "editParty";
 	}
-	
+
 	public String validateEdit(){
-		
+
 		if(!validationDate())
 			return "";
-		
+
 		partyEdited.setTitle(title);
 		partyEdited.setDescription(description);
 		partyEdited.setNbPlace(nbPlace);
@@ -391,23 +391,30 @@ public class CreateParty implements Serializable{
 		partyEdited.setDateParty(cal3);
 		Calendar hourParty = new GregorianCalendar(0,0,0,selectedHour,selectedMinute);
 		partyEdited.setTimeParty(hourParty);
-		
+
 		selectedArtists = new ArrayList<Artist>();
 		for(String s : selectedTexts){
 			LOG.debug("DEBUG: " + s);
 			selectedArtists.add(FrontPartyService.getInstance().getArtistByName(s));
 		}
-		
+
 		partyEdited.setArtists(selectedArtists);
 		FrontPartyService.getInstance().updateParty(partyEdited);
-		
+
 		// On réinitialise le bean createParty (pour ne pas garder les valeurs losqu'on va dans la vue newParty)
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		session.removeAttribute("createParty");
-	
+
 		return "accueil";
 	}
-	
+
+	public String cancel(){
+		// On réinitialise le bean createParty (pour ne pas garder les valeurs losqu'on va dans la vue newParty)
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		session.removeAttribute("createParty");
+		return "accueil";
+	}
+
 }
 
 //<label class="labelForm">Image</label>

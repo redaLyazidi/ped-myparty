@@ -69,9 +69,7 @@
 											</div>
 											<div class="descriptionParty">
 												<div class="listeItemTitle">
-													<h:commandLink action="#{accueilBean.outcome}" value="#{party.title}">
-														<f:param name="idParty" value="#{party.id}" />
-													</h:commandLink>
+													<h:commandLink action="#{partyBean.showPartyFromNotValidated(party.id)}" value="#{party.title}"/>
 												</div>
 												<div class="listeItemTheme">
 													<h:outputText value="#{party.theme}" />
