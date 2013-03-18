@@ -129,7 +129,7 @@
 											</div>
 											<div class="descriptionParty">
 												<div class="listeItemTitle">
-													<h:commandLink action="#{partyBean.showParty(party.id)}" value="#{party.title}"/>
+													<h:commandLink action="#{partyBean.showPartyFromAccueil(party.id)}" value="#{party.title}"/>
 												</div>
 												<div class="listeItemTheme">
 													<h:outputText value="#{party.theme}" />
@@ -163,7 +163,7 @@
 												<div>
 													<h:outputText value="#{party.price} €" />
 												</div>
-												<h:commandLink action="#{partyBean.showParty(party.id)}" value="Réservez"/>
+												<h:commandLink action="#{partyBean.showPartyFromAccueil(party.id)}" value="Réservez"/>
 											</div>
 										</td>
 									</tr>

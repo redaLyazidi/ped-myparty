@@ -32,10 +32,21 @@ public class PartyBean implements Serializable {
 	
 	public PartyBean(){
 		dateCourante = Calendar.getInstance();
+		disableBuyButton = false;
 	}
 	
-	public String showParty(int id){
+	public String showPartyFromAccueil(int id){
 		for(Party p : FrontPartyService.getInstance().getPartiesNotBegun()) {
+			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
+				partySelect = p;
+				break;
+			}
+		}	
+		return "party";
+	}
+	
+	public String showPartyFromNotValidated(int id){
+		for(Party p : FrontPartyService.getInstance().getAllPartiesNotValidated()) {
 			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
 				partySelect = p;
 				break;
@@ -53,8 +64,8 @@ public class PartyBean implements Serializable {
 	}
 
 	public boolean isDisableBuyButton() {
-		if(partySelect.getDateBegin().after(Calendar.getInstance().getTime()) &&
-		partySelect.getDateEnd().before(Calendar.getInstance().getTime()) &&
+		if(partySelect.getDateBegin().after(Calendar.getInstance()) ||
+		partySelect.getDateEnd().before(Calendar.getInstance()) ||
 		partySelect.getNbPlace() <= partySelect.getNbPlaceBought()) {
 			disableBuyButton = true;
 		}
