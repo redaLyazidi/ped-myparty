@@ -106,9 +106,22 @@
 								</tr>
 								<tr>
 									<td style="padding: 10px">
-										<h:commandButton class="btn btn-warning" value="Supprimer" ajax="false" action="#{partyBean.deleteParty}" rendered="#{loginBean.userAdmin}"/>
+										<p:commandButton styleClass="btn btn-warning" value="Supprimer" ajax="false" onclick="confirmation.show()" rendered="#{loginBean.userAdmin}" type="button"/>
 									</td>
 								</tr>
+								
+								<!-- Popup confirmation suppression Party -->
+								<p:confirmDialog id="confirmDialog" message="Voulez-vous vraiment détruire cette party ?"  header="Suppression Party" widgetVar="confirmation">
+							       	<p:commandButton id="confirm" value="Oui" oncomplete="confirmation.hide()" action="#{partyBean.deleteParty}" />  
+							        <p:commandButton id="decline" value="Non" onclick="confirmation.hide()" type="button" />
+    							</p:confirmDialog>
+    							
+    							<tr>
+									<td style="padding: 10px">
+										<h:commandButton class="btn btn-warning" value="Créer billet" ajax="false" rendered="#{loginBean.userAdmin}" onclick="this.form.target='_blank'" action="#{partyBean.test}"/>
+									</td>
+								</tr>
+    							
 							</c:when>
 							<c:otherwise>
 								<tr>

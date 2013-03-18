@@ -124,4 +124,8 @@ public class PartyBean implements Serializable {
 		return "accueil";
 	}
 	
+	public String test(){
+		return "accueil";
+	}
+	
 }
