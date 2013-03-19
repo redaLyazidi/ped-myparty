@@ -1,5 +1,6 @@
 package net.ped.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -7,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import net.ped.model.Customer;
 import net.ped.model.Party;
@@ -124,8 +126,8 @@ public class PartyBean implements Serializable {
 		return "accueil";
 	}
 	
-	public String test(){
-		return "accueil";
+	public void createTicket() throws IOException {
+		 FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/myparty-frontend/resources/ticket-designer/svg-editor.html?idParty="+partySelect.getId());
 	}
 	
 }
