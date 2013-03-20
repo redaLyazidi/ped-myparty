@@ -15,7 +15,7 @@ public class InkscapeSvgToPdf implements SvgToPdf {
 		//String svgfullname = svg.getName();
 		//String svgname = svgfullname.substring(0, svgfullname.length() -4);
 		StringBuilder cmdBuilder = new StringBuilder();
-		cmdBuilder.append("inkscape -f ").append(svg.getAbsolutePath()).append(" -A ").append(output.getAbsolutePath());
+		cmdBuilder.append("inscape -f ").append(svg.getAbsolutePath()).append(" -A ").append(output.getAbsolutePath());
 		//String cmd = "inkscape -f " + svg.getAbsolutePath() + " -A " + svg.getParent() + '/' + svg.getName() + ".pdf";
 		String cmd = cmdBuilder.toString();
 		LOG.info("cmd: " + cmd);

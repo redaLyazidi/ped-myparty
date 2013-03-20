@@ -17,11 +17,15 @@ import net.ped.shared.FileStorage;
 import net.ped.shared.PedHttpServlet;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @SuppressWarnings("serial")
 public class StoreSvgTickets extends PedHttpServlet {
 
+	private static final Logger LOG = LoggerFactory.getLogger(StoreSvgTickets.class);
+	
 	/** Called when the admin wants to edit the ticket (and load it) after having validated it */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idPartyString = request.getParameter("idParty");

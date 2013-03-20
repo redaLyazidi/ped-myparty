@@ -9,7 +9,7 @@ import javax.servlet.ServletContextListener;
 
 public class BackgroundRessourceCleanerScheduler implements ServletContextListener {
 	private ScheduledExecutorService scheduler;
-	private static final int checkIntervalSeconds = 100; 
+	private static final int checkIntervalSeconds = 10000; 
 
 	@Override
 	public void contextInitialized(ServletContextEvent event) {

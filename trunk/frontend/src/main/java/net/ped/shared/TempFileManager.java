@@ -37,7 +37,9 @@ public class TempFileManager {
 	
 	public File get(int id) {
 		setupDir();
-		return FileStorage.getTempFile(context, name + id + "." + extension);
+		File f = FileStorage.getTempFile(context, name + id + "." + extension);
+		LOG.debug("from FileStorage: " + f.toString());
+		return f;
 	}
 	
 	public File get(String name) {
@@ -52,5 +54,6 @@ public class TempFileManager {
 	private void setupDir() {
 		File dir = new File(FileStorage.getTemporaryDirPath(), context);
 		dir.mkdirs();
+		LOG.debug("setupDir is fine");
 	}
 }

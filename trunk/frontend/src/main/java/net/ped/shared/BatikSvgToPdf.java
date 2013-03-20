@@ -19,7 +19,7 @@ public class BatikSvgToPdf implements SvgToPdf {
 
 	@Override
 	public boolean convert(File svg, File output) {
-		String svg_URI_input = "file:///" + svg.getAbsolutePath();
+		String svg_URI_input = "file://" + svg.getAbsolutePath();
 		//List<String> ls = null;
 		/*try {
 			ls = IOUtils.readLines(new FileInputStream(svg));
@@ -46,9 +46,10 @@ public class BatikSvgToPdf implements SvgToPdf {
 			TranscoderOutput output_pdf_file = new TranscoderOutput(pdf_ostream);               
 			Transcoder transcoder = new PDFTranscoder();
 	
-			System.out.println("----------- BEFORE");
+			LOG.info("----------- BEFORE transcoder");
+			LOG.debug("svg_URI_input: " + svg_URI_input);
 			transcoder.transcode(input_svg_image, output_pdf_file);
-			System.out.println("----------- AFTER");
+			LOG.info("----------- AFTER transcoder");
 			pdf_ostream.flush();
 			IOUtils.closeQuietly(pdf_ostream);
 		} catch (Exception e) {

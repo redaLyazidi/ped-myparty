@@ -75,7 +75,8 @@ if (!alert)
             shortcuts: true,
             saveAsUrl: self.location.protocol + '//' + self.location.host + mypartyurlbase + '/saveas',
             sendsvgtoserver: self.location.protocol + '//' + self.location.host + mypartyurlbase + '/storesvgtickets',
-            sendsvgtopdf : self.location.protocol + '//' + self.location.host + mypartyurlbase + '/ticketcustomerrasterizer'
+            sendsvgtopdf : self.location.protocol + '//' + self.location.host + mypartyurlbase + '/ticketcustomerrasterizer',
+            sendforpreview : self.location.protocol + '//' + self.location.host + mypartyurlbase + '/ticketpreview'
         },
         uiStrings = Editor.uiStrings = {
             common: {
@@ -2656,14 +2657,7 @@ if (!alert)
 
             var clickPreview =function(){
                 if (toolButtonClick('#tool_preview')) {
-                    jQuery.alert('Preview clicked');
-                    jQuery.post(curConfig.sendsvgtopdf, {
-                        'svgstr' : svgCanvas.svgCanvasToString()
-                        },
-                        function (data) {
-                            console.log('data: ',data);
-                            window.open(data,"width=950 height=450");
-                        });
+                    svgCanvas.preview(curConfig.sendforpreview);
                 }
             };
             

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public abstract class PedHttpServlet extends HttpServlet {
-	protected static final Logger LOG = LoggerFactory.getLogger(PedHttpServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PedHttpServlet.class);
 
     public void init(ServletConfig config) throws ServletException {
     	super.init(config);

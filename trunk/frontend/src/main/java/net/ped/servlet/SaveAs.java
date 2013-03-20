@@ -8,6 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.ped.shared.Commons;
 import net.ped.shared.FileStorage;
 import net.ped.shared.PedHttpServlet;
@@ -16,7 +19,8 @@ import net.ped.shared.TempFileManager;
 @SuppressWarnings("serial")
 public class SaveAs extends PedHttpServlet {
 	static TempFileManager tempFileManager = null;
-
+	private static final Logger LOG = LoggerFactory.getLogger(SaveAs.class);
+	
 	public void init() {
 		if (tempFileManager == null) {
 			tempFileManager = new TempFileManager("saveas", "ticket", "svg", true);
@@ -26,15 +30,7 @@ public class SaveAs extends PedHttpServlet {
 	// step 1
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		/*InputStream svgstr = request.getInputStream();
-		// create a temporary file in that directory
-		File tempFile = tempFileManager.create();
-		LOG.info(tempFile.getPath());
-		LOG.info(getServletContext().getMimeType(tempFile.getName()));
 
-		Commons.writeSvgInServer(svgstr, tempFile);
-		response.setContentType("text/plain");
-		response.getWriter().println(tempFile.getName());*/
 		Commons.writeSvgInTmp(request,response,tempFileManager);
 	}
 
