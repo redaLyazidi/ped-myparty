@@ -20,6 +20,8 @@ import org.apache.commons.httpclient.InvalidRedirectLocationException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // This class is used as a proxy to download image from client side that come from another domain.
 // It can retreive any http resource, not only images
@@ -37,6 +39,7 @@ public final class ImageProxy  extends PedHttpServlet {
 	final String https = "https://";
 	final String start = "url=";
 
+	private static final Logger LOG = LoggerFactory.getLogger(ImageProxy.class);
 
 	@Override
 	protected void doGet(final HttpServletRequest request,

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,6 +31,8 @@ import net.ped.shared.TempFileManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public abstract class TicketRasterizer extends PedHttpServlet {
@@ -37,15 +40,18 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 	static TempFileManager pdfTempFileManager = null;
 	static TempFileManager clientSvgTempFileManager = null;
 
+	private static final Logger LOG = LoggerFactory.getLogger(TicketRasterizer.class);
+	
 	public void init() {
 		if (pdfTempFileManager == null) {
 			pdfTempFileManager = new TempFileManager("rasterized-pdf", "ticket", "pdf", true);
 		}
 		if (clientSvgTempFileManager == null) {
+			LOG.debug("It was null");
 			clientSvgTempFileManager = new TempFileManager("client-specific-ticket", "ticket", "svg", true);
 		}
 	}
-		
+
 	class TicketInformation {
 		public int idParty, idClient;
 		public String secretCode;
@@ -63,7 +69,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		
+
 		TicketInformation ticketInfos = getTicketInformations(request, response);
 		if (ticketInfos == null || checkValidTicketInformation(ticketInfos) == false) {
 			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
@@ -77,7 +83,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 			return;
 		}
 		LOG.debug("checkAuthorizedAccess passed");
-		
+
 		File clientSvgTicket = null;
 		File clientPdfTicket = null;
 		try {
@@ -96,6 +102,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			LOG.debug("generateClientSpecificSvgTicket failed");
 			response.getWriter().write(htmlPersonnalErrorMessage(ticketInfos));
 			return;
 		} finally {
@@ -134,7 +141,11 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 		// replace qrcode path with the real image
 		String SvgQrcodeTag = "xlink:href=\"images/myparty/qrcode.png\""; // oops ! could be on two lines !
-		File specificFile = clientSvgTempFileManager.create();
+		LOG.debug("Before creating the tmp file");
+		File specificFile = null;
+		specificFile = clientSvgTempFileManager.create();
+
+		LOG.debug("After creating the tmp file");
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(specificFile)));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(generalTicket)));
 
@@ -143,7 +154,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 		//List<String> txt = IOUtils.readLines(new FileReader(generalTicket));
 		//LOG.debug("Size : " + txt.size());
-		
+
 		String line;
 		while((line = reader.readLine()) != null) {
 			String line2 = line.replace(SvgQrcodeTag, qrDataUri)

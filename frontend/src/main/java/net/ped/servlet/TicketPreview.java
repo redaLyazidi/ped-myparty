@@ -14,13 +14,19 @@ import net.ped.shared.Commons;
 import net.ped.shared.TempFileManager;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class TicketPreview extends TicketRasterizer {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(TicketPreview.class);
+	
 	private File svgTicket;
 	static TempFileManager tempFileManager = null;
 
 	public void init() {
+		super.init();
 		if (tempFileManager == null) {
 			tempFileManager = new TempFileManager("preview", "ticket", "svg", true);
 		}
@@ -69,6 +75,6 @@ public class TicketPreview extends TicketRasterizer {
 
 	protected void cleanupRessources(File clientSvgTicket, File clientPdfTicket) {
 		super.cleanupRessources(clientSvgTicket, clientPdfTicket);
-		FileUtils.deleteQuietly(svgTicket);
+		//FileUtils.deleteQuietly(svgTicket);
 	}
 }

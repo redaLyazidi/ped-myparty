@@ -5,6 +5,9 @@ import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.ped.dao.BillingDaoImpl;
 import net.ped.model.Ticket;
 import net.ped.shared.Commons;
@@ -12,6 +15,9 @@ import net.ped.shared.Commons;
 
 @SuppressWarnings("serial")
 public class TicketCustomerRasterizer extends TicketRasterizer {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(TicketCustomerRasterizer.class);
+	
 	protected TicketInformation getTicketInformations(HttpServletRequest request, HttpServletResponse response) {
 		TicketInformation ticketInfos = new TicketInformation();
 

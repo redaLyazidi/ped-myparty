@@ -70,16 +70,6 @@
  <url-pattern>/storesvgtickets</url-pattern>
 </servlet-mapping>
 
-<!-- <servlet>
- <servlet-name>ConvertSvg</servlet-name>
- <servlet-class>net.ped.servlet.ConvertSvg</servlet-class>
-</servlet>
-
-<servlet-mapping>
- <servlet-name>ConvertSvg</servlet-name>
- <url-pattern>/convertsvg</url-pattern>
-</servlet-mapping> -->
-
 <servlet>
  <servlet-name>TicketPreview</servlet-name>
  <servlet-class>net.ped.servlet.TicketPreview</servlet-class>
