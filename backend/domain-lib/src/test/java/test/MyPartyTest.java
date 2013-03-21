@@ -8,7 +8,9 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.ped.dao.BillingDaoImpl;
 import net.ped.dao.RESTDaoImpl;
@@ -109,7 +111,7 @@ public class MyPartyTest {
 	
 	@Test
 	public void testB_AddParty(){
-		try {	
+		try {
 			service.addParty(party1);
 			service.addParty(party2);
 			service.addParty(party3);
