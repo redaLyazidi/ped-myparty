@@ -2,8 +2,11 @@ package net.ped.model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -50,6 +52,9 @@ public class Party implements java.io.Serializable{
 	@ManyToMany
 	@JoinTable(name="PARTY_ARTIST", joinColumns = {@JoinColumn(name = "PARTY_FK")}, inverseJoinColumns = {@JoinColumn(name = "ARTIST_FK")})
 	private List<Artist> artists = new ArrayList<Artist>();
+	
+	@ElementCollection
+	private Map<Calendar,Integer> ticketSold = new HashMap<Calendar,Integer>();
 
 	public Party() {
 
@@ -73,6 +78,7 @@ public class Party implements java.io.Serializable{
 		this.CP = CP;
 		this.place = place;
 		this.artists = artists;
+		ticketSold.put(Calendar.getInstance(), 0);
 	}
 
 	public int getId() {
@@ -226,4 +232,13 @@ public class Party implements java.io.Serializable{
 	public void setValidated(boolean validated) {
 		this.validated = validated;
 	}
+
+	public Map<Calendar, Integer> getStatTicketSold() {
+		return ticketSold;
+	}
+
+	public void setStatTicketSold(Map<Calendar, Integer> statTicketSold) {
+		this.ticketSold = statTicketSold;
+	}
+	
 }

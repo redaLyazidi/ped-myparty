@@ -2,7 +2,9 @@ package net.ped.dao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -240,7 +242,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 			tx = em.getTransaction();
 			tx.begin();
 			Query query = em.createQuery("from Party u "
-					+ "inner join fetch u.artists where u.id=:param");
+					+ "inner join fetch u.artists inner join fetch u.ticketSold where u.id=:param");
 			query.setParameter("param", id);
 			p = (Party) query.getSingleResult();
 			tx.commit();

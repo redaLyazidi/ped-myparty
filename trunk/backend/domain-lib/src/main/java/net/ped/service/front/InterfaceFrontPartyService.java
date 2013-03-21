@@ -41,7 +41,6 @@ public interface InterfaceFrontPartyService {
 	
 	/**
 	 * valide une party -> l'étape de création de billet a été faite
-	 * ajoute le chemin du billet à la party
 	 */
 	public void ValidateParty(int id);
 	

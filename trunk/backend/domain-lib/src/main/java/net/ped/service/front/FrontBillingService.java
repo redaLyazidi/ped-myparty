@@ -1,6 +1,7 @@
 package net.ped.service.front;
 
 import java.math.BigInteger;
+import java.util.Calendar;
 
 import net.ped.dao.BillingDaoImpl;
 import net.ped.dao.InterfaceBillingDao;
@@ -83,6 +84,25 @@ public class FrontBillingService implements InterfaceFrontBillingService{
 		try {
 			Customer c = dao.getCustomerById(idCustomer);
 			Party p = daoParty.getParty(idParty);
+			
+			//incrémente le nombre de places achetées
+			p.setNbPlaceBought(p.getNbPlaceBought() + 1);
+			
+			//met à jour la hashMap contenant l'historique des achats
+			boolean exist = false;
+			for(Calendar mapKey : p.getStatTicketSold().keySet()){
+				if(mapKey.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) && 
+						mapKey.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+					p.getStatTicketSold().put(mapKey, p.getStatTicketSold().get(mapKey) + 1);
+					exist = true;
+				}
+				break;
+			}
+			if(!exist){
+				p.getStatTicketSold().put(Calendar.getInstance(), 1);
+			}
+			daoParty.updateParty(p);
+			
 			Ticket t = new Ticket(p, c, secretCode);
 			dao.addTicket(t);
 		} catch (Exception e) {

@@ -24,6 +24,8 @@ public interface InterfaceFrontBillingService {
 	
 	/**
 	 * ajoute un ticket
+	 * incrémente de 1 le nombre de places achetées pour la party
+	 * met à jour la hashMap contenant l'historique des billets achetés pour la party
 	 */
 	public void addTicket(int idCustomer, int idParty);
 	
