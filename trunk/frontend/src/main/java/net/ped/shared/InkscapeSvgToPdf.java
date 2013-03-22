@@ -35,7 +35,8 @@ public class InkscapeSvgToPdf implements SvgToPdf {
 			LOG.debug("You're not allowed to use that command on this server\n" + cmd);
 			return false;
 		} catch (IOException ioe) {
-			LOG.debug("An error occured during the execution of the command:\n" + cmd);
+			LOG.debug("An error occured during the execution of the command");
+			LOG.debug(cmd);
 			return false;
 		}
 		return true;

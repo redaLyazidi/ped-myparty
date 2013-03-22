@@ -7,11 +7,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.ped.model.Customer;
-import net.ped.model.Party;
-import net.ped.model.Ticket;
 import net.ped.shared.Commons;
+import net.ped.shared.DummyTicketInformation;
 import net.ped.shared.TempFileManager;
+import net.ped.shared.TicketInformation;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -41,28 +40,13 @@ public class TicketPreview extends TicketRasterizer {
 	@Override
 	protected TicketInformation getTicketInformations(
 			HttpServletRequest request, HttpServletResponse response) {
-		TicketInformation ticketInfos = new TicketInformation();
+		TicketInformation ticketInfos = new DummyTicketInformation();
 		LOG.debug("dummy get ticket information");
 		return ticketInfos;
 	}
 
 	@Override
-	protected boolean checkValidTicketInformation(TicketInformation ticketInfos) {
-		return true;
-	}
-
-	@Override
-	protected Ticket checkAuthorizedAccess(TicketInformation ticketInfos) {
-		// long name
-		Customer c = new Customer("Peyronnelle Clémentine",
-				"Wong Wun Gatchunk", "clems@hotmail.fr");
-		Ticket ticket = new Ticket(new Party(), c, "0123456789ABCDEF");
-		return ticket;
-	}
-
-	@Override
-	protected File getGenericSvgTicket(HttpServletRequest request,
-			TicketInformation infos) {
+	protected File getGenericSvgTicket(HttpServletRequest request, TicketInformation infos) {
 		String filename = request.getParameter("url");
 		if (filename == null) {
 			LOG.info("Missing parameter url in request");
@@ -75,6 +59,6 @@ public class TicketPreview extends TicketRasterizer {
 
 	protected void cleanupRessources(File clientSvgTicket, File clientPdfTicket) {
 		super.cleanupRessources(clientSvgTicket, clientPdfTicket);
-		//FileUtils.deleteQuietly(svgTicket);
+		FileUtils.deleteQuietly(svgTicket);
 	}
 }
