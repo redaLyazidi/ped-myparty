@@ -5,13 +5,10 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,9 +25,8 @@ import net.ped.shared.FileStorage;
 import net.ped.shared.InkscapeSvgToPdf;
 import net.ped.shared.PedHttpServlet;
 import net.ped.shared.TempFileManager;
+import net.ped.shared.TicketInformation;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,11 +46,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 			LOG.debug("It was null");
 			clientSvgTempFileManager = new TempFileManager("client-specific-ticket", "ticket", "svg", true);
 		}
-	}
-
-	class TicketInformation {
-		public int idParty, idClient;
-		public String secretCode;
+		super.init();
 	}
 
 	public String htmlPersonnalErrorMessage(TicketInformation infos) {
@@ -65,25 +57,24 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 				+ "identifiant party : " +  infos.idParty    + "<br/>"
 				+ "code secret : " +        infos.secretCode + "</body></html>";
 	}
-
+	
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-
 		TicketInformation ticketInfos = getTicketInformations(request, response);
-		if (ticketInfos == null || checkValidTicketInformation(ticketInfos) == false) {
+		if (ticketInfos == null || ticketInfos.checkValidTicketInformation() == false) {
 			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			return;
 		}
 
 		LOG.debug("getTicketInformations passed");
-		Ticket ticket = checkAuthorizedAccess(ticketInfos);
+		Ticket ticket = ticketInfos.checkAuthorizedAccess();
 		if (ticket == null) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
 		LOG.debug("checkAuthorizedAccess passed");
-
+		
 		File clientSvgTicket = null;
 		File clientPdfTicket = null;
 		try {
@@ -102,7 +93,6 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			LOG.debug("generateClientSpecificSvgTicket failed");
 			response.getWriter().write(htmlPersonnalErrorMessage(ticketInfos));
 			return;
 		} finally {
@@ -128,24 +118,18 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 	}
 
 	protected abstract TicketInformation getTicketInformations(HttpServletRequest request, HttpServletResponse response);
-	protected abstract boolean checkValidTicketInformation(TicketInformation ticketInfos);
-	protected abstract Ticket checkAuthorizedAccess(TicketInformation ticketInfos);
 	protected abstract File getGenericSvgTicket(HttpServletRequest request, TicketInformation infos);
 
 	private File generateClientSpecificSvgTicket(Ticket ticket, File generalTicket) throws Exception {
 		// Generate qrcode
-		String qrText = "Toto tata\nRololo !"; //Commons.QRCodeString(null, null);
+		String qrText = "Toto tata\nRololo !";
 		ByteArrayOutputStream out = QRCode.from(qrText).to(ImageType.PNG).stream();
 		String qrData = DatatypeConverter.printBase64Binary(out.toByteArray());
 		String qrDataUri = "xlink:href=\"data:image/png;base64," + qrData + "\"";
 
 		// replace qrcode path with the real image
 		String SvgQrcodeTag = "xlink:href=\"images/myparty/qrcode.png\""; // oops ! could be on two lines !
-		LOG.debug("Before creating the tmp file");
-		File specificFile = null;
-		specificFile = clientSvgTempFileManager.create();
-
-		LOG.debug("After creating the tmp file");
+		File specificFile = clientSvgTempFileManager.create();
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(specificFile)));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(generalTicket)));
 
@@ -154,7 +138,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 		//List<String> txt = IOUtils.readLines(new FileReader(generalTicket));
 		//LOG.debug("Size : " + txt.size());
-
+		
 		String line;
 		while((line = reader.readLine()) != null) {
 			String line2 = line.replace(SvgQrcodeTag, qrDataUri)
