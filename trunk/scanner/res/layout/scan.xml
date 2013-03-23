@@ -14,8 +14,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Scanner"
+            android:text="@string/scan"
             android:onClick="launchScanner"
+    />
+    
+     <Button android:padding="50dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/manual"
+            android:onClick="launchManualInput"
     />
     
 </LinearLayout>
