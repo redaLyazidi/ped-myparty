@@ -2669,15 +2669,22 @@ if (!alert)
                     jQuery.post(curConfig.sendsvgtoserver, {
                         'idparty': Editor.curConfig.idParty,
                         'svgstr' : svgCanvas.svgCanvasToString()
-                    },
-                    function (data) {
-                        //console.log('data: ',data);
-                        //jQuery.alert('Response from the server: ' + data);
-                        //if(data === true)
-                        //    jQuery.alert('Response from the server: ' + data);
-                        //if(data === 'true') {
-                        //    jQuery.alert('Connexion impossible avec le serveur... ');
+                    }/*,
+                   function (data) {
+                        console.log('data: ',data);
+                        jQuery.alert('Response from the server: ' + data);
+                        if(data === true)
+                            jQuery.alert('Response from the server: ' + data);
+                        if(data === 'true') {
+                            jQuery.alert('Connexion impossible avec le serveur... ');
+                        }
+                    }*/).done( function () {
+                        document.location.href = '../views/party.xhtml'
+                    })
+                    .fail(function () {
+                        jQuery.alert ("The server was unable to validate this ticket");
                     });
+                    
                 }
             };
             

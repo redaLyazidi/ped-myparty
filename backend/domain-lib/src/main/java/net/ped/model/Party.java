@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,10 +53,11 @@ public class Party implements java.io.Serializable{
 	private String place;
 	
 	@ManyToMany
-	@JoinTable(name="PARTY_ARTIST", joinColumns = {@JoinColumn(name = "PARTY_FK")}, inverseJoinColumns = {@JoinColumn(name = "ARTIST_FK")})
+	@JoinTable(name="party_artist", joinColumns = {@JoinColumn(name = "party_fk")}, inverseJoinColumns = {@JoinColumn(name = "artist_fk")})
 	private List<Artist> artists = new ArrayList<Artist>();
 	
 	@ElementCollection
+	@JoinTable(name="party_ticketsold")
 	private Map<Calendar,Integer> ticketSold = new HashMap<Calendar,Integer>();
 
 	public Party() {
