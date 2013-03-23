@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="30dip"
+    android:id="@+id/screen" android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:gravity="center">
+
+<TextView 
+    android:padding="5dip"
+    android:id="@+id/ticket" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:text="Id client"
+    android:layout_gravity="center" />  
+    
+<Button android:padding="50dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Valider le ticket"
+            android:onClick="validateTicket"
+/>  
+
+</LinearLayout>

@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="30dip"
+    android:id="@+id/screen" android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:gravity="center">
+
+<TextView 
+    android:padding="5dip"
+    android:id="@+id/title" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:text="Id client"
+    android:layout_gravity="center" />
+
+<EditText android:id="@+id/idClient" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:padding="20dip" 
+    android:onClick="clearField"
+    android:layout_gravity="center" />
+
+<TextView 
+    android:padding="5dip"
+    android:id="@+id/title" 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:text="Id billet"
+    android:layout_gravity="center" />
+    
+<EditText android:padding="20dip"
+    android:id="@+id/idTicket" 
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:onClick="clearField"
+    android:layout_gravity="center" />
+    
+<Button android:padding="20dip"
+    android:id="@+id/confirm" android:layout_height="wrap_content"
+    android:text="Vérifier" android:layout_width="fill_parent" 
+    android:layout_gravity="center"
+    android:onClick="launchChecking" />
+
+</LinearLayout>

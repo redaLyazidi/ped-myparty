@@ -33,13 +33,15 @@
     android:id="@+id/error" android:layout_height="wrap_content"
     android:text="@string/error_login" android:layout_width="fill_parent"
     android:visibility="invisible"
-    android:layout_gravity="center" />
+    android:layout_gravity="center"
+    android:editable="false" />
     
 <EditText android:padding="20dip"
     android:background="#99ff99"
     android:id="@+id/connecting" android:layout_height="wrap_content"
     android:text="@string/connecting" android:layout_width="fill_parent"
     android:visibility="invisible"
-    android:layout_gravity="center" />
+    android:layout_gravity="center"
+    android:editable="false" />
 
 </LinearLayout>

@@ -9,5 +9,7 @@
     <string name="confirm">Confirmer</string>
     <string name="error_login">Identifiant ou mot de passe incorrect.</string>
     <string name="connecting">Connexion...</string>
+    <string name="scan">Scanner</string>
+    <string name="manual">Saisie manuelle</string>
 
 </resources>
