@@ -24,23 +24,23 @@
 	<script>
     $(document).ready(function() {
 
-    	$('#j_idt26\\:editer').hover(function () {
+    	$('#menuAdmin\\:editer').hover(function () {
     		$(this).tooltip({'placement' : 'bottom'});
     		$(this).tooltip('show');
     	});
-    	$('#j_idt26\\:supprimer').hover(function () {
+    	$('#menuAdmin\\:supprimer').hover(function () {
     		$(this).tooltip({'placement' : 'bottom'});
     		$(this).tooltip('show');
     	});
-    	$('#j_idt26\\:stat').hover(function () {
+    	$('#menuAdmin\\:stat').hover(function () {
     		$(this).tooltip({'placement' : 'bottom'});
     		$(this).tooltip('show');
     	});
-    	$('#j_idt26\\:billet').hover(function () {
+    	$('#menuAdmin\\:billet').hover(function () {
     		$(this).tooltip({'placement' : 'bottom'});
     		$(this).tooltip('show');
     	});
-    	$('#j_idt26\\:valider').hover(function () {
+    	$('#menuAdmin\\:valider').hover(function () {
     		$(this).tooltip({'placement' : 'bottom'});
     		$(this).tooltip('show');
     	});
@@ -54,7 +54,7 @@
 <ui:include src="header.xhtml" />
 
 	<div class="container">
-	<h:form>
+	<h:form id="menuAdmin">
 		<h:panelGroup rendered="#{loginBean.userAdmin}">
 			<div id="menuAdmin" class="row-fluid" style="margin-top: 20px">
 				<div class="span10 offset1">
