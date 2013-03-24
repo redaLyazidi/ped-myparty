@@ -1,6 +1,7 @@
 package net.ped.dao;
 
 import net.ped.model.Customer;
+import net.ped.model.Party;
 import net.ped.model.Ticket;
 
 public interface InterfaceBillingDao {
@@ -34,9 +35,13 @@ public interface InterfaceBillingDao {
 	public void addTicket(Ticket t) throws Exception;
 	
 	/**
+	 * met à jour un ticket
+	 */
+	public void updateTicket(Ticket t) throws Exception;
+	
+	/**
 	 * obtient un ticket
 	 * @return Ticket
 	 */
 	public Ticket getTicket(int idCustomer, int idParty) throws Exception;
-
 }

@@ -6,6 +6,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import net.ped.model.Customer;
+import net.ped.model.Party;
 import net.ped.model.Ticket;
 
 import org.slf4j.Logger;
@@ -135,6 +136,26 @@ public class BillingDaoImpl extends GenericDAO implements InterfaceBillingDao{
 			tx.rollback();
 			throw re;
 		}finally{
+			closeEntityManager();
+		}
+	}
+	
+	public void updateTicket(Ticket t) throws Exception{
+		LOG.info("> updateTicket");
+		EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.merge(t);
+			tx.commit();
+			LOG.debug("Modification du ticket");
+		} catch (Exception re) {
+			if (tx != null)
+				LOG.error("Erreur dans la fonction updateTicket", re);
+			tx.rollback();
+			throw re;
+		} finally {
 			closeEntityManager();
 		}
 	}

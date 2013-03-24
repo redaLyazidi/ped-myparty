@@ -1,10 +1,9 @@
 package net.ped.model;
 
-public class ScannedTicket {
-
+public class ScannedTicketManuel {
+	
 	private int idCustomer;
 	private int idParty;
-	private String secretCode;
 	private boolean validated;
 	
 	public int getIdCustomer() {
@@ -21,14 +20,6 @@ public class ScannedTicket {
 	
 	public void setIdParty(int idParty) {
 		this.idParty = idParty;
-	}
-	
-	public String getSecretCode() {
-		return secretCode;
-	}
-	
-	public void setSecretCode(String secretCode) {
-		this.secretCode = secretCode;
 	}
 
 	public boolean isValidated() {
