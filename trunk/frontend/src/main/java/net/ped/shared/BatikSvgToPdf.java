@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderInput;
@@ -19,7 +20,14 @@ public class BatikSvgToPdf implements SvgToPdf {
 
 	@Override
 	public boolean convert(File svg, File output) {
-		String svg_URI_input = "file://" + svg.getAbsolutePath();
+		//String svg_URI_input = "file://" + svg.getAbsolutePath();
+		String svg_URI_input = null;
+		try {
+			svg_URI_input = new File(svg.getAbsolutePath()).toURI().toURL().toString();
+		} catch (MalformedURLException e1) {
+			LOG.debug("svg_URI_input :" + svg_URI_input); 
+			e1.printStackTrace();
+		}
 		//List<String> ls = null;
 		/*try {
 			ls = IOUtils.readLines(new FileInputStream(svg));
