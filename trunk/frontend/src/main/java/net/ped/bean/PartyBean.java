@@ -79,6 +79,8 @@ public class PartyBean implements Serializable {
 		
 		Customer c = new Customer(firstname, name, mail);
 		FrontBillingService.getInstance().addCustomer(c);
+		Customer customer = FrontBillingService.getInstance().getCustomer(firstname, name, mail);
+		FrontBillingService.getInstance().addTicket(customer.getId(), partySelect.getId());
 		FrontBillingService.getInstance().sendMail(mail);
 		//customer-test@hotmail.fr
 		
