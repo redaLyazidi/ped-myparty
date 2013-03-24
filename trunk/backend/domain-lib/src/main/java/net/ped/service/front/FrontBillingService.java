@@ -3,6 +3,8 @@ package net.ped.service.front;
 import java.math.BigInteger;
 import java.util.Calendar;
 
+import javax.mail.MessagingException;
+
 import net.ped.dao.BillingDaoImpl;
 import net.ped.dao.InterfaceBillingDao;
 import net.ped.dao.InterfacePartyDao;
@@ -10,6 +12,7 @@ import net.ped.dao.PartyDaoImpl;
 import net.ped.model.Customer;
 import net.ped.model.Party;
 import net.ped.model.Ticket;
+import net.ped.utils.Mail;
 
 import static java.lang.Math.round;
 import static java.lang.Math.random;
@@ -118,5 +121,13 @@ public class FrontBillingService implements InterfaceFrontBillingService{
 			e.printStackTrace();
 		}
 		return ticket;
+	}
+	
+	public void sendMail(String dest) {
+		try {
+			Mail.getInstance().sendMail(dest);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 	}
 }

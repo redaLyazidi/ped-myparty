@@ -67,8 +67,6 @@
 					    				<li><h:commandButton action="#{createParty.edit(partyBean.partySelect.id)}" id="editer" image="../img/glyphicons_030_pencil.png" style="margin-left: 15px; margin-right: 15px;" data-toggle="tooltip" title="éditer"/></li>
 										
 					    				<li><h:commandButton action="#{partyBean.deleteParty}" id="supprimer" image="../img/glyphicons_016_bin.png" style="width: 20px; height: 24px; margin-left: 15px; margin-right: 15px;" data-toggle="tooltip" title="supprimer"/></li>
-									   
-									    <li><h:commandButton action="#" id="stat" image="../img/glyphicons_040_stats.png" style="width: 24px; height: 24px; margin-left: 15px; margin-right: 15px;" data-toggle="tooltip" title="historique des ventes"/></li>
 									    
 									    <li><h:commandButton action="#{partyBean.createTicket}" id="billet" image="../img/glyphicons_258_qrcode.png" style="width: 24px; height: 24px; margin-left: 15px; margin-right: 15px;" data-toggle="tooltip" title="créer billet"/></li>
 									    
@@ -76,7 +74,11 @@
 								    </ul>
 						    	</c:when>
 						    	<c:otherwise>
-						    		<h:outputText value="Vous ne pouvez plus modifier la party" styleClass="label label-warning" style="margin-top: 6px"/>
+						    		<ul class="nav">
+						    			<li><h:outputText value="Vous ne pouvez plus modifier la party" styleClass="label label-warning" style="margin-top: 6px"/></li>
+						    			
+						    			<li><h:commandButton action="statsTicket" id="stat" image="../img/glyphicons_040_stats.png" style="width: 24px; height: 24px; margin-left: 15px; margin-right: 15px;" data-toggle="tooltip" title="historique des ventes"/></li>
+						    		</ul>
 						    	</c:otherwise>
 						    </c:choose>
 		    			</div>

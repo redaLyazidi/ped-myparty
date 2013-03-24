@@ -32,17 +32,17 @@
 			<div class="container">
 				<div class="row-fluid">
 					<div class="span12 offset2">
-						<h3>Confirmation de votre réservation</h3>
+						<h3>Suivi d'évolution de ticket vendus</h3>
 
 						<div class="row-fluid">
 							<div class="span8">
-								
-								<h:outputText value="#{partyBean.firstname} #{partyBean.name}"/>
-								<h:outputText value="Nous vous confirmons la réservation de #{partyBean.partySelect.title} ..."/>
-								<h:outputText value="Un email vous à été envoyé à l'adresse #{partyBean.mail}"/>
-								...
-								Lien vers le ticket ...
 
+								<p:lineChart id="linear" 
+									value="#{partyBean.chartTicket}"
+									legendPosition="e"  
+									title="Evolution de ticket vendus"
+									animate="true"/> 								
+								
 							</div>
 						</div>
 					

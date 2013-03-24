@@ -94,6 +94,14 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
+		
+		<!--  javamail -->
+		<dependency>
+	      <groupId>com.sun.mail</groupId>
+	      <artifactId>javax.mail</artifactId>
+	      <version>1.4.5</version>
+	    </dependency>
+		
 	</dependencies>
 
 	<build>
