@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 
 import net.ped.model.Party;
 import net.ped.model.ScannedTicket;
+import net.ped.model.ScannedTicketManuel;
 import net.ped.model.User;
 
 @Path("/service")
@@ -40,8 +41,8 @@ public interface InterfaceRestPartyService {
 	
 	/**
 	 * Vérifie l'id customer - id party - secret code
-	 * Retourne le Customer concerné en cas de succès
-	 * Retourne null sinon
+	 * Retourne id customer - id party - secret code en cas de succès
+	 * Retourne id customer - id party - secret code vide sinon
 	 *
 	 * @param u
 	 */
@@ -49,5 +50,17 @@ public interface InterfaceRestPartyService {
 	@Path("/ticket")
 	@Produces("application/json")
 	public Response validateTicket(ScannedTicket st);
+	
+	/**
+	 * Vérifie l'id customer - id party lors de la saisie manuelle
+	 * Retourne id customer - id party en cas de succès
+	 * Retourne id customer - id party vide sinon
+	 *
+	 * @param u
+	 */
+	@POST
+	@Path("/ticketManuel")
+	@Produces("application/json")
+	public Response validateTicketManuel(ScannedTicketManuel st);
 
 }

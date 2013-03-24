@@ -1,6 +1,7 @@
 package net.ped.service.front;
 
 import net.ped.model.Customer;
+import net.ped.model.Party;
 import net.ped.model.Ticket;
 
 public interface InterfaceFrontBillingService {
@@ -34,6 +35,7 @@ public interface InterfaceFrontBillingService {
 	 * @return Ticket
 	 */
 	public Ticket getTicket(int idCustomer, int idParty);
+	
 	
 	/**
 	 * Envoyer un mail

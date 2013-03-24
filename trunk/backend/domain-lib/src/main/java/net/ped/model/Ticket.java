@@ -24,6 +24,8 @@ public class Ticket implements java.io.Serializable{
 	
 	@Column(length = 16)
 	private String secretCode;
+	
+	private boolean validated = false;
 
 	public Ticket() {
 
@@ -65,5 +67,13 @@ public class Ticket implements java.io.Serializable{
 
 	public void setSecretCode(String secretCode) {
 		this.secretCode = secretCode;
+	}
+
+	public boolean isValidated() {
+		return validated;
+	}
+
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 }
