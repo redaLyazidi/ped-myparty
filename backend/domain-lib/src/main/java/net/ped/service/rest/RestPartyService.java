@@ -9,7 +9,9 @@ import net.ped.dao.InterfacePartyDao;
 import net.ped.dao.InterfaceRESTDao;
 import net.ped.dao.PartyDaoImpl;
 import net.ped.dao.RESTDaoImpl;
+import net.ped.model.Customer;
 import net.ped.model.Party;
+import net.ped.model.ScannedTicket;
 import net.ped.model.User;
 
 public class RestPartyService implements InterfaceRestPartyService{
@@ -39,6 +41,18 @@ public class RestPartyService implements InterfaceRestPartyService{
 			e.printStackTrace();
 		}
 		return party;
+	}
+	
+	public Response validateTicket(ScannedTicket st){
+		Customer customer = new Customer();
+		try {
+			customer = daoREST.validateTicket(st);
+			return Response.ok(customer).build();
+		} catch (Exception e) {
+			LOG.error("erreur validation ticket couche service");
+			e.printStackTrace();
+			return Response.status(400).entity("Connexion failed!").build();
+		}
 	}
 
 }

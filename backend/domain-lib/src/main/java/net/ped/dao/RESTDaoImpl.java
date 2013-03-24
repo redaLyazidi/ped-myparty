@@ -8,6 +8,9 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.ped.model.Customer;
+import net.ped.model.ScannedTicket;
+import net.ped.model.Ticket;
 import net.ped.model.User;
 
 public class RESTDaoImpl extends GenericDAO implements InterfaceRESTDao{
@@ -39,5 +42,34 @@ public class RESTDaoImpl extends GenericDAO implements InterfaceRESTDao{
 			closeEntityManager();
 		}
 		return u;
+	}
+
+	public Customer validateTicket(ScannedTicket st) {
+		LOG.info("> validateTicket");
+		EntityManager em = createEntityManager(); 
+		EntityTransaction tx = null;
+		Ticket ticket =new Ticket();
+		try{
+			tx = em.getTransaction();
+			tx.begin();
+			Query query = em.createQuery("from Ticket u" +
+					" where u.party.id=:param1 and" +
+					" u.customer.id=:param2 and" +
+					" u.secretCode=:param3");
+			query.setParameter("param1", st.getIdParty());
+			query.setParameter("param2", st.getIdCustomer());
+			query.setParameter("param3", st.getSecretCode());
+			ticket = (Ticket)query.getSingleResult();
+			tx.commit();
+			LOG.debug("la recherche a reussi");
+		}catch (NoResultException nre) {
+			LOG.debug("Le ticket n'existe pas");
+		} catch (RuntimeException re) {
+			LOG.error("Erreur dans la fonction validateTicket", re);
+			throw re;
+		}finally{
+			closeEntityManager();
+		}
+		return ticket.getCustomer();
 	}
 }
