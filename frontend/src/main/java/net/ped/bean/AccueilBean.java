@@ -35,13 +35,19 @@ public class AccueilBean implements Serializable {
 	private Date dateParty;
 	private int selectedHour;
 	private int selectedMinute;
+	private Calendar datePartyCriteria;
+	private Calendar timeCriteria;
 
 	private List<Integer> hour;
 	private List<Integer> minute;
+	
+	private boolean searchMode;
 
 	public AccueilBean(){
 		hour = new ArrayList<Integer>();
 		minute = new ArrayList<Integer>();
+		
+		searchMode = false;
 
 		for(int i=0; i<=23; i++){
 			hour.add(i);
@@ -51,10 +57,15 @@ public class AccueilBean implements Serializable {
 		}
 
 		listParty = new ArrayList<Party>();
+		
+		initPages();
+	}
+	
+	public void initPages() {
+		
 		numPage = 1;
 		//La numérotation des pages commencent à 1 mais les parties commencent à 0, d'où le numPage -1
 		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
-		
 		int nbParties = FrontPartyService.getInstance().getNbPartiesNotBegun();
 		if(nbParties == ConstantesWeb.NUMBER_PARTY_PAGE) {
 			nbPages = 1;
@@ -63,23 +74,54 @@ public class AccueilBean implements Serializable {
 			nbPages = (nbParties / ConstantesWeb.NUMBER_PARTY_PAGE) + 1;
 		}
 	}
+	
+	public void deleteSearch() {
+		searchMode = false;
+		
+		this.place = "";
+		this.priceMin = 0;
+		this.priceMax = 0;
+		this.dateParty = null;
+		this.selectedHour = 0;
+		this.selectedMinute = 0;
+		
+		initPages();
+	}
 
 	public void gotoPage(int page) {
 		numPage = page;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
+		
+		if(searchMode) {
+			listParty = FrontPartyService.getInstance().getPartiesCriteria((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
+		}
+		else {
+			listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
+		}
 	}
 	
 	public void nextPage() {
 		numPage ++;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
+		
+		if(searchMode) {
+			listParty = FrontPartyService.getInstance().getPartiesCriteria((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
+		}
+		else {
+			listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
+		}
 	}
 
 	public void prevPage() {
 		numPage --;
 		listParty.clear();
-		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
+		
+		if(searchMode) {
+			listParty = FrontPartyService.getInstance().getPartiesCriteria((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
+		}
+		else {
+			listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
+		}
 	}
 
 	public List<Party> getListParty() {
@@ -205,22 +247,39 @@ public class AccueilBean implements Serializable {
 	}
 
 	public void search(){
-		Calendar dateParty2 = null;
-		Calendar time = null;
+		
 		if(dateParty != null){
-			dateParty2 = Calendar.getInstance();
-			dateParty2.setTime(dateParty);
+			datePartyCriteria = Calendar.getInstance();
+			datePartyCriteria.setTime(dateParty);
 		}
 		if(selectedHour!=0){
-			time = new GregorianCalendar(0, 0, 0, selectedHour, selectedMinute, 00);
+			timeCriteria = new GregorianCalendar(0, 0, 0, selectedHour, selectedMinute, 00);
 		}
 		
 		try {
 			listParty.clear();
-			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, dateParty2, time);
+			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
+			
+			int nbParties = FrontPartyService.getInstance().getNbPartiesCriteria(place, priceMin, priceMax, datePartyCriteria, timeCriteria);
+			if(nbParties == ConstantesWeb.NUMBER_PARTY_PAGE) {
+				nbPages = 1;
+			}
+			else {
+				nbPages = (nbParties / ConstantesWeb.NUMBER_PARTY_PAGE) + 1;
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		searchMode = true;
+	}
+
+	public boolean isSearchMode() {
+		return searchMode;
+	}
+
+	public void setSearchMode(boolean searchMode) {
+		this.searchMode = searchMode;
 	}
 }
