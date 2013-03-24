@@ -34,4 +34,9 @@ public interface InterfaceFrontBillingService {
 	 * @return Ticket
 	 */
 	public Ticket getTicket(int idCustomer, int idParty);
+	
+	/**
+	 * Envoyer un mail
+	 */
+	public void sendMail(String dest);
 }

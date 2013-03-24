@@ -3,12 +3,19 @@ package net.ped.bean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 
 import net.ped.model.Customer;
 import net.ped.model.Party;
@@ -31,6 +38,7 @@ public class PartyBean implements Serializable {
 	private String firstname;
 	
 	private Party partySelect;
+	private CartesianChartModel chartTicket;
 	
 	public PartyBean(){
 		dateCourante = Calendar.getInstance();
@@ -38,22 +46,32 @@ public class PartyBean implements Serializable {
 	}
 	
 	public String showPartyFromAccueil(int id){
+		
+		partySelect = FrontPartyService.getInstance().getParty(id);
+		/*
 		for(Party p : FrontPartyService.getInstance().getPartiesNotBegun()) {
 			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
 				partySelect = p;
 				break;
 			}
-		}	
+		}*/
+		
+		createChartTicket();
 		return "party";
 	}
 	
 	public String showPartyFromNotValidated(int id){
+		
+		partySelect = FrontPartyService.getInstance().getParty(id);
+		/*
 		for(Party p : FrontPartyService.getInstance().getAllPartiesNotValidated()) {
 			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
 				partySelect = p;
 				break;
 			}
-		}	
+		}*/	
+		
+		createChartTicket();
 		return "party";
 	}
 	
@@ -61,9 +79,32 @@ public class PartyBean implements Serializable {
 		
 		Customer c = new Customer(firstname, name, mail);
 		FrontBillingService.getInstance().addCustomer(c);
+		FrontBillingService.getInstance().sendMail(mail);
+		//customer-test@hotmail.fr
 		
 		return "confirmBilling";
 	}
+	
+	private void createChartTicket() {  
+    	
+		chartTicket = new CartesianChartModel();
+		
+		Map<Calendar,Integer> ticketSold = partySelect.getStatTicketSold();
+		
+		LineChartSeries serie = new LineChartSeries();  
+        serie.setLabel("tickets vendus");
+        
+        Set<Calendar> keySetData = ticketSold.keySet();
+        Set<Calendar> dataSorted = new TreeSet<Calendar>();
+		for(Calendar c : keySetData) {
+			dataSorted.add(c);
+		}
+        for(Calendar c : dataSorted) {
+        	serie.set(c.getTime(), ticketSold.get(c));
+    	}
+        
+        chartTicket.addSeries(serie);
+    } 
 
 	public boolean isDisableBuyButton() {
 		if(partySelect.getDateBegin().after(Calendar.getInstance()) ||
@@ -129,6 +170,14 @@ public class PartyBean implements Serializable {
 	public void createTicket() throws IOException {
 //		 FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/myparty-frontend/resources/ticket-designer/svg-editor.html?idParty="+partySelect.getId());
 		FacesContext.getCurrentInstance().getExternalContext().redirect("../ticket-designer/svg-editor.html?idParty="+partySelect.getId());
+	}
+
+	public CartesianChartModel getChartTicket() {
+		return chartTicket;
+	}
+
+	public void setChartTicket(CartesianChartModel chartTicket) {
+		this.chartTicket = chartTicket;
 	}
 	
 }
