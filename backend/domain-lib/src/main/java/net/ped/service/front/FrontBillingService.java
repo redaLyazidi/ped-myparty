@@ -1,9 +1,11 @@
 package net.ped.service.front;
 
-import java.math.BigInteger;
 import java.util.Calendar;
 
 import javax.mail.MessagingException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.ped.dao.BillingDaoImpl;
 import net.ped.dao.InterfaceBillingDao;
@@ -26,6 +28,9 @@ public class FrontBillingService implements InterfaceFrontBillingService{
 	private InterfaceBillingDao dao = new BillingDaoImpl();
 	private InterfacePartyDao daoParty = new PartyDaoImpl();
 	private static FrontBillingService instance;
+	
+	private static final Logger LOG = LoggerFactory
+			.getLogger(FrontBillingService.class);
 	
 	private FrontBillingService() {
 		instance = this;
@@ -98,8 +103,8 @@ public class FrontBillingService implements InterfaceFrontBillingService{
 						mapKey.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
 					p.getStatTicketSold().put(mapKey, p.getStatTicketSold().get(mapKey) + 1);
 					exist = true;
+					break;
 				}
-				break;
 			}
 			if(!exist){
 				p.getStatTicketSold().put(Calendar.getInstance(), 1);
