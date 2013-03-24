@@ -22,8 +22,8 @@
 				
 					<h:form id="form" styleClass="navbar-form">
             			<ul class="nav">
-              				<li ><h:commandLink value="CREER PARTY" action="newParty" rendered="#{loginBean.userAdmin}" style="color: white"/></li>
-            				<li ><h:commandLink value="VALIDER PARTY" action="partiesNotValidated" rendered="#{loginBean.userAdmin}" style="color: white"/></li>
+              				<li ><h:commandLink value="CREER PARTY" action="#{loginBean.newParty}" rendered="#{loginBean.userAdmin}" style="color: white"/></li>
+            				<li ><h:commandLink value="VALIDER PARTY" action="#{loginBean.partiesNotValidated}" rendered="#{loginBean.userAdmin}" style="color: white"/></li>
             			</ul>
 					
 						<div class="pull-right">

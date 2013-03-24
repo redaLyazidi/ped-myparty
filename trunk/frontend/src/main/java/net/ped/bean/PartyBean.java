@@ -182,4 +182,11 @@ public class PartyBean implements Serializable {
 		this.chartTicket = chartTicket;
 	}
 	
+	public String reserveParty(){
+		mail = "";
+		name = "";
+		firstname = "";
+		return "reserveParty";
+	}
+	
 }

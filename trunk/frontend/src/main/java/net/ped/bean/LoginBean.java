@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 
 import net.ped.constante.ConstantesWeb;
@@ -19,7 +20,7 @@ public class LoginBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String login;
 	private String password;
 	private boolean loginSuccess;
@@ -27,27 +28,27 @@ public class LoginBean implements Serializable {
 	private boolean connectFailed;
 	private User userLogged;
 	private boolean userAdmin;
-	
+
 	public LoginBean() {
 		this.errorMsg = ConstantesWeb.ERROR_MESSAGE_LOGIN;
-	
+
 		this.loginSuccess = false;
 		this.connectFailed = false;
 		this.userAdmin = false;
-		
+
 	}
-	
+
 	public String connect() {
-		
+
 		if(login != null && password != null ) {
-			
+
 			userLogged = FrontPartyService.getInstance().login(login, password);
-			
+
 			if(userLogged.getId() != 0) {
-			
+
 				this.loginSuccess = true;
 				this.connectFailed = false;
-				
+
 				if(userLogged.getRole().equals("admin")) {
 					this.userAdmin = true;
 				}
@@ -55,34 +56,34 @@ public class LoginBean implements Serializable {
 			else {
 				this.loginSuccess = false;
 				this.connectFailed = true;
-				
+
 			}
 		}
-		
+
 		return "login";
 	}
-	
+
 	public String logout() {
 		userLogged = null;
 		this.loginSuccess = false;
 		this.userAdmin = false;
-		
+
 		return "logout";
 	}
-	
-	
+
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getLogin() {
 		return login;
 	}
-	
+
 	public void setLogin(String login) {
 		this.login = login;
 	}
@@ -127,6 +128,20 @@ public class LoginBean implements Serializable {
 	public void setUserAdmin(boolean userAdmin) {
 		this.userAdmin = userAdmin;
 	}
-	
+
+	public String newParty(){
+		// On réinitialise le bean createParty (pour ne pas garder les valeurs)
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		session.removeAttribute("createParty");
+		return "newParty";
+	}
+
+	public String partiesNotValidated(){
+		// On réinitialise le bean createParty (pour ne pas garder les valeurs)
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		session.removeAttribute("createParty");
+		return "partiesNotValidated";
+	}
+
 
 }
