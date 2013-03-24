@@ -98,6 +98,9 @@
 									<li class="active">
 										<h:commandButton class="btn btn-primary" value="RECHERCHER" ajax="false" action="#{accueilBean.search}"/>
 									</li>
+									<li>
+										<h:commandLink style="margin-top:18px" value="Supprimer la recherche" action="#{accueilBean.deleteSearch}" rendered="#{accueilBean.searchMode}"/>
+									</li>
 								</ul>
 							</div>
 						</div>
