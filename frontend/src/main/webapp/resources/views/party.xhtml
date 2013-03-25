@@ -169,12 +169,16 @@
 				</div>
 			</div>
 			<h:panelGroup rendered="#{loginBean.userAdmin}">
-				<div class="row-fluid">
+				<div class="row-fluid" style="margin-top: 150px;">
 					<div class="span10 offset1">
-						<div style="background: #191919; height: 20px; margin-top: 50px;">
-							
+						<div class="navbar">
+							<div class="navbar-inner">
+								<a class="brand">Ticket</a>
+							</div>
 						</div>
-						<h:graphicImage value="#{partyBean.urlTicket}"></h:graphicImage>
+					</div>
+					<div class="span10 offset1" style="text-align: center">
+						<object type="image/svg+xml" data="#{partyBean.urlTicket}"/>
 					</div>
 				</div>
 			</h:panelGroup>
