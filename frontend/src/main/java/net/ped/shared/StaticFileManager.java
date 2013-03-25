@@ -38,7 +38,6 @@ public class StaticFileManager implements FileManagerItf {
 	    String serverName = req.getServerName();     // hostname.com
 	    int serverPort = req.getServerPort();        // 80
 	    String contextPath = MyHttpServlet.getInstance().getServletContext().getContextPath();   // /myparty-frontend
-		String desiredPath = "/" + FileStorage.getServletStaticDirPath().getName() + "/" + get(id).getName();
 
 	    // Reconstruct original requesting URL
 	    StringBuffer url =  new StringBuffer();
@@ -48,7 +47,12 @@ public class StaticFileManager implements FileManagerItf {
 	        url.append(":").append(serverPort);
 	    }
 	    url.append(contextPath);
-	    url.append(desiredPath);
+	    url.append("/") // desired path in the server
+	       .append(FileStorage.getServletStaticDirPath().getName())
+	       .append("/")
+	       .append(context)
+	       .append("/")
+	       .append(get(id).getName());
 	    LOG.error(url.toString());
 	    return new URL(url.toString());
 	}
