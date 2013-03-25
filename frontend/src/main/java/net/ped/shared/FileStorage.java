@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class FileStorage {
 	protected static final Logger LOG = LoggerFactory.getLogger(FileStorage.class);
 
@@ -23,6 +24,10 @@ public class FileStorage {
 	
 	public static File getTemporaryDirPath() {
 		return new File(tmpDirPath);
+	}
+	
+	public static File getServletStaticDirPath() {
+		return new File(myservlet.getServletContext().getRealPath("/resources/"));
 	}
 	
 	public static File createTempFile(String context, String name, String extension) {
@@ -42,23 +47,25 @@ public class FileStorage {
 		}
 	}
 	
-	public static File getTempFile(String context, String name) {
+	private static File getFile(File path, String context, String name) {
 		try {
-			File dir = new File(tmpDirPath, context);
+			File dir = new File(path, context);
 			return new File(dir, name);
 		} catch(Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
+	
+	public static File getTempFile(String context, String name) {
+		return getFile(new File(tmpDirPath), context, name);
+	}
 
 	public static File getPermanentFile(String context, String name) {
-		try {
-			File dir = new File(getServletDirPath(), context);
-			return new File(dir, name);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return getFile(getServletDirPath(), context, name);
+	}
+	
+	public static File getStaticFile(String context, String name) {
+		return getFile(getServletStaticDirPath(), context, name);
 	}
 }

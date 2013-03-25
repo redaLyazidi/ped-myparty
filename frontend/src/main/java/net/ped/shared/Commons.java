@@ -23,10 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+
 public class Commons {
 	private static final Logger LOG = LoggerFactory.getLogger(Commons.class);
 	private static HttpServlet myservlet = MyHttpServlet.getInstance();
-	static PermanentFileManager permanentSvgTicketFileManager = null;
+	static StaticFileManager svgTicketFileManager = null;
 	
 	public static String getProjectConfigParameter(String name) {
 		return myservlet.getServletContext().getInitParameter(name);
@@ -42,11 +43,11 @@ public class Commons {
 			return null;
 		}
 
-		if (permanentSvgTicketFileManager == null) {
-			permanentSvgTicketFileManager = new PermanentFileManager("ticketsdir", "ticket", "svg");
+		if (svgTicketFileManager == null) {
+			svgTicketFileManager = new StaticFileManager("ticketsdir", "ticket", "svg");
 		}
 		try {
-			return permanentSvgTicketFileManager.get(idParty);
+			return svgTicketFileManager.get(idParty);
 		} catch (IOException e) {
 			return null;
 		}
