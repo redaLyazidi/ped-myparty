@@ -261,11 +261,11 @@ public class AccueilBean implements Serializable {
 			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
 			
 			int nbParties = FrontPartyService.getInstance().getNbPartiesCriteria(place, priceMin, priceMax, datePartyCriteria, timeCriteria);
-			if(nbParties == ConstantesWeb.NUMBER_PARTY_PAGE) {
+			if(nbParties <= ConstantesWeb.NUMBER_PARTY_PAGE) {
 				nbPages = 1;
 			}
 			else {
-				nbPages = (nbParties / ConstantesWeb.NUMBER_PARTY_PAGE) + 1;
+				nbPages = (nbParties -1) / ConstantesWeb.NUMBER_PARTY_PAGE + 1;
 			}
 			
 		} catch (Exception e) {
