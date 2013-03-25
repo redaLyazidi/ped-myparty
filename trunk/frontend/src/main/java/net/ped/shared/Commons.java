@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -32,22 +33,39 @@ public class Commons {
 	public static String getProjectConfigParameter(String name) {
 		return myservlet.getServletContext().getInitParameter(name);
 	}
-
-	public static File getPartySvgFile(int idParty) {
-		if (idParty < 0) {
-			LOG.debug("The id can't be lower than 0, id = " + idParty);
-			return null;
-		}
-		if (new PartyDaoImpl().containsParty(idParty) == false) {
-			LOG.debug("This id : " + idParty+ " doesn't match to any party");
-			return null;
-		}
-
+	
+	private static boolean checkParty(int idParty) {
 		if (svgTicketFileManager == null) {
 			svgTicketFileManager = new StaticFileManager("ticketsdir", "ticket", "svg");
 		}
+		
+		if (idParty < 0) {
+			LOG.debug("The id can't be lower than 0, id = " + idParty);
+			return false;
+		}
+		if (new PartyDaoImpl().containsParty(idParty) == false) {
+			LOG.debug("This id : " + idParty+ " doesn't match to any party");
+			return false;
+		}
+		return true;
+	}
+
+	public static File getPartySvgFile(int idParty) {
+		if (checkParty(idParty) == false)
+			return null;
 		try {
 			return svgTicketFileManager.get(idParty);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	
+	public static URL getPartySvgURL(HttpServletRequest req, int idParty) {
+		if (checkParty(idParty) == false)
+			return null;
+
+		try {
+			return svgTicketFileManager.getURL(req, idParty);
 		} catch (IOException e) {
 			return null;
 		}
