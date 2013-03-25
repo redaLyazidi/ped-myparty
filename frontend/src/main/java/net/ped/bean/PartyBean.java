@@ -2,6 +2,7 @@ package net.ped.bean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +14,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -22,6 +24,7 @@ import net.ped.model.Party;
 import net.ped.constante.ConstantesWeb;
 import net.ped.service.front.FrontBillingService;
 import net.ped.service.front.FrontPartyService;
+import net.ped.shared.Commons;
 
 @ManagedBean(name="partyBean")
 @SessionScoped
@@ -39,6 +42,7 @@ public class PartyBean implements Serializable {
 	
 	private Party partySelect;
 	private CartesianChartModel chartTicket;
+	private String urlTicket;
 	
 	public PartyBean(){
 		dateCourante = Calendar.getInstance();
@@ -48,13 +52,14 @@ public class PartyBean implements Serializable {
 	public String showPartyFromAccueil(int id){
 		
 		partySelect = FrontPartyService.getInstance().getParty(id);
-		/*
-		for(Party p : FrontPartyService.getInstance().getPartiesNotBegun()) {
-			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
-				partySelect = p;
-				break;
-			}
-		}*/
+		
+		//récupère l'URL du ticket si il existe
+		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		if (request == null)
+		{
+			throw new RuntimeException("Sorry. Got a null request from faces context");
+		}
+		urlTicket = Commons.getPartySvgURL(request, partySelect.getId()).toString();
 		
 		createChartTicket();
 		return "party";
@@ -63,13 +68,14 @@ public class PartyBean implements Serializable {
 	public String showPartyFromNotValidated(int id){
 		
 		partySelect = FrontPartyService.getInstance().getParty(id);
-		/*
-		for(Party p : FrontPartyService.getInstance().getAllPartiesNotValidated()) {
-			if (Integer.valueOf(id).compareTo(Integer.valueOf(p.getId())) == 0) {
-				partySelect = p;
-				break;
-			}
-		}*/	
+		
+		//récupère l'URL du ticket si il existe
+		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		if (request == null)
+		{
+			throw new RuntimeException("Sorry. Got a null request from faces context");
+		}
+		urlTicket = Commons.getPartySvgURL(request, partySelect.getId()).toString();
 		
 		createChartTicket();
 		return "party";
@@ -182,11 +188,18 @@ public class PartyBean implements Serializable {
 		this.chartTicket = chartTicket;
 	}
 	
+	public String getUrlTicket() {
+		return urlTicket;
+	}
+
+	public void setUrlTicket(String urlTicket) {
+		this.urlTicket = urlTicket;
+	}
+
 	public String reserveParty(){
 		mail = "";
 		name = "";
 		firstname = "";
 		return "reserveParty";
 	}
-	
 }
