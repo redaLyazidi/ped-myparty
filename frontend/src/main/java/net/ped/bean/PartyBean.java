@@ -170,7 +170,7 @@ public class PartyBean implements Serializable {
 	
 	public void createTicket() throws IOException {
 //		 FacesContext.getCurrentInstance().getExternalContext().redirect("http://localhost:8080/myparty-frontend/resources/ticket-designer/svg-editor.html?idParty="+partySelect.getId());
-		FacesContext.getCurrentInstance().getExternalContext().redirect("../ticket-designer/svg-editor.html?idParty="+partySelect.getId());
+		FacesContext.getCurrentInstance().getExternalContext().redirect("../ticket-designer/svg-editor.html?idParty=" + partySelect.getId() + "&lang=fr");
 	}
 
 	public CartesianChartModel getChartTicket() {

@@ -31,7 +31,7 @@ public class SaveAs extends PedHttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		Commons.writeSvgInTmp(request,response,tempFileManager);
+		Commons.answerSvgLocationFromSpecificRequest(request,response,tempFileManager);
 	}
 
 	// step 2

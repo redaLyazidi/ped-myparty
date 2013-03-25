@@ -33,6 +33,10 @@ public class StaticFileManager implements FileManagerItf {
 	}
 	
 	public URL getURL(HttpServletRequest req, int id) throws IOException {
+		File f = get(id);
+		if (FileStorage.exists(f) == false)
+			return null;
+		
 		setupDir();
 	    String scheme = req.getScheme();             // http
 	    String serverName = req.getServerName();     // hostname.com
@@ -52,8 +56,8 @@ public class StaticFileManager implements FileManagerItf {
 	       .append("/")
 	       .append(context)
 	       .append("/")
-	       .append(get(id).getName());
-	    LOG.error(url.toString());
+	       .append(f.getName());
+	    LOG.info(url.toString());
 	    return new URL(url.toString());
 	}
 	
