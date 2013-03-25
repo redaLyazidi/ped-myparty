@@ -2,9 +2,8 @@ package net.ped.shared;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.regex.Pattern;
 
-public class PermanentFileManager {
+public class PermanentFileManager implements FileManagerItf {
 
 	private String context;
 	private String name;

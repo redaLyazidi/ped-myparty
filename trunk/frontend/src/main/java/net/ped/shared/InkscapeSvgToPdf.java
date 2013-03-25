@@ -23,13 +23,12 @@ public class InkscapeSvgToPdf implements SvgToPdf {
 		LOG.info("cmd: " + cmd);
 		try {
 			Runtime runtime = Runtime.getRuntime();
-			
 			Process process = runtime.exec(cmd);
 			BufferedInputStream bufin = new BufferedInputStream(process.getInputStream());
 			byte[] buffer = new byte[bufferSize];
 			
-			while (bufin.read(buffer) != -1)
-				;
+			while (bufin.read(buffer) != -1) // empty the command standard output buffer to avoid a deadlock
+				; // please note that there can still be a deadlock with the error output buffer.
 			
 			try {
 				process.waitFor();
@@ -38,15 +37,7 @@ public class InkscapeSvgToPdf implements SvgToPdf {
 				e.printStackTrace();
 				return false;
 			}
-			/*int delay = 3 * 1000;
-			LOG.debug("Let me sleep some time...");
-	        try {
-	            Thread.sleep(delay);
-	        } catch (InterruptedException e1) {
-	        	LOG.debug("I can't sleep...");
-	        }*/
-	        LOG.debug("Ahhh... let's go !");
-			
+	        LOG.debug("done !");
 		} catch (SecurityException se) {
 			LOG.debug("You're not allowed to use that command on this server\n" + cmd);
 			return false;
