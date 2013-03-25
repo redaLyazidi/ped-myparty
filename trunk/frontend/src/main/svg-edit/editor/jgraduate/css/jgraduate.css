@@ -184,7 +184,7 @@ div.jGraduate_Form_Section {
 	-webkit-border-radius: 5px;
 	padding: 15px 5px 5px 5px;
 	margin: 5px 2px;
-	width: 110px;
+	width: 125px;
 	text-align: center;
 	overflow: auto;
 }
@@ -217,7 +217,7 @@ div.jGraduate_stopPicker {
 
 
 .jGraduate_gradPick {
-	width: 535px;
+	width: 555px;
 }
 
 .jGraduate_gradPick div.jGraduate_OpacField {

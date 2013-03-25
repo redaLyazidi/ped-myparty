@@ -156,7 +156,7 @@
 	
 	<!-- SVG QRcode TAG -->
 	<context-param>
-		<param-name>svgQRcodetag</param-name>
+		<param-name>SvgQrcodeTag</param-name>
 		<param-value>xlink:href="images/myparty/qrcode.png"</param-value>
 	</context-param>
 	

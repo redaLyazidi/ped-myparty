@@ -1,9 +1,9 @@
 package net.ped.service.rest;
 
-import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.ws.rs.core.Response;
 
 import net.ped.dao.BillingDaoImpl;
 import net.ped.dao.InterfaceBillingDao;
@@ -11,15 +11,17 @@ import net.ped.dao.InterfacePartyDao;
 import net.ped.dao.InterfaceRESTDao;
 import net.ped.dao.PartyDaoImpl;
 import net.ped.dao.RESTDaoImpl;
-import net.ped.model.Customer;
 import net.ped.model.Party;
+import net.ped.model.PartyDescriptionAndId;
 import net.ped.model.ScannedTicket;
 import net.ped.model.ScannedTicketManuel;
 import net.ped.model.Ticket;
 import net.ped.model.User;
 
-public class RestPartyService implements InterfaceRestPartyService{
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class RestPartyService implements InterfaceRestPartyService{
 	InterfaceRESTDao daoREST = new RESTDaoImpl();
 	InterfacePartyDao daoParty = new PartyDaoImpl();
 	InterfaceBillingDao daoBilling = new BillingDaoImpl();
@@ -110,4 +112,18 @@ public class RestPartyService implements InterfaceRestPartyService{
 		}
 	}
 
+	public List<PartyDescriptionAndId> listPartiesDescriptionAndId() {
+		LOG.info("listPartiesDescriptionAndId");
+		List<Party> parties = new ArrayList<Party>();
+		try {
+			parties = daoParty.getAllParties();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		List<PartyDescriptionAndId> res = new ArrayList<PartyDescriptionAndId>();
+		for(Party p : parties) {
+			res.add(new PartyDescriptionAndId(p));
+		}
+		return res;
+	}
 }

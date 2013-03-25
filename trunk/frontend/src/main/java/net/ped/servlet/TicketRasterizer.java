@@ -122,13 +122,14 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 	private File generateClientSpecificSvgTicket(Ticket ticket, File generalTicket) throws Exception {
 		// Generate qrcode
-		String qrText = "Toto tata\nRololo !";
+		String qrText = Commons.QRCodeString(ticket);
 		ByteArrayOutputStream out = QRCode.from(qrText).to(ImageType.PNG).stream();
 		String qrData = DatatypeConverter.printBase64Binary(out.toByteArray());
 		String qrDataUri = "xlink:href=\"data:image/png;base64," + qrData + "\"";
 
 		// replace qrcode path with the real image
-		String SvgQrcodeTag = "xlink:href=\"images/myparty/qrcode.png\""; // oops ! could be on two lines !
+		String SvgQrcodeTag = Commons.getProjectConfigParameter("SvgQrcodeTag");
+		//	"xlink:href=\"images/myparty/qrcode.png\""; // oops ! could be on two lines !
 		File specificFile = clientSvgTempFileManager.create();
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(specificFile)));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(generalTicket)));

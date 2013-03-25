@@ -1,5 +1,7 @@
 package net.ped.service.rest;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -8,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import net.ped.model.Party;
+import net.ped.model.PartyDescriptionAndId;
 import net.ped.model.ScannedTicket;
 import net.ped.model.ScannedTicketManuel;
 import net.ped.model.User;
@@ -63,4 +66,11 @@ public interface InterfaceRestPartyService {
 	@Produces("application/json")
 	public Response validateTicketManuel(ScannedTicketManuel st);
 
+	/**
+	 * Retourne les descriptions de toutes les parties avec leur id
+	 */
+	@GET
+	@Path("/listParty")
+	@Produces("application/json")
+	public List<PartyDescriptionAndId> listPartiesDescriptionAndId();
 }

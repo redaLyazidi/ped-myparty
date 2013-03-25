@@ -73,8 +73,10 @@ public class Commons {
 
 	public static String QRCodeString(Ticket t) {
 		Customer c = t.getCustomer();
-		LOG.info(getProjectConfigParameter("svgQRcodetag"));
-		return c.getId() + '\n' + t.getParty().getId() + '\n' + t.getSecretCode();
+		String sep = " ";
+		String content = c.getId() + sep + t.getParty().getId() + sep + t.getSecretCode();
+		LOG.info("QRcode content : " + content);
+		return content;
 	}
 
 	public static void sendFileDownloadResponse(HttpServletRequest request,
@@ -98,7 +100,8 @@ public class Commons {
 		op.close();
 	}
 
-	public static void writeSvgInServer(InputStream svgstr, File svgFile) throws IOException {
+	/** take a request with a svg file in the svgstr parameter, and store the svg to the given file */ 
+	public static void writeSvgInFileFromSvgSpecificRequest(InputStream svgstr, File svgFile) throws IOException {
 		FileWriter fw = new FileWriter(svgFile);
 		try {
 			IOUtils.skip(svgstr, "svgstr=".length());
@@ -110,17 +113,17 @@ public class Commons {
 		}
 	}
 	
-	public static void writeSvgInTmp (HttpServletRequest request,
-			HttpServletResponse response,TempFileManager tempFileManager ) throws ServletException, IOException {
+	/** take a request with a svg file in the svgstr, store the svg localy and returns its id for further access */ 
+	public static void answerSvgLocationFromSpecificRequest(HttpServletRequest request,
+			HttpServletResponse response,TempFileManager tempFileManager) throws ServletException, IOException {
 		InputStream svgstr = request.getInputStream();
 		// create a temporary file in that directory
 		File tempFile = tempFileManager.create();
 		LOG.info(tempFile.getPath());
 
-		Commons.writeSvgInServer(svgstr, tempFile);
+		Commons.writeSvgInFileFromSvgSpecificRequest(svgstr, tempFile);
 		response.setContentType("text/plain");
 		response.getWriter().println(tempFile.getName());
 	}
-	
 }
 
