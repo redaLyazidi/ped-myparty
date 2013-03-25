@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -329,6 +331,10 @@ public class CreateParty implements Serializable{
 			LOG.debug("DEBUG: " + s);
 			selectedArtists.add(FrontPartyService.getInstance().getArtistByName(s));
 		}
+		
+		Map<Calendar,Integer> map = new HashMap<Calendar, Integer>();
+		map.put(Calendar.getInstance(), 0);
+		party.setStatTicketSold(map);
 
 		party.setArtists(selectedArtists);
 		FrontPartyService.getInstance().addParty(party);

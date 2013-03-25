@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -60,7 +61,7 @@ public class PartyBean implements Serializable {
 			throw new RuntimeException("Sorry. Got a null request from faces context");
 		}
 		urlTicket = Commons.getPartySvgURL(request, partySelect.getId()).toString();
-		
+		System.out.println(urlTicket);
 		createChartTicket();
 		return "party";
 	}
@@ -68,14 +69,6 @@ public class PartyBean implements Serializable {
 	public String showPartyFromNotValidated(int id){
 		
 		partySelect = FrontPartyService.getInstance().getParty(id);
-		
-		//récupère l'URL du ticket si il existe
-		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		if (request == null)
-		{
-			throw new RuntimeException("Sorry. Got a null request from faces context");
-		}
-		urlTicket = Commons.getPartySvgURL(request, partySelect.getId()).toString();
 		
 		createChartTicket();
 		return "party";
@@ -201,5 +194,11 @@ public class PartyBean implements Serializable {
 		name = "";
 		firstname = "";
 		return "reserveParty";
+	}
+	
+	public void validateParty(){
+		FrontPartyService.getInstance().ValidateParty(partySelect.getId());
+		FacesMessage msg = new FacesMessage("La party a été validée");
+		FacesContext.getCurrentInstance().addMessage(null, msg); 
 	}
 }

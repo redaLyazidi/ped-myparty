@@ -57,6 +57,7 @@
 	<h:form id="menuAdmin">
 		<h:panelGroup rendered="#{loginBean.userAdmin}">
 			<div id="menuAdmin" class="row-fluid" style="margin-top: 20px">
+				<p:messages/>
 				<div class="span10 offset1">
 			    	<div class="navbar">
 		    			<div class="navbar-inner">
@@ -71,11 +72,13 @@
 									    <li class="divider-vertical"></li>
 									    <li><h:commandButton action="#{partyBean.createTicket}" id="billet" image="../img/glyphicons_258_qrcode.png" style="width: 24px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="créer billet"/></li>
 									    <li class="divider-vertical"></li>
-									    <li><h:commandButton action="#" id="valider" image="../img/glyphicons_206_ok_2.png" style="width: 28px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="valider party"/></li>    
+									    <h:panelGroup rendered="#{!partyBean.partySelect.validated}">
+									    <li><h:commandButton action="#{partyBean.validateParty}" id="valider" image="../img/glyphicons_206_ok_2.png" style="width: 28px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="valider party"/></li>    
 								    	<li class="divider-vertical"></li>
+								    	</h:panelGroup>
 								    </ul>
 								    <div class="pull-right" style="margin-top: 8px;">
-						    			<h:outputText value="Party non validée" style="font-weight: bold; color: red;"/>
+						    			<h:outputText value="Préventes non commencées" style="font-weight: bold; color: red;"/>
 						    		</div>
 						    	</c:when>
 						    	<c:otherwise>
@@ -178,7 +181,11 @@
 						</div>
 					</div>
 					<div class="span10 offset1" style="text-align: center">
-						<object type="image/svg+xml" data="#{partyBean.urlTicket}"/>
+						<h:panelGroup rendered="#{loginBean.userAdmin}">
+							<object type="image/svg+xml" data="#{partyBean.urlTicket}" style="max-width: 970px;"/>
+						</h:panelGroup>
+						
+						
 					</div>
 				</div>
 			</h:panelGroup>
