@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:padding="20dip"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:orientation="vertical" >
     
-    <TextView android:id="@+id/result" android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dip" 
-    android:layout_gravity="center" />
+    <TextView android:id="@+id/result" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/method"
+        android:textSize="15sp" />
     
-    <Button android:padding="50dip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/scan"
-            android:onClick="launchScanner"
+    <Button android:text="@string/scan"
+        android:padding="30dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="launchScanner"
     />
     
-     <Button android:padding="50dip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/manual"
-            android:onClick="launchManualInput"
+     <Button android:padding="30dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/manual"
+        android:onClick="launchManualInput"
     />
     
 </LinearLayout>

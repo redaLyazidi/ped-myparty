@@ -28,27 +28,30 @@ import android.widget.TextView;
  * @see SystemUiHider
  */
 public class LoginActivity extends Activity {
-	
+
 	/** server to connect to call web services */
 	//final static String SERVER_ADDR = "http://10.0.2.2:8080";
-	final static String SERVER_ADDR = "http://192.168.0.11:8080";
-	
+	final static String SERVER_ADDR = "http://192.168.0.13:8080";
+
 	/** web services address */
 	final static String SERVICES_ADDR = SERVER_ADDR + 
 			"/myparty-frontend/rest/service";
-	
+
 	/** connexion  web service address */
 	final static String CONNEXION_SERVICE_ADDR = SERVICES_ADDR + "/connexion";
-	
+
+	/** ticket  web service address */
+	final static String TICKET_SERVICE_ADDR = SERVICES_ADDR + "/ticket";
+
 	/** keeping track of views sequence */
 	Stack<Integer> viewSequence;
-	
+
 	/** possible views */
 	public enum ScannerView { LOGIN, // first view 
-		                      STATS, // intermediate view displayed upon login
-                              SCAN   // the view for the scanner
-                            };
-	
+		STATS, // intermediate view displayed upon login
+		SCAN   // the view for the scanner
+	};
+
 	/** current view */
 	public ScannerView currentView;
 
@@ -64,7 +67,7 @@ public class LoginActivity extends Activity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 	}
-	
+
 	/**
 	 * Clear a text field 
 	 * 
@@ -74,7 +77,7 @@ public class LoginActivity extends Activity {
 		EditText view = (EditText)v;
 		view.setText("");
 	}
-	
+
 	/**
 	 * Set a new view for this activity and takes this view
 	 * into account for eventual further backPressed action.
@@ -88,13 +91,13 @@ public class LoginActivity extends Activity {
 		System.out.println(layoutId + "=" + R.layout.scan);
 		super.setContentView(layoutId);
 		if(viewSequence != null) {
-		    viewSequence.push(layoutId);
+			viewSequence.push(layoutId);
 			System.out.println(viewSequence + "" + viewSequence.size());
 		} else {
 			System.out.println("null");
 		}
 	}
-	
+
 	/**
 	 * Open a new view a start the scanner activity
 	 * 
@@ -104,7 +107,7 @@ public class LoginActivity extends Activity {
 		IntentIntegrator integrator = new IntentIntegrator(this);
 		integrator.initiateScan();
 	}
-	
+
 	/**
 	 * Open a new view a start the scanner activity
 	 * 
@@ -113,7 +116,7 @@ public class LoginActivity extends Activity {
 	public void launchManualInput(View v) {
 		transitView(R.layout.manual);
 	}
-	
+
 	/**
 	 * Set the view for checking the manual input
 	 * 
@@ -125,37 +128,87 @@ public class LoginActivity extends Activity {
 				"Secret code : 1245c45c5\nId client : 12");		
 	}
 	
-    /**
-     *
-     */
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		  if (scanResult != null) {
-			   ((TextView)findViewById(R.id.result)).setText(scanResult.getContents());
-		  }
-		  // else continue with any other code you need in the method
-		}
-	
 	/**
 	 * Upon a back button pressed, will display the last view
 	 * set by the method transitView. If none view has been found
 	 * to display, the activity will finish
 	 */
 	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		//super.onBackPressed();
-		
+	public void onBackPressed() {		
 		// display appropriate view depending on the current view
 		if(!viewSequence.isEmpty()) { // can we remove an element?
 			viewSequence.pop();
 			if(!viewSequence.isEmpty()) {  
-			    setContentView(viewSequence.peek());
-			    System.out.println(viewSequence);
-		    } else { // no view to display anymore
-			    finish(); 
-		    }
+				setContentView(viewSequence.peek());
+			} else { // no view to display anymore
+				finish(); 
+			}
 		}
+	}
+
+	/**
+	 *
+	 */
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		AsyncTask<String, Void, JSONObject> 
+		                           callBack;  // result of the web service call 
+		IntentResult scanResult;              // result when the scan is done
+		String result;                        // result of the qrcode scanned
+		String[] results;                     // different parts of the result
+		JSONObject customerJson;              // object json to communicate
+		TextView displayResult;               // view where to display the result
+
+		scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		result = scanResult.getContents();
+		customerJson = new JSONObject();
+		results = result.split("\n");
+		
+		transitView(R.layout.qr_checking);
+		displayResult = (TextView)findViewById(R.id.checking);
+		
+		if (scanResult != null && results.length == 3) {
+			// building customer json object
+			try {
+				customerJson.put("idCustomer", Integer.valueOf(results[0]));
+				customerJson.put("idParty", Integer.valueOf(results[1]));
+				customerJson.put("secretCode", results[2]);
+			} catch (JSONException e) {
+				displayResult.setText(R.string.error_checking);
+			} catch (NumberFormatException e) {
+				displayResult.setText(R.string.error_checking);
+			}
+			
+			ServiceCaller call = new ServiceCaller(ServiceCaller.POST, customerJson);
+			callBack = call.execute(TICKET_SERVICE_ADDR);
+			
+			// waiting for the result
+			try {
+				customerJson = callBack.get();
+				if(customerJson.getBoolean("validated")) {
+					displayResult.setText(R.string.alreay_validated); 
+				} else if(customerJson.getInt("idCustomer") != 0) { 
+					displayResult.setText(R.string.validated); 
+				} else {
+					displayResult.setText(R.string.error_customer); 
+				}
+				
+				((TextView)findViewById(R.id.ticket_info)).setText(
+					    "\nInfos ticket :\n\n" +
+						"ID party : " + customerJson.getInt("idParty") +
+						"\nID client : " + customerJson.getInt("idCustomer") +
+						"\nCode secret : " + customerJson.getString("secretCode"));
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (JSONException e) {
+				displayResult.setText(R.string.error_checking);
+			}
+			
+		} else {
+			displayResult.setText(R.string.error_checking);
+		}		
 	}
 
 	/**
@@ -166,23 +219,21 @@ public class LoginActivity extends Activity {
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void performLogin(View v) {
 		AsyncTask<String, Void, JSONObject> 
-		          callBack;   // result of the web service call
+		callBack;   // result of the web service call
 		CharSequence login;   // login from the textfield
 		CharSequence pwd;     // password from the textfield
-		final String address; // web service address
 		JSONObject userJson;  // login and password fields formatted into json
 		ServiceCaller call;   // caller to call the web service
-		
+
 		login = ((TextView)findViewById(R.id.login)).getText();
 		pwd = ((TextView)findViewById(R.id.pwd)).getText();
-		/*address = "http://10.0.2.2:8080/myparty-frontend/rest/service/connexion";*/
-        userJson = new JSONObject();	
+		userJson = new JSONObject();	
 		call = new ServiceCaller(ServiceCaller.POST, userJson);
-		
+
 		((TextView)findViewById(R.id.connecting)).setVisibility(View.VISIBLE);
-		
+
 		// building json body request
-        try {
+		try {
 			userJson.put("password", pwd.toString());
 			userJson.put("login", login.toString());
 			userJson.put("firstname", null);
@@ -194,10 +245,10 @@ public class LoginActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    
-		
+
 		callBack = call.execute(CONNEXION_SERVICE_ADDR);
 		System.out.println(CONNEXION_SERVICE_ADDR);
-		
+
 		// waiting for the result
 		try {
 			userJson = callBack.get();
@@ -208,13 +259,14 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 
-        // checking the login and perform appropriate action
+		// checking the login and perform appropriate action
 		try {
 			if(login.toString().equals("root") || 
-			   userJson != null && (userJson.getInt("id") != 0)) {
-				
+					userJson != null && (userJson.getInt("id") != 0)) {
+
 				// going to the next view
 				transitView(R.layout.scan);
+				//setContentView(new PartyList(this));
 				this.currentView = ScannerView.STATS;	
 			} else { // login not ok, displaying an error
 				((TextView)findViewById(R.id.connecting)).setVisibility(View.INVISIBLE);
