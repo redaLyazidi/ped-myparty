@@ -373,8 +373,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 			tx = em.getTransaction();
 			tx.begin();
 			CriteriaBuilder criteria = em.getCriteriaBuilder();
-			CriteriaQuery<Party> criteriaQuery = criteria
-					.createQuery(Party.class);
+			CriteriaQuery<Party> criteriaQuery = criteria.createQuery(Party.class);
 			Root<Party> from = criteriaQuery.from(Party.class);
 			criteriaQuery.select(from);
 
@@ -383,12 +382,14 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 			Predicate p0 = criteria.equal(from.get("validated"), true);
 			list.add(p0);
 			
-			if (!place.equals("")){
+			if (!place.equals("")) {
+				// very restrictive... could be done in a post treatment using the Levenshtein distance
 				LOG.debug("ajout lieu");
-				Predicate p1 = criteria.equal(from.get("place"), place);
-				list.add(p1);
+				Predicate or = criteria.disjunction();
+				or.getExpressions().add(criteria.equal(from.get("town"), place));
+				or.getExpressions().add(criteria.equal(from.get("place"), place));
+				list.add(or);
 			}
-
 			if (priceEnd != 0) {
 				LOG.debug("ajout prix");
 				Predicate p2 = criteria.between(from.<Double> get("price"),
