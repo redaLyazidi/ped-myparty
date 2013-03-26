@@ -73,4 +73,12 @@ public interface InterfaceRestPartyService {
 	@Path("/listParty")
 	@Produces("application/json")
 	public JsonList<PartyDescriptionAndId> listPartiesDescriptionAndId();
+	
+	/**
+	 * Retourne le nombre de tickets scannés pour une party
+	 */
+	@GET
+	@Path("/nbScan/{id}")
+	@Produces("application/json")
+	public int getNbScan(@PathParam("id")int id);
 }

@@ -3,6 +3,7 @@ package net.ped.service.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import net.ped.dao.BillingDaoImpl;
@@ -126,5 +127,16 @@ public class RestPartyService implements InterfaceRestPartyService{
 			list.add(new PartyDescriptionAndId(p));
 		}
 		return res;
+	}
+	
+	public int getNbScan(int id){
+		int nb=0;
+		try {
+			Party p = daoParty.getParty(id);
+			nb = p.getNbPlaceScanned();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return nb;
 	}
 }
