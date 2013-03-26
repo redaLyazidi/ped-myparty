@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.ped.bean.PartyBean;
 import net.ped.dao.PartyDaoImpl;
 import net.ped.shared.Commons;
 import net.ped.shared.FileStorage;
@@ -84,5 +85,9 @@ public class StoreSvgTickets extends PedHttpServlet {
 		IOUtils.closeQuietly(ticketoutput);
 		//response.getWriter().println(true);
 		LOG.debug("Post ok");
+		
+		PartyBean bean = (PartyBean) request.getSession().getAttribute("partyBean");
+		LOG.debug("passage du booleen hasTicket dans le bean partyBean à true");
+		bean.setHasTicket(true);
 	}
 }
