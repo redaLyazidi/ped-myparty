@@ -42,6 +42,7 @@ public class AccueilBean implements Serializable {
 	private List<Integer> minute;
 	
 	private boolean searchMode;
+	private boolean emptySearch;
 
 	public AccueilBean(){
 		hour = new ArrayList<Integer>();
@@ -84,6 +85,7 @@ public class AccueilBean implements Serializable {
 		this.dateParty = null;
 		this.selectedHour = 0;
 		this.selectedMinute = 0;
+		emptySearch = false;
 		
 		initPages();
 	}
@@ -92,36 +94,21 @@ public class AccueilBean implements Serializable {
 		numPage = page;
 		listParty.clear();
 		
-		if(searchMode) {
-			listParty = FrontPartyService.getInstance().getPartiesCriteria((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
-		}
-		else {
-			listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
-		}
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 	
 	public void nextPage() {
 		numPage ++;
 		listParty.clear();
 		
-		if(searchMode) {
-			listParty = FrontPartyService.getInstance().getPartiesCriteria((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
-		}
-		else {
-			listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
-		}
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 
 	public void prevPage() {
 		numPage --;
 		listParty.clear();
 		
-		if(searchMode) {
-			listParty = FrontPartyService.getInstance().getPartiesCriteria((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
-		}
-		else {
-			listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
-		}
+		listParty = FrontPartyService.getInstance().getPartiesNotBegunMaxResult((numPage - 1)*ConstantesWeb.NUMBER_PARTY_PAGE, ConstantesWeb.NUMBER_PARTY_PAGE);
 	}
 
 	public List<Party> getListParty() {
@@ -260,12 +247,11 @@ public class AccueilBean implements Serializable {
 			listParty.clear();
 			listParty = FrontPartyService.getInstance().getPartiesCriteria(0,ConstantesWeb.NUMBER_PARTY_PAGE, place, priceMin, priceMax, datePartyCriteria, timeCriteria);
 			
-			int nbParties = FrontPartyService.getInstance().getNbPartiesCriteria(place, priceMin, priceMax, datePartyCriteria, timeCriteria);
-			if(nbParties <= ConstantesWeb.NUMBER_PARTY_PAGE) {
-				nbPages = 1;
+			if(listParty.isEmpty()) {
+				emptySearch = true;
 			}
 			else {
-				nbPages = (nbParties -1) / ConstantesWeb.NUMBER_PARTY_PAGE + 1;
+				emptySearch = false;
 			}
 			
 		} catch (Exception e) {
@@ -281,5 +267,13 @@ public class AccueilBean implements Serializable {
 
 	public void setSearchMode(boolean searchMode) {
 		this.searchMode = searchMode;
+	}
+
+	public boolean isEmptySearch() {
+		return emptySearch;
+	}
+
+	public void setEmptySearch(boolean emptySearch) {
+		this.emptySearch = emptySearch;
 	}
 }

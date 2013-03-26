@@ -333,7 +333,7 @@ public class CreateParty implements Serializable{
 		}
 		
 		Map<Calendar,Integer> map = new HashMap<Calendar, Integer>();
-		map.put(Calendar.getInstance(), 0);
+		map.put(party.getDateBegin(), 0);
 		party.setStatTicketSold(map);
 
 		party.setArtists(selectedArtists);
