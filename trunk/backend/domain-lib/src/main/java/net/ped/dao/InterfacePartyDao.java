@@ -111,6 +111,6 @@ public interface InterfacePartyDao {
 	 *  Permet d'établir la connexion
 	 */
 	public User login(String login, String password) throws Exception;
-	
 
+	
 }
