@@ -12,11 +12,11 @@ import net.ped.dao.InterfaceRESTDao;
 import net.ped.dao.PartyDaoImpl;
 import net.ped.dao.RESTDaoImpl;
 import net.ped.model.Party;
-import net.ped.model.PartyDescriptionAndId;
 import net.ped.model.ScannedTicket;
 import net.ped.model.ScannedTicketManuel;
 import net.ped.model.Ticket;
 import net.ped.model.User;
+import net.ped.service.PartyDescriptionAndId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +112,7 @@ public class RestPartyService implements InterfaceRestPartyService{
 		}
 	}
 
-	public List<PartyDescriptionAndId> listPartiesDescriptionAndId() {
+	public JsonList<PartyDescriptionAndId> listPartiesDescriptionAndId() {
 		LOG.info("listPartiesDescriptionAndId");
 		List<Party> parties = new ArrayList<Party>();
 		try {
@@ -120,9 +120,10 @@ public class RestPartyService implements InterfaceRestPartyService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		List<PartyDescriptionAndId> res = new ArrayList<PartyDescriptionAndId>();
+		JsonList<PartyDescriptionAndId> res = new JsonList<PartyDescriptionAndId>();
+		List<PartyDescriptionAndId> list = res.list; 
 		for(Party p : parties) {
-			res.add(new PartyDescriptionAndId(p));
+			list.add(new PartyDescriptionAndId(p));
 		}
 		return res;
 	}

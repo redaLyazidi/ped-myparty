@@ -10,10 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import net.ped.model.Party;
-import net.ped.model.PartyDescriptionAndId;
 import net.ped.model.ScannedTicket;
 import net.ped.model.ScannedTicketManuel;
 import net.ped.model.User;
+import net.ped.service.PartyDescriptionAndId;
 
 @Path("/service")
 public interface InterfaceRestPartyService {
@@ -72,5 +72,5 @@ public interface InterfaceRestPartyService {
 	@GET
 	@Path("/listParty")
 	@Produces("application/json")
-	public List<PartyDescriptionAndId> listPartiesDescriptionAndId();
+	public JsonList<PartyDescriptionAndId> listPartiesDescriptionAndId();
 }
