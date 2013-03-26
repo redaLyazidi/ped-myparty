@@ -21,6 +21,7 @@ svgEditor.addExtension("mypartyName", function() {
 			type: "mode",
 			//position: 10,
 			title: "Add a person name to this party ticket",
+                        classes: ["important_buttons"],
 			events: {
 				"click": function() {
 					canv.setMode(mode_id);
