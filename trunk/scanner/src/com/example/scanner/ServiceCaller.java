@@ -94,7 +94,7 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 	
 	protected JSONObject doGetRequest(String uri) {
 				
-		String output = "";     // 
+		String output, result = "";     // 
 		JSONObject json = null; // final json object to return 
 		
 		try {
@@ -122,12 +122,13 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 					new InputStreamReader((response.getEntity().getContent())));
 
 			System.out.println("Output from Server .... \n");
-			while ((output += br.readLine()) != null) {
+			while ((output = br.readLine()) != null) {
 				System.out.println(output);
+				result += output;
 			}
 
 			httpClient.getConnectionManager().shutdown();
-			json = new JSONObject(output);
+			json = new JSONObject(result);
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

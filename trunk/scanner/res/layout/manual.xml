@@ -12,7 +12,7 @@
     android:text="Id client"
     android:layout_gravity="center" />
 
-<EditText android:id="@+id/idClient" 
+<EditText android:id="@+id/id_customer" 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
     android:padding="20dip" 
@@ -21,14 +21,14 @@
 
 <TextView 
     android:padding="5dip"
-    android:id="@+id/title" 
+    android:id="@+id/label_customer" 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
     android:text="Id billet"
     android:layout_gravity="center" />
     
 <EditText android:padding="20dip"
-    android:id="@+id/idTicket" 
+    android:id="@+id/id_party" 
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:onClick="clearField"

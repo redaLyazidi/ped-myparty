@@ -9,7 +9,7 @@
     <string name="confirm">Confirmer</string>
     <string name="error_login">Identifiant ou mot de passe incorrect.</string>
     <string name="connecting">Connexion...</string>
-    <string name="method">Choisissez votre méthode de validation du ticket</string>
+    <string name="method">Choisissez votre méthode de validation du ticket pour la party</string>
     <string name="scan">Scanner QR code</string>
     <string name="manual">Saisie manuelle</string>
     <string name="validated">Le ticket a été validé avec succès!</string>
