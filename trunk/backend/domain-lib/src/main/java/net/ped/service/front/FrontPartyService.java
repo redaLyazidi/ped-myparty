@@ -182,18 +182,6 @@ public class FrontPartyService implements InterfaceFrontPartyService{
 		return list;
 	}
 	
-	public int getNbPartiesCriteria(String place, Double priceBegin, Double priceEnd,
-			Calendar date, Calendar time){
-		int nbParties = 0;
-		
-		try {
-			nbParties = dao.getNbPartiesCriteria(place, priceBegin, priceEnd, date, time);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return nbParties;
-	}
-	
 	public void addUser(User u){
 		try {
 			dao.addUser(u);

@@ -115,6 +115,7 @@
 					<!-- Body -->
 					<div class="span9">
 
+						<h:panelGroup rendered="#{!accueilBean.emptySearch}">
 							<table class="table table-hover" id="tab">
 								
 								<thead style="background: #191919">
@@ -174,18 +175,23 @@
 								</c:forEach>
 								</tbody>
 							</table>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{accueilBean.emptySearch}">
+							<h:outputText value="La recherche n'a retourné aucun résultat." />
+						</h:panelGroup>
 							
 							<!-- A MODIFIER POUR LA PAGINATION -->
-							<div class="pagination pagination-right">
-								<ul>
-									<li><h:commandLink action="#{accueilBean.prevPage}"	value="Précédent" disabled="#{accueilBean.disableButtonPrev}"/></li>
-									<c:forEach var="i" begin="1" end="#{accueilBean.nbPages}">
-										<li> <h:commandLink value="#{i}" action="#{accueilBean.gotoPage(i)}" /> </li>
-									</c:forEach>
-									<li><h:commandLink action="#{accueilBean.nextPage}" value="Suivant" disabled="#{accueilBean.disableButtonNext}"/></li>
-								</ul>
-							</div>
-							
+							<h:panelGroup rendered="#{!accueilBean.searchMode}">
+								<div class="pagination pagination-right">
+									<ul>
+										<li><h:commandLink action="#{accueilBean.prevPage}"	value="Précédent" disabled="#{accueilBean.disableButtonPrev}"/></li>
+										<c:forEach var="i" begin="1" end="#{accueilBean.nbPages}">
+											<li> <h:commandLink value="#{i}" action="#{accueilBean.gotoPage(i)}" /> </li>
+										</c:forEach>
+										<li><h:commandLink action="#{accueilBean.nextPage}" value="Suivant" disabled="#{accueilBean.disableButtonNext}"/></li>
+									</ul>
+								</div>
+							</h:panelGroup>
 					</div>
 					<!--/span-->
 				</div>
