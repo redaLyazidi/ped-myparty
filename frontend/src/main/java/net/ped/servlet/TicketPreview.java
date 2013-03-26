@@ -59,6 +59,7 @@ public class TicketPreview extends TicketRasterizer {
 
 	protected void cleanupRessources(File clientSvgTicket, File clientPdfTicket) {
 		super.cleanupRessources(clientSvgTicket, clientPdfTicket);
-		FileUtils.deleteQuietly(svgTicket);
+		if (cleanupResources == true)
+			FileUtils.deleteQuietly(svgTicket);
 	}
 }

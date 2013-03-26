@@ -1,6 +1,8 @@
-package net.ped.model;
+package net.ped.service;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import net.ped.model.Party;
 
 @SuppressWarnings("serial")
 @XmlRootElement

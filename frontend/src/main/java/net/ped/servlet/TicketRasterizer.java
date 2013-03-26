@@ -27,6 +27,7 @@ import net.ped.shared.PedHttpServlet;
 import net.ped.shared.TempFileManager;
 import net.ped.shared.TicketInformation;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 
 	static TempFileManager pdfTempFileManager = null;
 	static TempFileManager clientSvgTempFileManager = null;
+	protected boolean cleanupResources = false;
 
 	private static final Logger LOG = LoggerFactory.getLogger(TicketRasterizer.class);
 	
@@ -123,27 +125,32 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 	private File generateClientSpecificSvgTicket(Ticket ticket, File generalTicket) throws Exception {
 		// Generate qrcode
 		String qrText = Commons.QRCodeString(ticket);
-		ByteArrayOutputStream out = QRCode.from(qrText).to(ImageType.PNG).stream();
+		int qrSize = 300;
+		ByteArrayOutputStream out = QRCode.from(qrText).to(ImageType.PNG).withSize(qrSize, qrSize).stream();
 		String qrData = DatatypeConverter.printBase64Binary(out.toByteArray());
 		String qrDataUri = "xlink:href=\"data:image/png;base64," + qrData + "\"";
 
 		// replace qrcode path with the real image
 		String SvgQrcodeTag = Commons.getProjectConfigParameter("SvgQrcodeTag");
-		//	"xlink:href=\"images/myparty/qrcode.png\""; // oops ! could be on two lines !
+		//	"xlink:href=\"images/myparty/qrcode.png\""; // oops ! could be on two lines if edited with inkscape !
 		File specificFile = clientSvgTempFileManager.create();
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(specificFile)));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(generalTicket)));
 
 		Customer customer = ticket.getCustomer();
-		String clientName = customer.getFirstname() + " " + customer.getFirstname();
-
+		String clientName = customer.getLastname() + " " + customer.getFirstname();
 		//List<String> txt = IOUtils.readLines(new FileReader(generalTicket));
 		//LOG.debug("Size : " + txt.size());
 		
+		char sep = '_';
+		String id = "" + ticket.getId() + sep
+					   + ticket.getCustomer().getId()
+					   + sep + ticket.getSecretCode();
 		String line;
 		while((line = reader.readLine()) != null) {
 			String line2 = line.replace(SvgQrcodeTag, qrDataUri)
-					.replace("$NAME$", clientName); // TODO : add id
+					           .replace("$NAME$", clientName)
+					           .replace("$ID$", id);
 			writer.write(line2);
 		}
 		writer.flush();
@@ -159,17 +166,23 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 			return null;
 		}
 		File pdfOutput = pdfTempFileManager.create();
-		if (new InkscapeSvgToPdf().convert(svg, pdfOutput) == true)
+		if (new InkscapeSvgToPdf().convert(svg, pdfOutput) == true) {
 			return pdfOutput;
+		} else {
+			LOG.warn("Inkscape did not execute fine. Either it is not installed or not in the path, resulting in poor performances, " +
+					 "or the svg ticket is invalid...");
+		}
 		if (new BatikSvgToPdf().convert(svg, pdfOutput))
 			return pdfOutput;
-		pdfOutput.delete();
+		FileUtils.deleteQuietly(pdfOutput);
 		return null;
 	}
 
 	protected void cleanupRessources(File clientSvgTicket, File clientPdfTicket) {
-		//FileUtils.deleteQuietly(clientSvgTicket);
-		//FileUtils.deleteQuietly(clientPdfTicket);
+		if (cleanupResources == true) {
+			FileUtils.deleteQuietly(clientSvgTicket);
+			FileUtils.deleteQuietly(clientPdfTicket);
+		}
 	}
 
 	protected void sendError(HttpServletResponse response, int error) {
