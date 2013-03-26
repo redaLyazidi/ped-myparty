@@ -365,6 +365,7 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 			double priceBegin, double priceEnd, Calendar date, Calendar time)
 					throws Exception {
 		LOG.info("> getPartiesCriteria");
+		place = place.trim();
 		EntityManager em = createEntityManager();
 		EntityTransaction tx = null;
 		List<Party> results = new ArrayList<Party>();

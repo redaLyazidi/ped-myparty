@@ -22,6 +22,7 @@ svgEditor.addExtension("mypartyQrcode", function() {
             type: "mode",
             position: 6,
             title: "Add the QRCode of this party ticket",
+            classes: ["important_buttons"],
             events: {
                 "click": function() {
                     canv.setMode(mode_id);
