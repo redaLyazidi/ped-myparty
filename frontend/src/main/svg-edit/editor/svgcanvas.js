@@ -7643,6 +7643,32 @@ $.SvgCanvas = function(container, config)
         }
     };
 
+    this.setAlignText = function(direction) {
+        var selected = selectedElements[0];
+        if (selected != null && selected.tagName  == "text" &&
+            selectedElements[1] == null)
+        {
+            var anchor = "middle";
+            var align  = "center";
+
+            switch(direction) {
+            case "left":
+                anchor = "left";
+                align = "left";
+                break;
+            case "right":
+                anchor = "end";
+                align = "end";
+                break;
+            }
+            changeSelectedAttribute("text-anchor", anchor);
+            changeSelectedAttribute("text-align", align);
+        }
+        if(!selectedElements[0].textContent) {
+            textActions.setCursor();
+        }
+    }
+
     // Function: getFontFamily
     // Returns the current font family
     this.getFontFamily = function() {
