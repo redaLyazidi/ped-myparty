@@ -3,6 +3,8 @@ package net.ped.bean;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
@@ -117,7 +119,9 @@ public class PartyBean implements Serializable {
 			dataSorted.add(c);
 		}
 		for(Calendar c : dataSorted) {
-			serie.set(c.getTime(), ticketSold.get(c));
+			DateFormat df = new SimpleDateFormat("dd/MM/yy");
+			String formattedDate = df.format(c.getTime());
+			serie.set(formattedDate, ticketSold.get(c));
 		}
 
 		chartTicket.addSeries(serie);
