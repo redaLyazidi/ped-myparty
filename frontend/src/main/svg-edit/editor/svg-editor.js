@@ -1351,6 +1351,14 @@ if (!alert)
                         .attr("id", id)
                         .attr("title", btn.title)
                         .addClass(cls);
+                        
+                        if (typeof(btn.classes) !== "undefined") { // my_party
+                            console.log("SEEMS OK");
+                            $.each(btn.classes, function(i, klass) {
+                                button.addClass(klass);
+                                //console.log("AYAYAYAYA!!!", klass);
+                            });
+                        }
                         if(!btn.includeWith && !btn.list) {
                             if("position" in btn) {
                                 $(parent).children().eq(btn.position).before(button);
@@ -1542,6 +1550,7 @@ if (!alert)
                 runCallback();
             };
 
+            
             var getPaint = function(color, opac, type) {
                 // update the editor's fill paint
                 var opts = null;
@@ -1708,6 +1717,8 @@ if (!alert)
                 var w = Math.min(Math.max(12 + elem.value.length * 6, 50), 300);
                 $(elem).width(w);
             }
+
+
 
             // updates the context panel tools based on the selected element
             var updateContextPanel = function() {
@@ -2656,35 +2667,34 @@ if (!alert)
             };
 
             var clickPreview =function(){
-                if (toolButtonClick('#tool_preview')) {
+                var prewiewId = '#tool_preview';
+                if (toolButtonClick(prewiewId)) {
                     svgCanvas.preview(curConfig.sendforpreview);
                 }
             };
-            
+
             var clickValidate = function(){
-                if (toolButtonClick('#tool_validate')) {
-                    console.log("Validate idParty ticket : ", Editor.curConfig.idParty);
-                    if (typeof(Editor.curConfig.idParty) !== "number")
-                        window.alert("No party id !");
-                    jQuery.post(curConfig.sendsvgtoserver, {
-                        'idparty': Editor.curConfig.idParty,
-                        'svgstr' : svgCanvas.svgCanvasToString()
-                    }/*,
-                   function (data) {
-                        console.log('data: ',data);
-                        jQuery.alert('Response from the server: ' + data);
-                        if(data === true)
-                            jQuery.alert('Response from the server: ' + data);
-                        if(data === 'true') {
-                            jQuery.alert('Connexion impossible avec le serveur... ');
-                        }
-                    }*/).done( function () {
-                        document.location.href = '../views/party.xhtml'
-                    })
-                    .fail(function () {
-                        jQuery.alert ("The server was unable to validate this ticket");
-                    });
+                var validateID = '#tool_validate';
+                if (toolButtonClick(validateID)) {
+                    $.confirm("vous etes sur", function(ok) {
+                        console.log(ok);
+                        if (ok) {
+                            console.log("Validate idParty ticket : ", Editor.curConfig.idParty);
+                            if (typeof(Editor.curConfig.idParty) !== "number")
+                                window.alert("No party id !");
+                            jQuery.post(curConfig.sendsvgtoserver, {
+                                'idparty': Editor.curConfig.idParty,
+                                'svgstr' : svgCanvas.svgCanvasToString()
+                            }).done( function () {
+                                document.location.href = '../views/party.xhtml'
+                            })
+                            .fail(function () {
+                                jQuery.alert ("The server was unable to validate this ticket");
+                            });
                     
+                        }
+                    //                    jQuery.alert('check the console again');
+                    });
                 }
             };
             
@@ -5841,6 +5851,7 @@ if (!alert)
     $(svgEditor.init);
 
 })();
+
 
 // ?iconsize=s&bkgd_color=555
 
