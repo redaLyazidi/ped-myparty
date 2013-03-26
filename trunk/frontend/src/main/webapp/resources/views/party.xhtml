@@ -15,6 +15,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="" />
 	<meta name="author" content="" />
+	
 
 	<!-- Le styles -->
 	<h:outputStylesheet library="css" name="bootstrap.css" />
@@ -70,11 +71,13 @@
 										<li class="divider-vertical"></li>
 					    				<li><h:commandButton action="#{partyBean.deleteParty}" id="supprimer" image="../img/glyphicons_016_bin.png" style="width: 20px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="supprimer"/></li>
 									    <li class="divider-vertical"></li>
-									    <li><h:commandButton action="#{partyBean.createTicket}" id="billet" image="../img/glyphicons_258_qrcode.png" style="width: 24px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="créer billet"/></li>
-									    <li class="divider-vertical"></li>
-									    <h:panelGroup rendered="#{!partyBean.partySelect.validated}">
-									    <li><h:commandButton action="#{partyBean.validateParty}" id="valider" image="../img/glyphicons_206_ok_2.png" style="width: 28px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="valider party"/></li>    
-								    	<li class="divider-vertical"></li>
+									    <h:panelGroup rendered="#{!partyBean.hasTicket}">
+										    <li><h:commandButton action="#{partyBean.createTicket}" id="billet" image="../img/glyphicons_258_qrcode.png" style="width: 24px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="créer billet"/></li>
+										    <li class="divider-vertical"></li>
+									    </h:panelGroup>
+									    <h:panelGroup rendered="#{!partyBean.partySelect.validated and partyBean.hasTicket}">
+										    <li><h:commandButton action="#{partyBean.validateParty}" id="valider" image="../img/glyphicons_206_ok_2.png" style="width: 28px; height: 24px; margin-left: 15px; margin-right: 15px; margin-top: 8px;" data-toggle="tooltip" title="valider party"/></li>    
+									    	<li class="divider-vertical"></li>
 								    	</h:panelGroup>
 								    </ul>
 								    <div class="pull-right" style="margin-top: 8px;">
@@ -177,14 +180,19 @@
 						<div class="navbar">
 							<div class="navbar-inner">
 								<a class="brand">Ticket</a>
+								<ul class="nav">
+				    				<li class="divider-vertical"></li>
+				    			</ul>
 							</div>
 						</div>
 					</div>
 					<div class="span10 offset1" style="text-align: center">
-						<h:panelGroup rendered="#{loginBean.userAdmin}">
+						<h:panelGroup rendered="#{partyBean.hasTicket}">
 							<object type="image/svg+xml" data="#{partyBean.urlTicket}" style="max-width: 970px;"/>
 						</h:panelGroup>
-						
+						<h:panelGroup rendered="#{!partyBean.hasTicket}">
+							<h:outputText value="La party ne possède pas de Ticket" style="font-weight: bold; color: red;"/>
+						</h:panelGroup>
 						
 					</div>
 				</div>
