@@ -4053,6 +4053,24 @@ if (!alert)
                 }
             }
 
+            function clickAlignTextLeft() {
+                svgCanvas.setAlignText("left");
+                updateContextPanel();
+                return false;
+            }
+
+            function clickAlignTextCenter() {
+                svgCanvas.setAlignText("center");
+                updateContextPanel();
+                return false;
+            }
+
+            function clickAlignTextRight() {
+                svgCanvas.setAlignText("right");
+                updateContextPanel();
+                return false;
+            }
+
             $('#layer_delete').click(deleteLayer);
 
             $('#layer_up').click(function() {
@@ -4686,6 +4704,24 @@ if (!alert)
                 {
                     sel:'#copy_save_done', 
                     fn: cancelOverlays, 
+                    evt: 'click'
+                },
+
+                {
+                    sel:'#tool_textleft',
+                    fn: clickAlignTextLeft,
+                    evt: 'click'
+                },
+
+                {
+                    sel:'#tool_textcenter',
+                    fn: clickAlignTextCenter,
+                    evt: 'click'
+                },
+
+                {
+                    sel:'#tool_textright',
+                    fn: clickAlignTextRight,
                     evt: 'click'
                 },
 
