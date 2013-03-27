@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.ped.bean.LoginBean;
 import net.ped.bean.PartyBean;
 import net.ped.dao.PartyDaoImpl;
 import net.ped.shared.Commons;
@@ -72,6 +73,12 @@ public class StoreSvgTickets extends PedHttpServlet {
 			return;
 		}
 		
+		LoginBean loginBean = (LoginBean) request.getSession().getAttribute("loginBean");
+		if (loginBean.isUserAdmin() == false) {
+			LOG.info("Refused ticket creation by not admin user");
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		}
+		
 		if (! new PartyDaoImpl().containsParty(idParty)) {
 			LOG.debug("This id : " + idParty+ " doesn't match to any party");
 			return;
@@ -87,6 +94,7 @@ public class StoreSvgTickets extends PedHttpServlet {
 		LOG.debug("Post ok");
 		
 		PartyBean bean = (PartyBean) request.getSession().getAttribute("partyBean");
+
 		LOG.debug("passage du booleen hasTicket dans le bean partyBean à true");
 		bean.setHasTicket(true);
 	}
