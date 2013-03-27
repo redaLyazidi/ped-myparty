@@ -118,7 +118,8 @@ svgEditor.addExtension("mypartyQrcode", function() {
                 'width': w,
                 'height': h,
                 'x': new_x,
-                'y': new_y
+                'y': new_y,
+                'preserveAspectRatio': 'xMidYMid';
             },1000);
         }
 
