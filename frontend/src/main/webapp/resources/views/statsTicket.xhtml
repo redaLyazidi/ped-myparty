@@ -35,18 +35,9 @@
 						<h3>Suivi d'évolution de tickets vendus</h3>
 
 						<div class="row-fluid">
-							<div class="span8">
-
-								<p:lineChart id="linear" 
-									value="#{partyBean.chartTicket}"
-									legendPosition="e"  
-									title="Evolution de ticket vendus"
-									animate="true"
-									/> 								
-
+							<div class="span8">							
 									<p:barChart id="basic" value="#{partyBean.chartTicket}" legendPosition="ne"  
 									            title="Evolution de ticket vendus" />
-								
 							</div>
 						</div>
 					
