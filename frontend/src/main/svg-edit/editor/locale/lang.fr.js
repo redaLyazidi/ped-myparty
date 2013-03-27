@@ -146,8 +146,11 @@ svgEditor.readLang({
 		"move_up": "Placer plus près",
 		"move_down": "Placer au dernier plan",
 		"move_back": "Placer plus au fond",
-                "preview": "Prévisualiser le design", //MyParty
-                "validate": "Valider le design " //MyParty
+        "preview": "Prévisualiser le design", //MyParty
+        "validate": "Valider le design", //MyParty
+        "align_textleft"   : "Aligner le texte sur la gauche", //MyParty
+        "align_textright"  : "Aligner le texte sur la droite", //MyParty
+        "align_textcenter" : "Aligner le texte au center" //MyParty
 	},
 	layers: {
 		"layer":"Calque",

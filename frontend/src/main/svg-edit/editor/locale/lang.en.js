@@ -144,8 +144,11 @@ svgEditor.readLang({
 		"move_up": "Move Layer Up",
 		"move_down": "Move Layer Down",
 		"move_back": "Send to Back",
-                "preview": "Preview the design", //MyParty
-                "validate": "Validate the design" //MyParty
+        "preview": "Preview the design", //MyParty
+        "validate": "Validate the design", //MyParty
+        "align_textleft"   : "Align the text to the left", //MyParty
+        "align_textright"  : "Align the text to the right", //MyParty
+        "align_textcenter" : "Align the text to the center" //MyParty
 	},
 	layers: {
 		"layer":"Layer",

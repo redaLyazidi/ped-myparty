@@ -263,6 +263,9 @@ var svgEditor = (function($, Editor) {
                         tool_validate: tools.validate, // my party
 			tool_square: tools.mode_square,
 			tool_text: tools.mode_text,
+            tool_textleft: tools.align_textleft,
+            tool_textright: tools.align_textright,
+            tool_textcenter: tools.align_textcenter,
 			tool_topath: tools.to_path,
 			tool_undo: tools.undo,
 			tool_ungroup: tools.ungroup,

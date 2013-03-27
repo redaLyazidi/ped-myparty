@@ -372,7 +372,10 @@ if (!alert)
                     'cancel':'cancel.png',
 
                     'arrow_right':'flyouth.png',
-                    'arrow_down':'dropdown.gif'
+                    'arrow_down':'dropdown.gif',
+                    'textleft':'textleft.png',
+                    'textright':'textright.png',
+                    'textcenter':'textcenter.png'
 
                 //'myparty_qrcode':'myparty/qrcode.png'
                 },
@@ -441,6 +444,10 @@ if (!alert)
                     '#linejoin_bevel':'linejoin_bevel',
 
                     '#url_notice':'warning',
+
+                    '#tool_textleft':'textleft',
+                    '#tool_textright':'textright',
+                    '#tool_textcenter':'textcenter',
 
                     '#layer_up':'go_up',
                     '#layer_down':'go_down',
@@ -1705,6 +1712,7 @@ if (!alert)
                             //console.log("datauri : ", datauri)
                             console.log("Changed an image URL with success");
                             setImageURL(datauri);
+                            svgCanvas.setPreserveAspectRation("xMidYMid"); // prevent a bug with scaled images in inkscape
                         }
                         default_img_url = url;
                     }
@@ -1889,6 +1897,16 @@ if (!alert)
                             else {
                                 $('#tool_bold').removeClass('push_button_pressed').addClass('tool_button');
                             }
+                            
+                            var align = svgCanvas.getTextAlign();
+                            var alignments = ["left", "center", "right"];
+                            for(var i = 0; i < alignments.length; ++i) {
+                                if (align == alignments[i])
+                                    $('#tool_text' + alignments[i]).addClass('push_button_pressed').removeClass('tool_button');
+                                else
+                                    $('#tool_text' + alignments[i]).removeClass('push_button_pressed').addClass('tool_button');
+                            }
+                            
                             $('#font_family').val(elem.getAttribute("font-family"));
                             $('#font_size').val(elem.getAttribute("font-size"));
                             $('#text').val(elem.textContent);
@@ -2671,6 +2689,7 @@ if (!alert)
                 if (toolButtonClick(prewiewId)) {
                     svgCanvas.preview(curConfig.sendforpreview);
                 }
+                $('.tool_button_current').removeClass('tool_button_current').addClass('tool_button'); // untoggle preview and validate buttons
             };
 
             var clickValidate = function(){
@@ -2693,7 +2712,12 @@ if (!alert)
                             });
                     
                         }
-                    //                    jQuery.alert('check the console again');
+                    }).done( function () {
+                        document.location.href = '../views/party.xhtml';
+                    })
+                    .fail(function () {
+                        jQuery.alert ("The server was unable to validate this ticket");
+                        $('.tool_button_current').removeClass('tool_button_current').addClass('tool_button'); // untoggle preview and validate buttons
                     });
                 }
             };
