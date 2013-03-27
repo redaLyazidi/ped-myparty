@@ -3,6 +3,7 @@ package net.ped.service.front;
 import java.util.Calendar;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import net.ped.dao.PartyDaoImpl;
 import net.ped.model.Customer;
 import net.ped.model.Party;
 import net.ped.model.Ticket;
+import net.ped.shared.MyHttpServlet;
 import net.ped.utils.Mail;
 
 import static java.lang.Math.round;
@@ -128,11 +130,40 @@ public class FrontBillingService implements InterfaceFrontBillingService{
 		return ticket;
 	}
 	
-	public void sendMail(String dest) {
+	public void sendMail(Customer customer, Party party, String ticketLink) {
 		try {
-			Mail.getInstance().sendMail(dest);
+			Mail.getInstance().sendMail(customer, party, ticketLink);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String getURL(HttpServletRequest req, Ticket ticket) {
+		
+	 	String scheme = req.getScheme();             // http
+	    String serverName = req.getServerName();     // hostname.com
+	    int serverPort = req.getServerPort();        // 80
+	    String contextPath = MyHttpServlet.getInstance().getServletContext().getContextPath();   // /myparty-frontend
+
+	    // Reconstruct original requesting URL
+	    StringBuffer url =  new StringBuffer();
+	    url.append(scheme).append("://").append(serverName);
+	    if ((serverPort != 80) && (serverPort != 443)) {
+	        url.append(":").append(serverPort);
+	    }
+	    url.append(contextPath);
+	    url.append("/")
+	    .append("ticketcustomerrasterizer")
+	    .append("?")
+	    .append("idparty=")
+	    .append(ticket.getParty().getId())
+	    .append("&")
+	    .append("idclient=")
+	    .append(ticket.getCustomer().getId())
+	    .append("&")
+	    .append("secretcode=")
+	    .append(ticket.getSecretCode());
+	    
+	    return url.toString();
 	}
 }

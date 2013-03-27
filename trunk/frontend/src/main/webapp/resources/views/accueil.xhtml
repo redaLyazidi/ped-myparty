@@ -166,7 +166,9 @@
 										<td>
 											<div class="listItemPrice"> 
 												<div>
-													<h:outputText value="#{party.price} €" />
+													<h:outputText value="#{party.price}" >
+														<f:convertNumber minFractionDigits="2" />
+													</h:outputText> €
 												</div>
 												<h:commandLink action="#{partyBean.showPartyFromAccueil(party.id)}" value="Réservez"/>
 											</div>

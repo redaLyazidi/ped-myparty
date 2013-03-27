@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -24,10 +25,12 @@ import org.slf4j.LoggerFactory;
 
 import net.ped.model.Customer;
 import net.ped.model.Party;
+import net.ped.model.Ticket;
 import net.ped.service.front.FrontBillingService;
 import net.ped.service.front.FrontPartyService;
 import net.ped.shared.Commons;
 import net.ped.shared.FileStorage;
+import net.ped.shared.StaticFileManager;
 
 @ManagedBean(name="partyBean")
 @SessionScoped
@@ -47,6 +50,7 @@ public class PartyBean implements Serializable {
 	private Party partySelect;
 	private CartesianChartModel chartTicket;
 	private String urlTicket;
+	private String urlTicketToPrint;
 	private boolean hasTicket = true;
 
 	public PartyBean(){
@@ -98,8 +102,12 @@ public class PartyBean implements Serializable {
 		FrontBillingService.getInstance().addCustomer(c);
 		Customer customer = FrontBillingService.getInstance().getCustomer(firstname, name, mail);
 		FrontBillingService.getInstance().addTicket(customer.getId(), partySelect.getId());
-		FrontBillingService.getInstance().sendMail(mail);
-		//customer-test@hotmail.fr
+		
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		Ticket ticket = FrontBillingService.getInstance().getTicket(customer.getId(), partySelect.getId());
+		urlTicketToPrint = FrontBillingService.getInstance().getURL(request,  ticket);
+		
+		//FrontBillingService.getInstance().sendMail(customer, partySelect, urlTicketToPrint);
 
 		return "confirmBilling";
 	}
@@ -228,5 +236,13 @@ public class PartyBean implements Serializable {
 		FrontPartyService.getInstance().ValidateParty(partySelect.getId());
 		FacesMessage msg = new FacesMessage("La party a été validée");
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
+	}
+
+	public String getUrlTicketToPrint() {
+		return urlTicketToPrint;
+	}
+
+	public void setUrlTicketToPrint(String urlTicketToPrint) {
+		this.urlTicketToPrint = urlTicketToPrint;
 	}
 }

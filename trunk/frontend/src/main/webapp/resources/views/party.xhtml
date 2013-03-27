@@ -147,7 +147,9 @@
 				</div>
 				<div class="span3 offset1" id="blocReservation">
 					<div>
-						<h:outputText value="#{partyBean.partySelect.price} €" />
+						<h:outputText value="#{partyBean.partySelect.price}">
+							<f:convertNumber minFractionDigits="2" />
+						</h:outputText> €
 					</div>
 					<div class="partyNbPlace">
 						<h:outputText value="#{partyBean.partySelect.nbPlace - partyBean.partySelect.nbPlaceBought} places restantes" />

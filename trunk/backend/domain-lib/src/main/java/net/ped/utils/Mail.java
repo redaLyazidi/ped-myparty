@@ -1,5 +1,6 @@
 package net.ped.utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
@@ -11,6 +12,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import net.ped.model.Customer;
+import net.ped.model.Party;
 
 public class Mail {
 	
@@ -28,19 +32,30 @@ public class Mail {
 		return instance;
 	}
 	
-	public void sendMail(String dest) throws MessagingException {
-		
+	public void sendMail(Customer customer, Party party, String urlTicket) throws MessagingException {
+
 		Properties prop;
 		try {
-			//prop = PropertyLoader.load("net/ped/utils/mail.properties");
-			//final String mail = prop.getProperty("mailMyParty");
-			//final String password = prop.getProperty("passwordMyParty");
-			//final String object = prop.getProperty("object");
-
+			
+//			prop = PropertyLoader.load("../java/net/utils/mail.properties");
+//			final String mail = prop.getProperty("mailMyParty");
+//			final String password = prop.getProperty("passwordMyParty");
+//			final String object = prop.getProperty("object");
+		
 			final String mail = "myparty@hotmail.fr";
 			final String password = "PASSword123";
 			final String object = "Confirmation de réservation";
-			
+			final String content = "<html><body> " +
+					"<h2>Confirmation de réservation</h2>" +
+					customer.getFirstname() + " " + customer.getLastname() + ", <br/>" +
+					"Votre réservation pour " + party.getTitle() + ", le " +
+					party.getDateParty().getTime() + ", d'un montant de " +
+					party.getPrice() + ", a bien été pris en compte. <br/>" +
+					"Veuillez présenter le ticket à l'entré du concert, disponible " +
+					"<a href=\" "+ urlTicket +" \">ici.</a>" +
+					"<br/><br/>" +
+					"MyParty.fr </body></html>";
+					
 			Properties props = new Properties();
 			props.put("mail.smtp.host", "smtp.live.com");
 			props.put("mail.smtp.starttls.enable", "true");
@@ -57,9 +72,9 @@ public class Mail {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(mail));
             message.setRecipients(Message.RecipientType.TO, 
-                InternetAddress.parse(dest));
+                InternetAddress.parse(customer.getMail()));
             message.setSubject(object);
-            message.setContent("Yes, this is the dog", "text/html");
+            message.setContent(content, "text/html");
 
             Transport.send(message);
 
