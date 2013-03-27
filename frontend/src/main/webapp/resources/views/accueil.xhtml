@@ -134,7 +134,7 @@
 											</div>
 											<div class="descriptionParty">
 												<div class="listeItemTitle">
-													<h:commandLink action="#{partyBean.showPartyFromAccueil(party.id)}" value="#{party.title}"/>
+													<h:commandLink action="#{partyBean.showParty(party.id)}" value="#{party.title}"/>
 												</div>
 												<div class="listeItemTheme">
 													<h:outputText value="#{party.theme}" />
@@ -170,7 +170,7 @@
 														<f:convertNumber minFractionDigits="2" />
 													</h:outputText> €
 												</div>
-												<h:commandLink action="#{partyBean.showPartyFromAccueil(party.id)}" value="Réservez"/>
+												<h:commandLink action="#{partyBean.showParty(party.id)}" value="Réservez"/>
 											</div>
 										</td>
 									</tr>

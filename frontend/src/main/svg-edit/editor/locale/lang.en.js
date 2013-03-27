@@ -240,6 +240,7 @@ svgEditor.readLang({
                 "PleaseSelectFile": "Please select a file",
                 "CannotReadImageFile" : "Cannot read image file",
                 "YouMustSelectValidImageFile": "You must select a valid image file",
-                "ItINValidURL": "It isn't a valid URL"
+                "ItINValidURL": "It isn't a valid URL",
+                "validate": "What's up"
 	}
 });
