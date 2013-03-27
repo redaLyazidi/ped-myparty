@@ -245,6 +245,9 @@ public class PartyDaoImpl extends GenericDAO implements InterfacePartyDao {
 					+ "inner join fetch u.artists inner join fetch u.ticketSold where u.id=:param");
 			query.setParameter("param", id);
 			p = (Party) query.getSingleResult();
+			List<Artist> list = new ArrayList<Artist>();
+			list.add(p.getArtists().get(0));
+			p.setArtists(list);
 			tx.commit();
 			LOG.debug("Party trouvee");
 		} catch (Exception re) {
