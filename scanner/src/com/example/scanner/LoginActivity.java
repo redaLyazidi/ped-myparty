@@ -3,12 +3,9 @@ package com.example.scanner;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.example.scanner.ServiceCaller.notJsonException;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -18,11 +15,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.text.style.UpdateLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -53,14 +48,19 @@ public class LoginActivity extends Activity {
 	/** list party  web service address */
 	final static String PARTIES_SERVICE_ADDR = SERVICES_ADDR + "/listParty";
 
+	/** list party  web service address */
+	final static String SCAN_SERVICE_ADDR = SERVICES_ADDR + "/nbScan";
+
 	/** keeping track of views sequence */
 	Stack<Integer> viewSequence;
-	
+
 	Stack<ViewGroup> layoutSequence;
-	
+
 	protected int idParty;
-	
+
 	protected String summaryParty;
+
+	protected StatCollector stats;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +74,19 @@ public class LoginActivity extends Activity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 	}
-	
+
 	public String getSummaryParty() {
 		return summaryParty;
 	}
-	
+
 	public int getIdParty() {
 		return idParty;
 	}
-	
+
 	public void setSummaryParty(String summary) {
 		summaryParty = summary;
 	}
-	
+
 	public void setIdParty(int id) {
 		idParty = id;
 	}
@@ -112,12 +112,26 @@ public class LoginActivity extends Activity {
 	 */
 	public void transitView(int layoutId) {
 		super.setContentView(layoutId);
-		if(viewSequence != null) {
+		transitView(layoutId, true);
+	}
+
+	/**
+	 * Set a new view for this activity and takes this view
+	 * into account for eventual further backPressed action.
+	 * 
+	 * Use setContentView if you do not want to take into account
+	 * backPressed action for this view.
+	 * 
+	 * @param the view to set
+	 */
+	public void transitView(int layoutId, boolean transit) {
+		super.setContentView(layoutId);
+		if(viewSequence != null && transit) {
 			viewSequence.push(layoutId);
 		} else {
 			System.out.println("null");
 		}
-	}
+	}	
 
 	/**
 	 * Open a new view a start the scanner activity
@@ -139,18 +153,65 @@ public class LoginActivity extends Activity {
 	}
 
 	/**
+	 * Open a new view a start the scanner activity
+	 */
+	public void launchScan(boolean transit) {
+		System.out.println("wut2");
+		transitView(R.layout.scan, transit);
+		refreshNbScan(null);
+		((TextView)findViewById(R.id.summery_party)).setText(summaryParty + 
+				"\n\n");
+	}
+
+	/**
+	 * Open a new view a start the scanner activity
+	 */
+	public void refreshNbScan(View v) {
+		AsyncTask<String, Void, String> 
+		              callBack;  // result of the web service call 
+		String result;           // object json to communicate
+		JSONObject  resultJson;
+		TextView displayResult;  // view where to display the result
+		ServiceCaller     call;
+
+		call = new ServiceCaller(ServiceCaller.GET);
+		callBack = call.execute(SCAN_SERVICE_ADDR + "/" + idParty);
+
+		try {
+			result = call.get();
+			((TextView)findViewById(R.id.nb_scan)).setText(
+					       "\nTickets scannés : " + result);		
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Upon a back button pressed, will display the last view
 	 * set by the method transitView. If none view has been found
 	 * to display, the activity will finish
 	 */
 	@Override
-	public void onBackPressed() {		
+	public void onBackPressed() {
+		int layoutId;
 		// display appropriate view depending on the current view
 		if(!viewSequence.isEmpty()) { // can we remove an element?
 			viewSequence.pop();
 			if(!viewSequence.isEmpty()) {
-				//(ViewGroup)getWindow().getDecorView();
-				setContentView(viewSequence.peek());
+				layoutId = viewSequence.peek();
+				System.out.println(viewSequence);
+				switch(layoutId) {
+				case R.layout.party_list : launchListParty(false);	
+				break;
+				case R.layout.scan : launchScan(false);	
+				break;
+				default : setContentView(layoutId);
+				break;
+				}
 			} else { // no view to display anymore
 				finish(); 
 			}
@@ -162,22 +223,24 @@ public class LoginActivity extends Activity {
 	 * 
 	 * @param v the view triggering this action
 	 */
-	public void launchListParty() {
-		AsyncTask<String, Void, JSONObject> 
-		              callBack;  // result of the web service call 
-		JSONObject  resultJson;  // object json to communicate
+	public void launchListParty(boolean transit) {
+		AsyncTask<String, Void, String> 
+		callBack;  // result of the web service call 
+		String result;           // object json to communicate
+		JSONObject  resultJson;
 		TextView displayResult;  // view where to display the result
 		ServiceCaller     call;
 		JSONArray    listParty;
 
-		transitView(R.layout.party_list);
-		
+		transitView(R.layout.party_list, transit);
+
 		try {
 			call = new ServiceCaller(ServiceCaller.GET);
 			callBack = call.execute(PARTIES_SERVICE_ADDR);
-			
+
 			System.out.println("yo");
-			resultJson = call.get();
+			result = call.get();
+			resultJson = new JSONObject(result);
 			listParty = resultJson.getJSONArray("list");
 			System.out.println("list : "+ listParty);
 			((PartyList)findViewById(R.id.party_list)).fill(listParty);
@@ -196,14 +259,15 @@ public class LoginActivity extends Activity {
 	 * @param v the view triggering this action
 	 */
 	public void launchChecking(View v) {
-		AsyncTask<String, Void, JSONObject> 
+		AsyncTask<String, Void, String> 
 		callBack;  // result of the web service call 
 		JSONObject customerJson,              // object json to communicate
 		resultJson;
+		String          result;
 		TextView displayResult;               // view where to display the result
 		ServiceCaller call;
 		int idParty, idCustomer;
-		
+
 		customerJson = new JSONObject();
 		displayResult = (TextView)findViewById(R.id.checking);
 
@@ -223,7 +287,8 @@ public class LoginActivity extends Activity {
 		callBack = call.execute(MANUAL_SERVICE_ADDR);
 
 		try {
-			resultJson = call.get();
+			result = call.get();
+			resultJson = new JSONObject(result);
 			((TextView)findViewById(R.id.ticket)).setText("" +
 					"Information du ticket : " +
 					"\n\nID party : " + resultJson.getInt("idParty") +
@@ -245,28 +310,39 @@ public class LoginActivity extends Activity {
 	 *
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		AsyncTask<String, Void, JSONObject> 
+		AsyncTask<String, Void, String> 
 		callBack;  // result of the web service call 
 		IntentResult scanResult;              // result when the scan is done
 		String result;                        // result of the qrcode scanned
-		String[] results;                     // different parts of the result
-		JSONObject customerJson;              // object json to communicate
+		String[] results = {};                     // different parts of the result
+		JSONObject customerJson = null;              // object json to communicate
 		TextView displayResult;               // view where to display the result
 
 		scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		result = scanResult.getContents();
-		customerJson = new JSONObject();
-		results = result.split("\n");
 
 		transitView(R.layout.qr_checking);
 		displayResult = (TextView)findViewById(R.id.checking);
 
+		if(scanResult.getContents() != null) {
+			result = scanResult.getContents();
+			customerJson = new JSONObject();
+			results = result.split("\n");
+		}
+
 		if (scanResult != null && results.length == 3) {
+
 			// building customer json object
 			try {
 				customerJson.put("idCustomer", Integer.valueOf(results[0]));
 				customerJson.put("idParty", Integer.valueOf(results[1]));
 				customerJson.put("secretCode", results[2]);
+
+				if(Integer.valueOf(results[1]) != idParty) {
+					displayResult.setText(R.string.error_party);
+					System.out.println(idParty);
+					return;
+				}
+
 			} catch (JSONException e) {
 				displayResult.setText(R.string.error_checking);
 			} catch (NumberFormatException e) {
@@ -278,7 +354,8 @@ public class LoginActivity extends Activity {
 
 			// waiting for the result
 			try {
-				customerJson = callBack.get();
+				result = callBack.get();
+				customerJson = new JSONObject(result);
 				if(customerJson.getBoolean("validated")) {
 					displayResult.setText(R.string.alreay_validated); 
 				} else if(customerJson.getInt("idCustomer") != 0) { 
@@ -313,10 +390,11 @@ public class LoginActivity extends Activity {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void performLogin(View v) {
-		AsyncTask<String, Void, JSONObject> 
+		AsyncTask<String, Void, String> 
 		callBack;   // result of the web service call
 		CharSequence login;   // login from the textfield
 		CharSequence pwd;     // password from the textfield
+		String result;
 		JSONObject userJson;  // login and password fields formatted into json
 		ServiceCaller call;   // caller to call the web service
 
@@ -345,11 +423,14 @@ public class LoginActivity extends Activity {
 
 		// waiting for the result
 		try {
-			userJson = callBack.get();
+			result = callBack.get();
+			userJson = new JSONObject(result);
 			System.out.println(userJson);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
@@ -360,7 +441,7 @@ public class LoginActivity extends Activity {
 				// going to the next view
 				//transitView(R.layout.scan);
 				//transitView(R.layout.party_list);
-				launchListParty();
+				launchListParty(true);
 			} else { // login not ok, displaying an error
 				((TextView)findViewById(R.id.connecting)).setVisibility(View.INVISIBLE);
 				((TextView)findViewById(R.id.error)).setVisibility(View.VISIBLE);

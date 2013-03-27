@@ -14,7 +14,10 @@
     <string name="manual">Saisie manuelle</string>
     <string name="validated">Le ticket a été validé avec succès!</string>
     <string name="error_customer">Erreur : Le client n\'a pas pu être trouvé pour ce ticket.</string>
+     <string name="error_party">Erreur : ce QR code ne correspond pas à cette party.</string>
     <string name="error_checking">Erreur : le QR code a un mauvais format.</string>
-    <string name="alreay_validated">Erreur : ce ticket a déjà été validé au préalable. Vérifiez l\'identitié du détenteur du ticket.    </string>
+    <string name="alreay_validated">Erreur : ce ticket a déjà été validé au préalable. Vérifiez l\'identitié du détenteur du ticket.</string>
+    <string name="tickets_scanned">Tickets scannés pour la party</string>
+    <string name="refresh">Rafraichir</string>
 
 </resources>
