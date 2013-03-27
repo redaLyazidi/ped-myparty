@@ -1,8 +1,7 @@
 package net.ped.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -16,8 +15,12 @@ import javax.mail.internet.MimeMessage;
 import net.ped.model.Customer;
 import net.ped.model.Party;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Mail {
-	
+	private static final Logger LOG = LoggerFactory.getLogger(Mail.class);
+
 	private static Mail instance;
 	
 	private Mail() {
@@ -45,17 +48,22 @@ public class Mail {
 			final String mail = "projet.img3d@gmail.com";
 			final String password = "blopblop";
 			final String object = "Confirmation de réservation";
+			final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+			final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
 			final String content = "<html><body> " +
 					"<h2>Confirmation de réservation</h2>" +
 					customer.getFirstname() + " " + customer.getLastname() + ", <br/>" +
 					"Votre réservation pour " + party.getTitle() + ", le " +
-					party.getDateParty().getTime() + ", d'un montant de " +
-					party.getPrice() + ", a bien été pris en compte. <br/>" +
+					dateFormat.format(party.getDateParty().getTime()) + " à " +
+					timeFormat.format(party.getTimeParty().getTime()) +
+					", d'un montant de " +
+					party.getPrice() + " euros, a bien été prise en compte. <br/>" +
 					"Veuillez présenter le ticket à l'entré du concert, " +
 					"<a href=\" "+ urlTicket +" \">disponible ici</a>." +
 					"<br/><br/>" +
 					"MyParty.fr </body></html>";
-					
+			LOG.debug(party.getDateParty().getTime().toString());
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");

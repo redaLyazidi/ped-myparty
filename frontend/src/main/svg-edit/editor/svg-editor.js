@@ -59,7 +59,7 @@ if (!alert)
             initOpacity: 1,
             imgPath: 'images/',
             fixedUrlImages: 'images/myparty/', //myparty
-            imageProxyServer: self.location.protocol + "//" + self.location.host + "/myparty-frontend/imgUrl?url=", // myparty
+            imageProxyServer: self.location.protocol + "//" + self.location.host + mypartyurlbase + "/imgUrl?url=", // myparty
             langPath: 'locale/',
             extPath: 'extensions/',
             jGraduatePath: 'jgraduate/images/',

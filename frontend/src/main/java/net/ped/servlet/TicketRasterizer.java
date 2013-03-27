@@ -145,7 +145,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		char sep = '_';
 		String id = "" + ticket.getId() + sep
 					   + ticket.getCustomer().getId()
-					   + sep + ticket.getSecretCode();
+					   + sep + ticket.getSecretCode().toUpperCase();
 		String line;
 		while((line = reader.readLine()) != null) {
 			String line2 = line.replace(SvgQrcodeTag, qrDataUri)

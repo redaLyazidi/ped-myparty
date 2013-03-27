@@ -14,7 +14,6 @@
 		<slf4j.version>1.7.2</slf4j.version>
 	</properties>
 	<modules>
-		<module>scanner-android</module>
 		<module>backend</module>
 		<module>frontend</module>
 	</modules>
@@ -61,5 +60,19 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+				<downloadSources> false</downloadSources>
+				<downloadJavadocs>false</downloadJavadocs>
+				<wtpversion>2.0</wtpversion>
+				<wtpmanifest>true</wtpmanifest>
+				<wtpapplicationxml> true</wtpapplicationxml>
+				</configuration>
+			</plugin>
+		</plugins> 
 	</build>
 </project>
