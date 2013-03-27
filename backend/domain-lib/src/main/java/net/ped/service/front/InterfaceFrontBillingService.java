@@ -1,5 +1,7 @@
 package net.ped.service.front;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.ped.model.Customer;
 import net.ped.model.Party;
 import net.ped.model.Ticket;
@@ -40,5 +42,11 @@ public interface InterfaceFrontBillingService {
 	/**
 	 * Envoyer un mail
 	 */
-	public void sendMail(String dest);
+	public void sendMail(Customer customer, Party party, String ticketLink);
+	
+	/**
+	 * 
+	 * Obtient l'url du ticket pour le client
+	 */
+	public String getURL(HttpServletRequest req, Ticket ticket);
 }

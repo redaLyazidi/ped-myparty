@@ -37,12 +37,24 @@
 						<div class="row-fluid">
 							<div class="span8">
 								
-								<h:outputText value="#{partyBean.firstname} #{partyBean.name}"/>
-								<h:outputText value="Nous vous confirmons la réservation de #{partyBean.partySelect.title} ..."/>
-								<h:outputText value="Un email vous à été envoyé à l'adresse #{partyBean.mail}"/>
-								...
-								Lien vers le ticket ...
-
+								<h:outputText value="#{partyBean.firstname} #{partyBean.name},"/> <div></div>
+								<h:outputText value="Votre réservation pour #{partyBean.partySelect.title}, le "/>
+								<h:outputText value="#{partyBean.partySelect.dateParty.getTime()}" >
+									<f:convertDateTime pattern="dd/MM/yyyy à " timeZone="Europe/Paris" />
+								</h:outputText>	
+								<h:outputText value="#{partyBean.partySelect.timeParty.getTime()}">
+									<f:convertDateTime pattern="HH:mm" timeZone="Europe/Paris" />
+								</h:outputText> 
+								<h:outputText value=" d'un montant de "/> 
+								<h:outputText value="#{partyBean.partySelect.price}" >
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText>
+								<h:outputText value=" € a bien été pris en compte."/>
+								<div></div>
+								<h:outputText value="Veuillez vous présenter à l'entré du concert avec le ticket disponible "/> 
+								<a href="#{partyBean.urlTicketToPrint}">ici.</a><div></div>
+								<h:outputText value="Un email vous à été envoyé à l'adresse #{partyBean.mail}" escape="false"/>
+								
 							</div>
 						</div>
 					

@@ -88,7 +88,10 @@
 								<div class="partyPartReserv">
 									<div>
 										<h:outputText style="color: rgb(255,155,55)"
-											value="#{partyBean.partySelect.price} €" />
+											value="#{partyBean.partySelect.price}" >
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText> <h:outputText style="color: rgb(255,155,55)"
+											value="€"/>
 									</div>
 								</div>
 
