@@ -88,7 +88,7 @@ public class PartyBean implements Serializable {
 		Ticket ticket = FrontBillingService.getInstance().getTicket(customer.getId(), partySelect.getId());
 		urlTicketToPrint = FrontBillingService.getInstance().getURL(request,  ticket);
 		
-		//FrontBillingService.getInstance().sendMail(customer, partySelect, urlTicketToPrint);
+		FrontBillingService.getInstance().sendMail(customer, partySelect, urlTicketToPrint);
 
 		return "confirmBilling";
 	}
