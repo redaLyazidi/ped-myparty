@@ -10,6 +10,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
     android:text="Id client"
+    android:textSize="20sp"
     android:layout_gravity="center" />
 
 <EditText android:id="@+id/id_customer" 
@@ -25,6 +26,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
     android:text="Id billet"
+    android:textSize="20sp"
     android:layout_gravity="center" />
     
 <EditText android:padding="20dip"
@@ -33,11 +35,5 @@
     android:layout_width="fill_parent"
     android:onClick="clearField"
     android:layout_gravity="center" />
-    
-<Button android:padding="20dip"
-    android:id="@+id/confirm" android:layout_height="wrap_content"
-    android:text="Vérifier" android:layout_width="fill_parent" 
-    android:layout_gravity="center"
-    android:onClick="launchChecking" />
 
 </LinearLayout>

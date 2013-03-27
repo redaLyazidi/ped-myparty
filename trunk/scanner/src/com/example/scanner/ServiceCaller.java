@@ -32,7 +32,7 @@ import android.util.Log;
  * Utility class to call Rest/JSon based web services.
  * 
  */
-public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
+public class ServiceCaller extends AsyncTask<String, Void, String> {
 	
 	/** Value to use to specify we want to use the post method */
 	public static final String POST = "post";
@@ -44,7 +44,7 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 	protected String method;
 	
 	/** Result of the web service to call*/
-	protected JSONObject result;
+	protected String result;
 	
 	/** Additional parameter for post method requests */
 	protected JSONObject param;
@@ -57,11 +57,11 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 		this.method = method;
 	}
 
-	public JSONObject getResult() {
+	public String getResult() {
 		return result;
 	}
 
-	public void setResult(JSONObject result) {
+	public void setResult(String result) {
 		this.result = result;
 	}
 
@@ -92,10 +92,9 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 		this.param = param;	
 	}
 	
-	protected JSONObject doGetRequest(String uri) {
+	protected String doGetRequest(String uri) {
 				
-		String output, result = "";     // 
-		JSONObject json = null; // final json object to return 
+		String output, result = "";  
 		
 		try {
 
@@ -115,7 +114,7 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 			if (response.getStatusLine().getStatusCode() != 200) {
 				Log.d("dogetrequest", "Failed : HTTP error code : "
 						+ response.getStatusLine().getStatusCode());
-				return json;
+				return result;
 			}
 
 			BufferedReader br = new BufferedReader(
@@ -128,27 +127,21 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 			}
 
 			httpClient.getConnectionManager().shutdown();
-			json = new JSONObject(result);
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
-		return json;
+		return result;
 	}
 
-	protected JSONObject doPostRequest(String uri, JSONObject param) {
+	protected String doPostRequest(String uri, JSONObject param) {
 		String   output, // intermediate result of the request
 		         result; // final result of the request
-		JSONObject json; // final json object to return 
 		
 		output = result =  "";     
-		json = null;
 		
 		try {
  
@@ -169,7 +162,7 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 			if (response.getStatusLine().getStatusCode() != 200) {
 				Log.d("dogetrequest", "Failed : HTTP error code : "
 						+ response.getStatusLine().getStatusCode());
-				return json;
+				return result;
 			}
 
 			BufferedReader br = new BufferedReader(
@@ -182,41 +175,23 @@ public class ServiceCaller extends AsyncTask<String, Void, JSONObject> {
 			}
 
 			httpClient.getConnectionManager().shutdown();
-			json = new JSONObject(result);
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+		}
 		
-		return json;
+		return result;
 	}
 
-	protected JSONObject doInBackground(String ... uri) {
-			
+	protected String doInBackground(String ... uri) {	
 		if(method.equals(GET))
 		   result = doGetRequest(uri[0]);
 		else if(method.equals(POST))
 		   result = doPostRequest(uri[0], this.param);
 		
 		return result;
-	}
-	
-	/**
-	 * 
-	 * @param uri address of the web service to call
-	 * @return
-	 */
-	public static JSONObject getContent(String uri) throws notJsonException {
-		return null;
-	}
-
-	public class notJsonException extends Exception {
-
 	}
 
 }

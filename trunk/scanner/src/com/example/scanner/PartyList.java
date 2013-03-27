@@ -29,7 +29,9 @@ public class PartyList extends ListView {
 
 	String[] partyList;
 	
-	int[] partyIds;
+	ArrayList<Integer> partyIds;
+	
+	ArrayList<Integer> allPartyIds;
 
 	ArrayList<String> resultParty;
 	
@@ -63,17 +65,19 @@ public class PartyList extends ListView {
 	public void fill(JSONArray parties) {
 		final int LENGTH = parties.length();
 		partyList = new String[LENGTH];
-		partyIds = new int[LENGTH];
+		allPartyIds = new ArrayList<Integer>(LENGTH);
 		for(int i=0; i<parties.length(); i++) {
 			try {
 				partyList[i] = parties.getJSONObject(i).getString("summary");
-				partyIds[i] = parties.getJSONObject(i).getInt("id");;
+				allPartyIds.add(parties.getJSONObject(i).getInt("id"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}			
 		}
 		this.parties = new ArrayAdapter<String>(getContext(), R.layout.edit_text, partyList);
+		this.partyIds = allPartyIds;
 		setAdapter(this.parties);
+		System.out.println(allPartyIds);
 	}
 
 	/**
@@ -92,13 +96,15 @@ public class PartyList extends ListView {
 				String partyLower = partyList[i].toLowerCase();
 				if(partyLower.contains(queryLower)) {
 					resultParty.add(partyList[i]);
-					resultId.add(partyIds[i]);
+					resultId.add(partyIds.get(i));
 				}
 			}
 			setAdapter(new ArrayAdapter<String>(getContext(), R.layout.edit_text, 
 					resultParty));
+			partyIds = resultId;
 		} else {
 			setAdapter(parties);
+		    partyIds = allPartyIds;
 		}
 
 
@@ -109,11 +115,9 @@ public class PartyList extends ListView {
 		public void onItemClick(AdapterView<?> ad, View v, int position,
 				long rowId) {
 			LoginActivity activity = ((LoginActivity)getContext());
-			activity.transitView(R.layout.scan);
 			activity.setSummaryParty(((TextView)v).getText().toString());
-			activity.setIdParty(partyIds[position]);	
-			((TextView)activity.findViewById(R.id.summery_party)).setText(
-					                   activity.getSummaryParty() + "\n");
+			activity.setIdParty(partyIds.get(position-1));
+			activity.launchScan(true);
 		}	
 	}
 
