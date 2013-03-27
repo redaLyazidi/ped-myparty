@@ -119,7 +119,7 @@ svgEditor.addExtension("mypartyQrcode", function() {
                 'height': h,
                 'x': new_x,
                 'y': new_y,
-                'preserveAspectRatio': 'xMidYMid';
+                'preserveAspectRatio': 'xMidYMid'
             },1000);
         }
 
