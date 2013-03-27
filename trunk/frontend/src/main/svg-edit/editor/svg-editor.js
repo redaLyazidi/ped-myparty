@@ -120,7 +120,8 @@ if (!alert)
                 "PleaseSelectFile": "Please select a file",
                 "CannotReadImageFile": "Cannot read image file",
                 "YouMustSelectValidImageFile": "You must select a valid image file",
-                "ItINValidURL": "It isn't a valid URL"
+                "ItINValidURL": "It isn't a valid URL",
+                "validate": "What's up"
             }
         };
 
@@ -2695,7 +2696,7 @@ if (!alert)
             var clickValidate = function(){
                 var validateID = '#tool_validate';
                 if (toolButtonClick(validateID)) {
-                    $.confirm("vous etes sur", function(ok) {
+                    $.confirm(uiStrings.notification.validate, function(ok) {
                         console.log(ok);
                         if (ok) {
                             console.log("Validate idParty ticket : ", Editor.curConfig.idParty);

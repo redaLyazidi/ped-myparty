@@ -60,37 +60,18 @@ public class PartyBean implements Serializable {
 		LOG.debug("constructeur : je passe par là !");
 	}
 
-	public String showPartyFromAccueil(int id){
+	public String showParty(int id){
 
 		partySelect = FrontPartyService.getInstance().getParty(id);
 
 		urlTicket = "../ticketsdir/ticket" + partySelect.getId() + ".svg";
-		LOG.debug("ticket :" + urlTicket);
 
 		hasTicket = false;
 		File file = Commons.getPartySvgFile(partySelect.getId());
 		if(FileStorage.exists(file)){
 			hasTicket = true;
+			LOG.debug("La party " + id + " ne possède pas de ticket");
 		}
-		LOG.debug("La party ne possède pas de ticket");
-
-		createChartTicket();
-		return "party";
-	}
-
-	public String showPartyFromNotValidated(int id){
-
-		partySelect = FrontPartyService.getInstance().getParty(id);
-
-		urlTicket = "../ticketsdir/ticket" + partySelect.getId() + ".svg";
-		LOG.debug("ticket :" + urlTicket);
-
-		hasTicket = false;
-		File file = Commons.getPartySvgFile(partySelect.getId());
-		if(FileStorage.exists(file)){
-			hasTicket = true;
-		}
-		LOG.debug("La party ne possède pas de ticket");
 
 		createChartTicket();
 		return "party";

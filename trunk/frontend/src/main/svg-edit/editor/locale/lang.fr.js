@@ -242,6 +242,7 @@ svgEditor.readLang({
                 "PleaseSelectFile": "Veuillez SVP choisir un fichier",
                 "CannotReadImageFile" : "Impossible de lire le fichier",
                 "YouMustSelectValidImageFile": "Le fichier choisi doit être une image valide",
-                "ItINValidURL": "Ce n'est pas une URL valide"
+                "ItINValidURL": "Ce n'est pas une URL valide",
+                "validate": "Si confirmation, le ticket sera créé et relié à la Party. <br/> Vous allez être redirigé vers la page de la Party"
 	}
 });
