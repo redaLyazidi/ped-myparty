@@ -5556,7 +5556,7 @@ $.SvgCanvas = function(container, config)
         
         //jQuery.alert('Preview clicked');
         this.sendSVGToServer(route);
-        /*jQuery.post(route, {
+        /*jQuery.post(route, { // encoding pb. Why here and not in sendSVGToServer ?!
             'svgstr' : svgCanvas.svgCanvasToString()
         },
         function (data) {
@@ -7653,7 +7653,7 @@ $.SvgCanvas = function(container, config)
 
             switch(direction) {
             case "left":
-                anchor = "left";
+                anchor = "start";
                 align = "left";
                 break;
             case "right":
@@ -7667,7 +7667,29 @@ $.SvgCanvas = function(container, config)
         if(!selectedElements[0].textContent) {
             textActions.setCursor();
         }
-    }
+    };
+    
+    this.getTextAlign = function() {
+        var selected = selectedElements[0];
+        if (selected != null && selected.tagName == "text" &&
+            selectedElements[1] == null)
+        {
+            var align = selected.getAttribute("text-align");
+            switch(align) {
+                case "center":
+                    return "center";
+                case "end":
+                case "right":
+                    return "right";
+                case "left":
+                case "start":
+                    return "left";
+            }
+            return "center";
+        }
+        console.log("bug on getTextAlign");
+        return "center";
+    };
 
     // Function: getFontFamily
     // Returns the current font family
@@ -9034,6 +9056,16 @@ $.SvgCanvas = function(container, config)
             bg.appendChild(bg_img);
         } else if(bg_img) {
             bg_img.parentNode.removeChild(bg_img);
+        }
+    }
+    
+    this.setPreserveAspectRation = function(value) {
+         var selected = selectedElements[0];
+        if (selected != null && selected.tagName  == "image" &&
+            selectedElements[1] == null)
+        {
+            changeSelectedAttribute("preserveAspectRatio", value);
+            console.log("aspect ratio");
         }
     }
 

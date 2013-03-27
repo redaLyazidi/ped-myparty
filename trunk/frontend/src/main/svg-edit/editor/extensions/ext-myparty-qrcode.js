@@ -17,6 +17,7 @@ svgEditor.addExtension("mypartyQrcode", function() {
 
     return {
         svgicons: "extensions/ext-myparty-qrcode.xml",
+        icon: "ext-myparty-qrcode.png",
         buttons: [{
             id: "tool_myparty_qrcode",
             type: "mode",
