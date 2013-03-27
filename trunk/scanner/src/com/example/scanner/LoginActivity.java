@@ -263,13 +263,16 @@ public class LoginActivity extends Activity {
 		callBack;  // result of the web service call 
 		JSONObject customerJson,              // object json to communicate
 		resultJson;
-		String          result;
+		String          result,
+		          displayState;
 		TextView displayResult;               // view where to display the result
 		ServiceCaller call;
 		int idParty, idCustomer;
 
 		customerJson = new JSONObject();
 		displayResult = (TextView)findViewById(R.id.checking);
+		displayState = "";
+		idParty = idCustomer = 0;
 
 		try {
 			idParty = Integer.valueOf(((TextView)findViewById(R.id.id_customer)).getText().toString());
@@ -277,8 +280,9 @@ public class LoginActivity extends Activity {
 			customerJson.put("idCustomer", idCustomer);
 			customerJson.put("idParty", idParty);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			idParty = idCustomer = 0;
 		}
 
 		transitView(R.layout.checking);
@@ -289,21 +293,26 @@ public class LoginActivity extends Activity {
 		try {
 			result = call.get();
 			resultJson = new JSONObject(result);
-			((TextView)findViewById(R.id.ticket)).setText("" +
+			
+			if(idParty == 0 || idCustomer == 0) {
+				displayState = getString(R.string.error_customer);
+			} else if(resultJson.getBoolean("validated")) {
+				displayState = getString(R.string.alreay_validated);
+			} else {
+				displayState = getString(R.string.validated);
+			}
+			
+			((TextView)findViewById(R.id.ticket)).setText(displayState + "\n\n" +
 					"Information du ticket : " +
 					"\n\nID party : " + resultJson.getInt("idParty") +
 					"\nID client : " + resultJson.getInt("idCustomer"));
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
