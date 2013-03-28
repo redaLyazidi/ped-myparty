@@ -143,7 +143,7 @@ public abstract class TicketRasterizer extends PedHttpServlet {
 		//LOG.debug("Size : " + txt.size());
 		
 		char sep = '_';
-		String id = "" + ticket.getId() + sep
+		String id = "" + ticket.getParty().getId() + sep
 					   + ticket.getCustomer().getId()
 					   + sep + ticket.getSecretCode().toUpperCase();
 		String line;
