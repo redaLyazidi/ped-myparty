@@ -22,11 +22,11 @@
 
 		
 		<!-- Hibernate c3p0 connection pool -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>4.1.7.Final</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>com.h2database</groupId>
