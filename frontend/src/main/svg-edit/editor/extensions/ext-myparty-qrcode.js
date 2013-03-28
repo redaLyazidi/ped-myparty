@@ -50,7 +50,8 @@ svgEditor.addExtension("mypartyQrcode", function() {
                     "height": 0,
                     "id": canv.getNextId(),
                     "opacity": cur_shape.opacity / 2,
-                    "style": "pointer-events:inherit"
+                    "style": "pointer-events:inherit",
+                    'preserveAspectRatio': 'xMidYMid'
                 }
             });
             canv.setHref(newImage, "images/myparty/qrcode.png");
@@ -118,8 +119,7 @@ svgEditor.addExtension("mypartyQrcode", function() {
                 'width': w,
                 'height': h,
                 'x': new_x,
-                'y': new_y,
-                'preserveAspectRatio': 'xMidYMid'
+                'y': new_y
             },1000);
         }
 
