@@ -1,142 +1,134 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.ped.myparty</groupId>
-		<artifactId>myparty-backend</artifactId>
-		<version>0.1.0.BUILD-SNAPSHOT</version>
-	</parent>
-	<artifactId>myparty-backend-domain-lib</artifactId>
-	<name>myparty-backend-domain-lib</name>
-	<packaging>jar</packaging>
+        <parent>
+                <groupId>com.ped.myparty</groupId>
+                <artifactId>myparty-backend</artifactId>
+                <version>0.1.0.BUILD-SNAPSHOT</version>
+        </parent>
+        <artifactId>myparty-backend-domain-lib</artifactId>
+        <name>myparty-backend-domain-lib</name>
+        <packaging>jar</packaging>
 
 
-	<dependencies>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.1.7.Final</version>
-		</dependency>
+        <dependencies>
+                <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-entitymanager</artifactId>
+                        <version>4.1.7.Final</version>
+                </dependency>
+                <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.3.168</version>
+                        <scope>test</scope>
+                </dependency>
+                <dependency>
+                        <groupId>org.dbunit</groupId>
+                        <artifactId>dbunit</artifactId>
+                        <version>2.4.8</version>
+                        <scope>test</scope>
+                </dependency>
 
-		
-		<!-- Hibernate c3p0 connection pool -->
-		<!--<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-			<version>4.1.7.Final</version>
-		</dependency> -->
+                <!-- jetty -->
+                <dependency>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-server</artifactId>
+                        <version>8.1.7.v20120910</version>
+                        <scope>provided</scope>
+                </dependency>
 
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.3.168</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.dbunit</groupId>
-			<artifactId>dbunit</artifactId>
-			<version>2.4.8</version>
-			<scope>test</scope>
-		</dependency>
+                <!-- c3p0 -->
+                <dependency>
+                        <groupId>c3p0</groupId>
+                        <artifactId>c3p0</artifactId>
+                        <version>0.9.1.2</version>
+                </dependency>
 
-		<!-- jetty -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>8.1.7.v20120910</version>
-			<scope>provided</scope>
-		</dependency>
+                <!-- MySQL -->
+                <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.21</version>
+                </dependency>
 
-		<!-- c3p0 -->
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
-		</dependency>
+                <!-- RESTEasy -->
+                <dependency>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                        <version>2.5</version>
+                        <scope>provided</scope>
+                </dependency>
+                <dependency>
+                        <groupId>javax.servlet.jsp</groupId>
+                        <artifactId>jsp-api</artifactId>
+                        <version>2.2</version>
+                        <scope>provided</scope>
+                </dependency>
+                <dependency>
+                        <groupId>org.jboss.resteasy</groupId>
+                        <artifactId>resteasy-jaxrs</artifactId>
+                        <version>2.3.4.Final</version>
+                </dependency>
+                <dependency>
+                        <groupId>org.jboss.resteasy</groupId>
+                        <artifactId>resteasy-jackson-provider</artifactId>
+                        <version>2.3.4.Final</version>
+                </dependency>
+                <!-- <dependency> -->
+                <!-- <groupId>org.jboss.resteasy</groupId> -->
+                <!-- <artifactId>resteasy-jaxb-provider</artifactId> -->
+                <!-- <version>2.3.4.Final</version> -->
+                <!-- </dependency> -->
+                <!-- <dependency> -->
+                <!-- <groupId>org.jboss.resteasy</groupId> -->
+                <!-- <artifactId>resteasy-jettison-provider</artifactId> -->
+                <!-- <version>2.3.4.Final</version> -->
+                <!-- </dependency> -->
 
-		<!-- MySQL -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.21</version>
-		</dependency>
+                <!-- Génération aléatoire String -->
+                <dependency>
+                        <groupId>org.apache.commons</groupId>
+                        <artifactId>commons-lang3</artifactId>
+                        <version>3.1</version>
+                </dependency>
+                
+                <!--  javamail -->
+                <dependency>
+              <groupId>com.sun.mail</groupId>
+              <artifactId>javax.mail</artifactId>
+              <version>1.4.5</version>
+            </dependency>
+                
+        </dependencies>
 
-		<!-- RESTEasy -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxrs</artifactId>
-			<version>2.3.4.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jackson-provider</artifactId>
-			<version>2.3.4.Final</version>
-		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.jboss.resteasy</groupId> -->
-		<!-- <artifactId>resteasy-jaxb-provider</artifactId> -->
-		<!-- <version>2.3.4.Final</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.jboss.resteasy</groupId> -->
-		<!-- <artifactId>resteasy-jettison-provider</artifactId> -->
-		<!-- <version>2.3.4.Final</version> -->
-		<!-- </dependency> -->
+        <build>
+                <finalName>domain-lib</finalName>
+                <plugins>
+                        <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-compiler-plugin</artifactId>
+                                <version>2.0.2</version>
+                                <configuration>
+                                        <source>1.6</source>
+                                        <target>1.6</target>
+                                </configuration>
+                        </plugin>
 
-		<!-- Génération aléatoire String -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
-		</dependency>
-		
-		<!--  javamail -->
-		<dependency>
-	      <groupId>com.sun.mail</groupId>
-	      <artifactId>javax.mail</artifactId>
-	      <version>1.4.5</version>
-	    </dependency>
-		
-	</dependencies>
+                        <plugin>
+                                <groupId>org.codehaus.mojo</groupId>
+                                <artifactId>tomcat-maven-plugin</artifactId>
+                                <version>1.1</version>
+                        </plugin>
 
-	<build>
-		<finalName>domain-lib</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>tomcat-maven-plugin</artifactId>
-				<version>1.1</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.1.5.v20120716</version>
-			</plugin>
-		</plugins>
-	</build>
+                        <plugin>
+                                <groupId>org.mortbay.jetty</groupId>
+                                <artifactId>jetty-maven-plugin</artifactId>
+                                <version>8.1.5.v20120716</version>
+                        </plugin>
+                </plugins>
+        </build>
 </project>
+

@@ -1,42 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
 http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-	version="2.0">
-	<persistence-unit name="domain-lib" transaction-type="RESOURCE_LOCAL">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>net.ped.model.Party</class>
-		<class>net.ped.model.Ticket</class>
-		<class>net.ped.model.Artist</class>
-		<class>net.ped.model.User</class>
-		<class>net.ped.model.Customer</class>
+        version="2.0">
+        <persistence-unit name="domain-lib" transaction-type="RESOURCE_LOCAL">
+                <provider>org.hibernate.ejb.HibernatePersistence</provider>
+                <class>net.ped.model.Party</class>
+                <class>net.ped.model.Ticket</class>
+                <class>net.ped.model.Artist</class>
+                <class>net.ped.model.User</class>
+                <class>net.ped.model.Customer</class>
 
-		<properties>
-			<!-- LOG SQL -->
-			<!-- <property name="hibernate.format_sql" value="true" /> -->
-			<!-- <property name="use_sql_comments" value="true" /> -->
-			<!-- <property name="hibernate.show_sql" value="true" /> -->
+                <properties>
+                        <!-- LOG SQL -->
+                        <!-- <property name="hibernate.format_sql" value="true" /> -->
+                        <!-- <property name="use_sql_comments" value="true" /> -->
+                        <!-- <property name="hibernate.show_sql" value="true" /> -->
 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+                        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+                        <property name="hibernate.hbm2ddl.auto" value="update" />
+                        <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 
-			
-			<!--<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/myparty" />
-			<property name="hibernate.connection.username" value="root"/>
-			<property name="hibernate.connection.password" value=""/> -->
+                        
+<!--                    <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/myparty" />
+                        <property name="hibernate.connection.username" value="root"/>
+                        <property name="hibernate.connection.password" value=""/> -->
 
-			<property name="hibernate.connection.username" value="rlyazidi" />
-			<property name="hibernate.connection.password" value="aldgwt" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://dbserver:3306/rlyazidi" />
-			
-			<!-- <property name="hibernate.c3p0.min_size" value="5" />
-			<property name="hibernate.c3p0.max_size" value="20" />
-			<property name="hibernate.c3p0.timeout" value="300" />
-			<property name="hibernate.c3p0.max_statements" value="50" />
-			<property name="hibernate.c3p0.idle_test_period" value="3000" /> -->
+                        <property name="hibernate.connection.username" value="rlyazidi" />
+                        <property name="hibernate.connection.password" value="aldgwt" />
+                        <property name="hibernate.connection.url" value="jdbc:mysql://dbserver:3306/rlyazidi" />
 
-		</properties>
-	</persistence-unit>
+
+                </properties>
+        </persistence-unit>
 </persistence>
+
